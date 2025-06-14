@@ -1,4 +1,6 @@
 import ply.lex as lex
+from datetime import datetime
+import os
 
 reserved = {
     'if': 'IF',
@@ -142,62 +144,29 @@ def t_error(t):
 
 lexer = lex.lex()
 
-data = '''
-   import 'dart:math';
-    /* Este programa almacena temperaturas 
-        las filtra segun un umbal y muestra resultados.*/
+input_folder = "../Algorithms/"
+output_folder = "../Logs/"
+
+for filename in os.listdir(input_folder):
+    file_path = os.path.join(input_folder, filename)
+    if os.path.isfile(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            file_content = file.read()
+
+        lex.input(file_content)
+
+        filename_split = filename.split(".")
+
+        output_path = os.path.join(output_folder, "lexico-" + filename_split[0] + "-" + datetime.now().strftime("%d-%m-%Y-%Hh%M") + ".txt")
+
+        with open(output_path, 'w', encoding='utf-8') as outfile:
+            while True:
+                tok = lexer.token()
+                if not tok:
+                    break
+                outfile.write(str(tok) + "\n")
        
-    void main() {
-        final double threshold = 30.5;
-        var temperatures <double> = [28.0, 31.2, 29.5, 32.1, 27.0];
-        List<double> highTemps = [];
 
-        for(double temp in temperatures) {
-            if(temp > threshold) {
-                highTemps.add(temp);
-            }else{
-                continue;
-            }
-        }
-    }
-
-    print("Temperaturas altas detectadas:");
-    for(var t in highTemps){
-        print(" - $t °C");
-        }
-
-    final Map<String, bool> estado = {
-        "alerta": highTemps.lenght > 2,
-        "estable": highTemps.lenght <= 2
-    };
-    
-    print("\nEstado del sistema:");
-    estado.forEach((clave, valor) {
-        print("$clave: $valor");
-    });
-
-    // Declaraciones alternativas
-    const bool sistemaActivo = true;
-    late String mensaje;
-
-    if (sistemaActivo) {
-        mensaje = "Sistema operativo en línea.";
-    }
-
-    print("\nMensaje: $mensaje");
-
-    }
-
-'''
-
-lexer.input(data)
-
-
-while True:
-    tok = lexer.token()
-    if not tok: 
-        break      
-    print(tok)
 
 
 
