@@ -1,12 +1,11 @@
-import ply.lex as lex 
+from analizadorLex import build_lexer
 from datetime import datetime
 import os
 
-input_folder = "../Algoritmos/"
-output_folder = "../Logs/"
+lexer = build_lexer()
 
-# Construcción del lexer
-lexer = lex.lex()
+input_folder = "./Algoritmos/"
+output_folder = "./Logs/"
 
 for filename in os.listdir(input_folder):
     file_path = os.path.join(input_folder, filename)
@@ -14,11 +13,11 @@ for filename in os.listdir(input_folder):
         with open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
 
-        lex.input(file_content)
+        lexer.input(file_content)
 
         filename_split = filename.split(".")
-
-        output_path = os.path.join(output_folder, "lexico-" + filename_split[0] + "-" + datetime.now().strftime("%d-%m-%Y-%Hh%M") + ".txt")
+        output_name = f"lexico-{filename_split[0]}-{datetime.now().strftime('%d-%m-%Y-%Hh%M')}.txt"
+        output_path = os.path.join(output_folder, output_name)
 
         with open(output_path, 'w', encoding='utf-8') as outfile:
             while True:

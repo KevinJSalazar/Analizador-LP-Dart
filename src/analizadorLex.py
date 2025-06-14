@@ -59,6 +59,7 @@ tokens = list(reserved.values()) + [
     'DOT', 'COMMA', 'COLON',
     'ASSIGN_OPERATOR',
     'LBRACKET', 'RBRACKET',
+    'TILDE',
 ]
 
 # Operadores y delimitadores
@@ -78,7 +79,7 @@ t_LESS_THAN_OR_EQUALS = r'<='
 t_ASSIGN_OPERATOR = r'='
 t_LPARENTHESIS = r'\('
 t_RPARENTHESIS = r'\)'
-t_SEMICOLON = r';'
+t_SEMICOLON = r'\;'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_DOT = r'\.'
@@ -86,6 +87,7 @@ t_COMMA = r','
 t_COLON = r':'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_TILDE = r'~'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
@@ -128,7 +130,7 @@ def t_STRING(t):
     return t
 
 # Control de líneas
-def t_new_line(t):
+def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
     pass
@@ -143,3 +145,7 @@ def t_ID(t):
 def t_error(t):
     print(f"Illegal character '{t.value[0]}' at line {t.lineno}")
     t.lexer.skip(1)
+
+# Función para construir el lexer
+def build_lexer():
+    return lex.lex()
