@@ -29,8 +29,8 @@ reserved = {
     'String': 'STRING_TYPE',
     'bool': 'BOOL_TYPE',
     'List': 'LIST_TYPE',
-    'MAP': 'MAP_TYPE'
-    
+    'Map': 'MAP_TYPE',
+    'null' : 'NULL'
 }
 
 # Falta añadir comentarios
@@ -56,7 +56,6 @@ tokens = list(reserved.values()) + [
     'INT',
     'STRING',
     'DOUBLE',
-    'NULL', #regex
     'LPARENTHESIS', #regex
     'RPARENTHESIS', #regex
     'SEMICOLON', #regex
@@ -147,6 +146,7 @@ lexer = lex.lex()
 input_folder = "../Algorithms/"
 output_folder = "../Logs/"
 
+'''
 for filename in os.listdir(input_folder):
     file_path = os.path.join(input_folder, filename)
     if os.path.isfile(file_path):
@@ -165,7 +165,7 @@ for filename in os.listdir(input_folder):
                 if not tok:
                     break
                 outfile.write(str(tok) + "\n")
-       
+'''
 
 
 
