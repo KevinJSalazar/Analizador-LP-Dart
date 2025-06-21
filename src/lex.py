@@ -66,7 +66,8 @@ tokens = list(reserved.values()) + [
     'COLON', #regex
     'ASSIGN_OPERATOR', #regex,
     'LBRACKET', #regex
-    'RBRACKET', #regex
+    'RBRACKET', #regex,
+    'MODULE', #regex
 ]   
 
 
@@ -95,6 +96,7 @@ t_COLON = r':'
 t_ignore = ' \t'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_MODULE = r'\%'
 
 def t_COMMENT_LINE(t):
     r'//.*'

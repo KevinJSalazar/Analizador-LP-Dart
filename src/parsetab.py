@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'statementABSTRACT AND ASSIGN_OPERATOR BOOL BOOL_TYPE BREAK COLON COMMA COMMENT_BLOCK COMMENT_LINE CONST CONTINUE DEFAULT DIVIDE DOT DOUBLE DOUBLE_TYPE ELSE ENUM EQUALS EXPORT FINAL FINALLY FOR GREATER_THAN GREATER_THAN_OR_EQUALS ID IF IMPORT INT INT_TYPE LATE LBRACE LBRACKET LESS_THAN LESS_THAN_OR_EQUALS LIST_TYPE LPARENTHESIS MAP_TYPE MINUS NOT NOT_EQUALS NULL NUM_TYPE OR PLUS RBRACE RBRACKET RETURN RPARENTHESIS SEMICOLON STATIC STRING STRING_TYPE TIMES TYPEDEF VAR VOID WHILEstatement : declaration\n| assignation\n| function\n| ifassignation : varType ID ASSIGN_OPERATOR variable SEMICOLONdeclaration : varType ID SEMICOLONvariable : INT \n| DOUBLE \n| STRING \n| BOOL  \n| NULL\n| IDvarType : INT_TYPE \n| STRING_TYPE \n| NUM_TYPE \n| DOUBLE_TYPE \n| BOOL_TYPE \n| LIST_TYPE \n| MAP_TYPE \n| VAR \n| CONST \n| FINAL\n| VOIDbooleanExpression : variable EQUALS variable\n| variable NOT_EQUALS variable\n| variable GREATER_THAN variable\n| variable LESS_THAN variable\n| variable GREATER_THAN_OR_EQUALS variable\n| variable LESS_THAN_OR_EQUALS variable\nif : IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACEfunction : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACEparameter : varType IDparametersList : parameter\n| parameter COMMA parametersListparameters : parametersList\n| emptyempty : '
+_lr_signature = 'statementABSTRACT AND ASSIGN_OPERATOR BOOL BOOL_TYPE BREAK COLON COMMA COMMENT_BLOCK COMMENT_LINE CONST CONTINUE DEFAULT DIVIDE DOT DOUBLE DOUBLE_TYPE ELSE ENUM EQUALS EXPORT FINAL FINALLY FOR GREATER_THAN GREATER_THAN_OR_EQUALS ID IF IMPORT INT INT_TYPE LATE LBRACE LBRACKET LESS_THAN LESS_THAN_OR_EQUALS LIST_TYPE LPARENTHESIS MAP_TYPE MINUS MODULE NOT NOT_EQUALS NULL NUM_TYPE OR PLUS RBRACE RBRACKET RETURN RPARENTHESIS SEMICOLON STATIC STRING STRING_TYPE TIMES TYPEDEF VAR VOID WHILEstatement : expression\n| declaration\n| assignation\n| function\n| ifassignation : varType ID ASSIGN_OPERATOR variable SEMICOLONdeclaration : varType ID SEMICOLONnumeric : INT\n| DOUBLEexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES numericterm : term DIVIDE numericterm : term MODULE numericterm : numericvariable : INT \n| DOUBLE \n| STRING \n| BOOL  \n| NULL\n| ID\n| expression\nvarType : INT_TYPE \n| STRING_TYPE \n| NUM_TYPE \n| DOUBLE_TYPE \n| BOOL_TYPE \n| LIST_TYPE \n| MAP_TYPE \n| VAR \n| CONST \n| FINAL\n| VOIDbooleanExpression : variable EQUALS variable\n| variable NOT_EQUALS variable\n| variable GREATER_THAN variable\n| variable LESS_THAN variable\n| variable GREATER_THAN_OR_EQUALS variable\n| variable LESS_THAN_OR_EQUALS variable\nif : IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACEfunction : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACEparameter : varType IDparametersList : parameter\n| parameter COMMA parametersListparameters : parametersList\n| emptyempty : '
     
-_lr_action_items = {'IF':([0,49,56,],[7,7,7,]),'INT_TYPE':([0,23,48,49,56,],[8,8,8,8,8,]),'STRING_TYPE':([0,23,48,49,56,],[9,9,9,9,9,]),'NUM_TYPE':([0,23,48,49,56,],[10,10,10,10,10,]),'DOUBLE_TYPE':([0,23,48,49,56,],[11,11,11,11,11,]),'BOOL_TYPE':([0,23,48,49,56,],[12,12,12,12,12,]),'LIST_TYPE':([0,23,48,49,56,],[13,13,13,13,13,]),'MAP_TYPE':([0,23,48,49,56,],[14,14,14,14,14,]),'VAR':([0,23,48,49,56,],[15,15,15,15,15,]),'CONST':([0,23,48,49,56,],[16,16,16,16,16,]),'FINAL':([0,23,48,49,56,],[17,17,17,17,17,]),'VOID':([0,23,48,49,56,],[18,18,18,18,18,]),'$end':([1,2,3,4,5,21,45,60,61,],[0,-1,-2,-3,-4,-6,-5,-30,-31,]),'RBRACE':([2,3,4,5,21,45,58,59,60,61,],[-1,-2,-3,-4,-6,-5,60,61,-30,-31,]),'ID':([6,8,9,10,11,12,13,14,15,16,17,18,20,22,33,39,40,41,42,43,44,],[19,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,31,31,46,31,31,31,31,31,31,]),'LPARENTHESIS':([7,19,],[20,23,]),'SEMICOLON':([19,26,27,28,29,30,31,32,],[21,-7,-8,-9,-10,-11,-12,45,]),'ASSIGN_OPERATOR':([19,],[22,]),'INT':([20,22,39,40,41,42,43,44,],[26,26,26,26,26,26,26,26,]),'DOUBLE':([20,22,39,40,41,42,43,44,],[27,27,27,27,27,27,27,27,]),'STRING':([20,22,39,40,41,42,43,44,],[28,28,28,28,28,28,28,28,]),'BOOL':([20,22,39,40,41,42,43,44,],[29,29,29,29,29,29,29,29,]),'NULL':([20,22,39,40,41,42,43,44,],[30,30,30,30,30,30,30,30,]),'RPARENTHESIS':([23,24,26,27,28,29,30,31,34,35,36,37,46,50,51,52,53,54,55,57,],[-37,38,-7,-8,-9,-10,-11,-12,47,-35,-36,-33,-32,-24,-25,-26,-27,-28,-29,-34,]),'EQUALS':([25,26,27,28,29,30,31,],[39,-7,-8,-9,-10,-11,-12,]),'NOT_EQUALS':([25,26,27,28,29,30,31,],[40,-7,-8,-9,-10,-11,-12,]),'GREATER_THAN':([25,26,27,28,29,30,31,],[41,-7,-8,-9,-10,-11,-12,]),'LESS_THAN':([25,26,27,28,29,30,31,],[42,-7,-8,-9,-10,-11,-12,]),'GREATER_THAN_OR_EQUALS':([25,26,27,28,29,30,31,],[43,-7,-8,-9,-10,-11,-12,]),'LESS_THAN_OR_EQUALS':([25,26,27,28,29,30,31,],[44,-7,-8,-9,-10,-11,-12,]),'COMMA':([37,46,],[48,-32,]),'LBRACE':([38,47,],[49,56,]),}
+_lr_action_items = {'IF':([0,65,72,],[9,9,9,]),'INT_TYPE':([0,38,64,65,72,],[11,11,11,11,11,]),'STRING_TYPE':([0,38,64,65,72,],[12,12,12,12,12,]),'NUM_TYPE':([0,38,64,65,72,],[13,13,13,13,13,]),'DOUBLE_TYPE':([0,38,64,65,72,],[14,14,14,14,14,]),'BOOL_TYPE':([0,38,64,65,72,],[15,15,15,15,15,]),'LIST_TYPE':([0,38,64,65,72,],[16,16,16,16,16,]),'MAP_TYPE':([0,38,64,65,72,],[17,17,17,17,17,]),'VAR':([0,38,64,65,72,],[18,18,18,18,18,]),'CONST':([0,38,64,65,72,],[19,19,19,19,19,]),'FINAL':([0,38,64,65,72,],[20,20,20,20,20,]),'VOID':([0,38,64,65,72,],[21,21,21,21,21,]),'INT':([0,24,25,26,27,28,30,37,55,56,57,58,59,60,65,72,],[22,22,22,22,22,22,41,41,41,41,41,41,41,41,22,22,]),'DOUBLE':([0,24,25,26,27,28,30,37,55,56,57,58,59,60,65,72,],[23,23,23,23,23,23,42,42,42,42,42,42,42,42,23,23,]),'$end':([1,2,3,4,5,6,7,10,22,23,31,32,33,34,35,36,61,76,77,],[0,-1,-2,-3,-4,-5,-12,-16,-8,-9,-10,-11,-13,-14,-15,-7,-6,-41,-42,]),'RBRACE':([2,3,4,5,6,7,10,22,23,31,32,33,34,35,36,61,74,75,76,77,],[-1,-2,-3,-4,-5,-12,-16,-8,-9,-10,-11,-13,-14,-15,-7,-6,76,77,-41,-42,]),'PLUS':([2,7,10,22,23,31,32,33,34,35,41,42,47,],[24,-12,-16,-8,-9,-10,-11,-13,-14,-15,-8,-9,24,]),'MINUS':([2,7,10,22,23,31,32,33,34,35,41,42,47,],[25,-12,-16,-8,-9,-10,-11,-13,-14,-15,-8,-9,25,]),'EQUALS':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,55,-8,-9,-19,-20,-21,-22,-23,]),'NOT_EQUALS':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,56,-8,-9,-19,-20,-21,-22,-23,]),'GREATER_THAN':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,57,-8,-9,-19,-20,-21,-22,-23,]),'LESS_THAN':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,58,-8,-9,-19,-20,-21,-22,-23,]),'GREATER_THAN_OR_EQUALS':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,59,-8,-9,-19,-20,-21,-22,-23,]),'LESS_THAN_OR_EQUALS':([7,10,22,23,31,32,33,34,35,40,41,42,43,44,45,46,47,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,60,-8,-9,-19,-20,-21,-22,-23,]),'SEMICOLON':([7,10,22,23,29,31,32,33,34,35,41,42,43,44,45,46,47,48,],[-12,-16,-8,-9,36,-10,-11,-13,-14,-15,-8,-9,-19,-20,-21,-22,-23,61,]),'RPARENTHESIS':([7,10,22,23,31,32,33,34,35,38,39,41,42,43,44,45,46,47,50,51,52,53,62,66,67,68,69,70,71,73,],[-12,-16,-8,-9,-10,-11,-13,-14,-15,-48,54,-8,-9,-19,-20,-21,-22,-23,63,-46,-47,-44,-43,-35,-36,-37,-38,-39,-40,-45,]),'TIMES':([7,10,22,23,31,32,33,34,35,41,42,],[26,-16,-8,-9,26,26,-13,-14,-15,-8,-9,]),'DIVIDE':([7,10,22,23,31,32,33,34,35,41,42,],[27,-16,-8,-9,27,27,-13,-14,-15,-8,-9,]),'MODULE':([7,10,22,23,31,32,33,34,35,41,42,],[28,-16,-8,-9,28,28,-13,-14,-15,-8,-9,]),'ID':([8,11,12,13,14,15,16,17,18,19,20,21,30,37,49,55,56,57,58,59,60,],[29,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,46,46,62,46,46,46,46,46,46,]),'LPARENTHESIS':([9,29,],[30,38,]),'ASSIGN_OPERATOR':([29,],[37,]),'STRING':([30,37,55,56,57,58,59,60,],[43,43,43,43,43,43,43,43,]),'BOOL':([30,37,55,56,57,58,59,60,],[44,44,44,44,44,44,44,44,]),'NULL':([30,37,55,56,57,58,59,60,],[45,45,45,45,45,45,45,45,]),'COMMA':([53,62,],[64,-43,]),'LBRACE':([54,63,],[65,72,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,49,56,],[1,58,59,]),'declaration':([0,49,56,],[2,2,2,]),'assignation':([0,49,56,],[3,3,3,]),'function':([0,49,56,],[4,4,4,]),'if':([0,49,56,],[5,5,5,]),'varType':([0,23,48,49,56,],[6,33,33,6,6,]),'booleanExpression':([20,],[24,]),'variable':([20,22,39,40,41,42,43,44,],[25,32,50,51,52,53,54,55,]),'parameters':([23,],[34,]),'parametersList':([23,48,],[35,57,]),'empty':([23,],[36,]),'parameter':([23,48,],[37,37,]),}
+_lr_goto_items = {'statement':([0,65,72,],[1,74,75,]),'expression':([0,30,37,55,56,57,58,59,60,65,72,],[2,47,47,47,47,47,47,47,47,2,2,]),'declaration':([0,65,72,],[3,3,3,]),'assignation':([0,65,72,],[4,4,4,]),'function':([0,65,72,],[5,5,5,]),'if':([0,65,72,],[6,6,6,]),'term':([0,24,25,30,37,55,56,57,58,59,60,65,72,],[7,31,32,7,7,7,7,7,7,7,7,7,7,]),'varType':([0,38,64,65,72,],[8,49,49,8,8,]),'numeric':([0,24,25,26,27,28,30,37,55,56,57,58,59,60,65,72,],[10,10,10,33,34,35,10,10,10,10,10,10,10,10,10,10,]),'booleanExpression':([30,],[39,]),'variable':([30,37,55,56,57,58,59,60,],[40,48,66,67,68,69,70,71,]),'parameters':([38,],[50,]),'parametersList':([38,64,],[51,73,]),'empty':([38,],[52,]),'parameter':([38,64,],[53,53,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,41 +27,52 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> declaration','statement',1,'p_statement','yacc.py',7),
-  ('statement -> assignation','statement',1,'p_statement','yacc.py',8),
-  ('statement -> function','statement',1,'p_statement','yacc.py',9),
-  ('statement -> if','statement',1,'p_statement','yacc.py',10),
-  ('assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON','assignation',5,'p_assignation','yacc.py',13),
-  ('declaration -> varType ID SEMICOLON','declaration',3,'p_declaration','yacc.py',16),
-  ('variable -> INT','variable',1,'p_variable','yacc.py',19),
-  ('variable -> DOUBLE','variable',1,'p_variable','yacc.py',20),
-  ('variable -> STRING','variable',1,'p_variable','yacc.py',21),
-  ('variable -> BOOL','variable',1,'p_variable','yacc.py',22),
-  ('variable -> NULL','variable',1,'p_variable','yacc.py',23),
-  ('variable -> ID','variable',1,'p_variable','yacc.py',24),
-  ('varType -> INT_TYPE','varType',1,'p_varType','yacc.py',27),
-  ('varType -> STRING_TYPE','varType',1,'p_varType','yacc.py',28),
-  ('varType -> NUM_TYPE','varType',1,'p_varType','yacc.py',29),
-  ('varType -> DOUBLE_TYPE','varType',1,'p_varType','yacc.py',30),
-  ('varType -> BOOL_TYPE','varType',1,'p_varType','yacc.py',31),
-  ('varType -> LIST_TYPE','varType',1,'p_varType','yacc.py',32),
-  ('varType -> MAP_TYPE','varType',1,'p_varType','yacc.py',33),
-  ('varType -> VAR','varType',1,'p_varType','yacc.py',34),
-  ('varType -> CONST','varType',1,'p_varType','yacc.py',35),
-  ('varType -> FINAL','varType',1,'p_varType','yacc.py',36),
-  ('varType -> VOID','varType',1,'p_varType','yacc.py',37),
-  ('booleanExpression -> variable EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',40),
-  ('booleanExpression -> variable NOT_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',41),
-  ('booleanExpression -> variable GREATER_THAN variable','booleanExpression',3,'p_booleanExpression','yacc.py',42),
-  ('booleanExpression -> variable LESS_THAN variable','booleanExpression',3,'p_booleanExpression','yacc.py',43),
-  ('booleanExpression -> variable GREATER_THAN_OR_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',44),
-  ('booleanExpression -> variable LESS_THAN_OR_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',45),
-  ('if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE','if',7,'p_if','yacc.py',48),
-  ('function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE','function',8,'p_function','yacc.py',51),
-  ('parameter -> varType ID','parameter',2,'p_parameter','yacc.py',54),
-  ('parametersList -> parameter','parametersList',1,'p_parametersList','yacc.py',57),
-  ('parametersList -> parameter COMMA parametersList','parametersList',3,'p_parametersList','yacc.py',58),
-  ('parameters -> parametersList','parameters',1,'p_parameters','yacc.py',61),
-  ('parameters -> empty','parameters',1,'p_parameters','yacc.py',62),
-  ('empty -> <empty>','empty',0,'p_empty','yacc.py',65),
+  ('statement -> expression','statement',1,'p_statement','yacc.py',7),
+  ('statement -> declaration','statement',1,'p_statement','yacc.py',8),
+  ('statement -> assignation','statement',1,'p_statement','yacc.py',9),
+  ('statement -> function','statement',1,'p_statement','yacc.py',10),
+  ('statement -> if','statement',1,'p_statement','yacc.py',11),
+  ('assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON','assignation',5,'p_assignation','yacc.py',14),
+  ('declaration -> varType ID SEMICOLON','declaration',3,'p_declaration','yacc.py',17),
+  ('numeric -> INT','numeric',1,'p_numeric','yacc.py',20),
+  ('numeric -> DOUBLE','numeric',1,'p_numeric','yacc.py',21),
+  ('expression -> expression PLUS term','expression',3,'p_plusOperation','yacc.py',24),
+  ('expression -> expression MINUS term','expression',3,'p_minuxOperation','yacc.py',26),
+  ('expression -> term','expression',1,'p_expressionTerm','yacc.py',29),
+  ('term -> term TIMES numeric','term',3,'p_termTimes','yacc.py',32),
+  ('term -> term DIVIDE numeric','term',3,'p_termDivide','yacc.py',35),
+  ('term -> term MODULE numeric','term',3,'p_termModule','yacc.py',38),
+  ('term -> numeric','term',1,'p_termValue','yacc.py',41),
+  ('variable -> INT','variable',1,'p_variable','yacc.py',44),
+  ('variable -> DOUBLE','variable',1,'p_variable','yacc.py',45),
+  ('variable -> STRING','variable',1,'p_variable','yacc.py',46),
+  ('variable -> BOOL','variable',1,'p_variable','yacc.py',47),
+  ('variable -> NULL','variable',1,'p_variable','yacc.py',48),
+  ('variable -> ID','variable',1,'p_variable','yacc.py',49),
+  ('variable -> expression','variable',1,'p_variable','yacc.py',50),
+  ('varType -> INT_TYPE','varType',1,'p_varType','yacc.py',54),
+  ('varType -> STRING_TYPE','varType',1,'p_varType','yacc.py',55),
+  ('varType -> NUM_TYPE','varType',1,'p_varType','yacc.py',56),
+  ('varType -> DOUBLE_TYPE','varType',1,'p_varType','yacc.py',57),
+  ('varType -> BOOL_TYPE','varType',1,'p_varType','yacc.py',58),
+  ('varType -> LIST_TYPE','varType',1,'p_varType','yacc.py',59),
+  ('varType -> MAP_TYPE','varType',1,'p_varType','yacc.py',60),
+  ('varType -> VAR','varType',1,'p_varType','yacc.py',61),
+  ('varType -> CONST','varType',1,'p_varType','yacc.py',62),
+  ('varType -> FINAL','varType',1,'p_varType','yacc.py',63),
+  ('varType -> VOID','varType',1,'p_varType','yacc.py',64),
+  ('booleanExpression -> variable EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',67),
+  ('booleanExpression -> variable NOT_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',68),
+  ('booleanExpression -> variable GREATER_THAN variable','booleanExpression',3,'p_booleanExpression','yacc.py',69),
+  ('booleanExpression -> variable LESS_THAN variable','booleanExpression',3,'p_booleanExpression','yacc.py',70),
+  ('booleanExpression -> variable GREATER_THAN_OR_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',71),
+  ('booleanExpression -> variable LESS_THAN_OR_EQUALS variable','booleanExpression',3,'p_booleanExpression','yacc.py',72),
+  ('if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE','if',7,'p_if','yacc.py',75),
+  ('function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE','function',8,'p_function','yacc.py',78),
+  ('parameter -> varType ID','parameter',2,'p_parameter','yacc.py',81),
+  ('parametersList -> parameter','parametersList',1,'p_parametersList','yacc.py',84),
+  ('parametersList -> parameter COMMA parametersList','parametersList',3,'p_parametersList','yacc.py',85),
+  ('parameters -> parametersList','parameters',1,'p_parameters','yacc.py',88),
+  ('parameters -> empty','parameters',1,'p_parameters','yacc.py',89),
+  ('empty -> <empty>','empty',0,'p_empty','yacc.py',92),
 ]

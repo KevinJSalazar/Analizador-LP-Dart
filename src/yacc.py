@@ -4,7 +4,8 @@ from lex import tokens
 start = 'statement'
 
 def p_statement(p):
-    '''statement : declaration
+    '''statement : expression
+                | declaration
                 | assignation
                 | function
                 | if'''
@@ -15,13 +16,39 @@ def p_assignation(p):
 def p_declaration(p):
     'declaration : varType ID SEMICOLON'
 
+def p_numeric(p):
+    '''numeric : INT
+               | DOUBLE'''
+
+def p_plusOperation(p):
+    'expression : expression PLUS term'
+def p_minuxOperation(p):
+    'expression : expression MINUS term'
+     
+def p_expressionTerm(p):
+    'expression : term'
+
+def p_termTimes(p):
+    'term : term TIMES numeric'
+
+def p_termDivide(p):
+    'term : term DIVIDE numeric'
+    
+def p_termModule(p):
+    'term : term MODULE numeric'
+
+def p_termValue(p):
+    'term : numeric'
+
 def p_variable(p):
     '''variable : INT 
                 | DOUBLE 
                 | STRING 
                 | BOOL  
                 | NULL
-                | ID'''
+                | ID
+                | expression
+                '''
 
 def p_varType(p):
     '''varType : INT_TYPE 
