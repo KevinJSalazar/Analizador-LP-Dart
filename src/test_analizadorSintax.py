@@ -1,7 +1,10 @@
 from analizadorLex import tokens
-from analizadorSintax import parser
+from analizadorSintax import build_parser
 from datetime import datetime
 import os
+
+# Crear instancia del parser
+parser = build_parser()
 
 input_folder = "../Algoritmos/"
 output_folder = "../LogsSintax/"
@@ -12,7 +15,7 @@ for filename in os.listdir(input_folder):
         with open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
 
-        # Log file name
+        # Generar nombre del log
         filename_split = filename.split(".")
         timestamp = datetime.now().strftime('%d-%m-%Y-%Hh%M')
         log_name = f"sintactico-{filename_split[0]}-{timestamp}.txt"

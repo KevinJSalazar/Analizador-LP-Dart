@@ -121,7 +121,10 @@ def p_for(p):
     '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE'''
 
 def p_increment(p):
-    '''increment : ID PLUS PLUS'''
+    '''increment : ID INCREMENT'''
+
+def p_decrement(p):
+    '''decrement : ID DECREMENT'''
 
 # Funciones
 def p_function(p):
@@ -132,7 +135,7 @@ def p_function_arrow(p):
 
 # Tipedef
 def p_typedef(p):
-    'typedef : TYPEDEF ID ASSIGN_OPERATOR varType FUNCTION LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
+    'typedef : TYPEDEF ID ASSIGN_OPERATOR varType function LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
 
 # Enum
 def p_enum(p):
@@ -202,5 +205,6 @@ def p_error(p):
     else:
         print("Syntax error at EOF")
 
-# Build parser
-parser = yacc.yacc()
+# Función para construir el parser
+def build_parser():
+    return yacc.yacc()

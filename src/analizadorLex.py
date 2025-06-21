@@ -27,6 +27,7 @@ reserved = {
     'static': 'STATIC',
     'abstract': 'ABSTRACT',
     'typedef': 'TYPEDEF',
+    'enum': 'ENUM',
 
     # === Importación y exportación ===
     'import': 'IMPORT',
