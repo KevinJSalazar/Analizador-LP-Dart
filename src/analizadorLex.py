@@ -1,51 +1,63 @@
 import ply.lex as lex
 
-# Kevin Salazar - inicio
 reserved = {
+    # === Palabras clave de control de flujo ===
     'if': 'IF',
     'else': 'ELSE',
     'for': 'FOR',
-    'return': 'RETURN',
     'while': 'WHILE',
+    'switch': 'SWITCH',
+    'case': 'CASE',
+    'default': 'DEFAULT',
+    'break': 'BREAK',
+    'continue': 'CONTINUE',
+    'return': 'RETURN',
+    'try': 'TRY',
+    'finally': 'FINALLY',
+
+    # === Declaración de variables y constantes ===
     'var': 'VAR',
     'const': 'CONST',
     'final': 'FINAL',
     'late': 'LATE',
+
+    # === Declaración de funciones y clases ===
     'void': 'VOID',
-    'enum': 'ENUM',
+    'class': 'CLASS',
     'static': 'STATIC',
-    'import': 'IMPORT',
     'abstract': 'ABSTRACT',
     'typedef': 'TYPEDEF',
-    'break': 'BREAK',
-    'default': 'DEFAULT',
-    'continue': 'CONTINUE',
-    'export': 'EXPORT',
-    'finally': 'FINALLY',
-    'class': 'CLASS',
-    # Kevin Salazar - fin
 
-    # Diego Flores - inicio
+    # === Importación y exportación ===
+    'import': 'IMPORT',
+    'export': 'EXPORT',
+
+    # === Tipos de datos primitivos ===  # Diego Flores
     'double': 'DOUBLE_TYPE',
     'int': 'INT_TYPE',
     'num': 'NUM_TYPE',
     'String': 'STRING_TYPE',
     'bool': 'BOOL_TYPE',
+    'true': 'TRUE',
+    'false': 'FALSE',
     'null': 'NULL_TYPE',
-    # Diego Flores - fin
 
-    # Alex Vizuete - inicio
+    # === Estructuras de datos ===  # Alex Vizuete
     'List': 'LIST_TYPE',
     'Set': 'SET_TYPE',
     'Map': 'MAP_TYPE',
-    # Alex Vizuete - fin
+    
+    # === Entrada/Salida ===
+    'print': 'PRINT',
+    'stdin': 'STDIN',
+    'readLineSync': 'READ',
 }
 
 # Tokens generales
 tokens = list(reserved.values()) + [
     # Literales y tipos de datos
     'ID',
-    'PLUS', 'MINUS', 'DIVIDE', 'TIMES',
+    'PLUS', 'MINUS', 'DIVIDE', 'TIMES', 'MODULE',
     'INCREMENT', 'DECREMENT',
     'AND', 'OR', 'NOT',
     'EQUALS', 'NOT_EQUALS',
@@ -58,7 +70,7 @@ tokens = list(reserved.values()) + [
     'DOT', 'COMMA', 'COLON',
     'ASSIGN_OPERATOR',
     'LBRACKET', 'RBRACKET',
-    'MODULE',
+    
 ]
 
 # Operadores y delimitadores
@@ -90,6 +102,7 @@ t_RBRACKET = r'\]'
 t_DOT = r'\.'
 t_COMMA = r','
 t_COLON = r':'
+t_ARROW = r'=>'
 t_MODULE = r'%'
 
 # Ignorar espacios y tabulaciones
