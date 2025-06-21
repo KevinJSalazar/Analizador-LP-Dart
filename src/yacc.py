@@ -7,7 +7,9 @@ def p_statement(p):
     '''statement : declaration
                 | assignation
                 | function
-                | if'''
+                | if
+                | while
+                | for'''
 
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
@@ -45,7 +47,20 @@ def p_booleanExpression(p):
                         | variable LESS_THAN_OR_EQUALS variable
                         '''
 def p_if(p):
-    'if : IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE'
+    '''if : IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+           | IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+           | IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE'''
+    
+def p_while(p):
+    '''while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+            | WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE'''
+
+def p_for(p):
+    '''for  : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+            | FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE'''
+    
+def p_increment(p):
+    '''increment : ID PLUS PLUS'''
 
 def p_function(p): 
     'function : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE'

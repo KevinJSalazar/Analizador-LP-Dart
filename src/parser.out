@@ -12,24 +12,20 @@ Unused terminals:
     DEFAULT
     DIVIDE
     DOT
-    ELSE
     ENUM
     EXPORT
     FINALLY
-    FOR
     IMPORT
     LATE
     LBRACKET
     MINUS
     NOT
     OR
-    PLUS
     RBRACKET
     RETURN
     STATIC
     TIMES
     TYPEDEF
-    WHILE
 
 Grammar
 
@@ -38,117 +34,129 @@ Rule 1     statement -> declaration
 Rule 2     statement -> assignation
 Rule 3     statement -> function
 Rule 4     statement -> if
-Rule 5     assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON
-Rule 6     declaration -> varType ID SEMICOLON
-Rule 7     variable -> INT
-Rule 8     variable -> DOUBLE
-Rule 9     variable -> STRING
-Rule 10    variable -> BOOL
-Rule 11    variable -> NULL
-Rule 12    variable -> ID
-Rule 13    varType -> INT_TYPE
-Rule 14    varType -> STRING_TYPE
-Rule 15    varType -> NUM_TYPE
-Rule 16    varType -> DOUBLE_TYPE
-Rule 17    varType -> BOOL_TYPE
-Rule 18    varType -> LIST_TYPE
-Rule 19    varType -> MAP_TYPE
-Rule 20    varType -> VAR
-Rule 21    varType -> CONST
-Rule 22    varType -> FINAL
-Rule 23    varType -> VOID
-Rule 24    booleanExpression -> variable EQUALS variable
-Rule 25    booleanExpression -> variable NOT_EQUALS variable
-Rule 26    booleanExpression -> variable GREATER_THAN variable
-Rule 27    booleanExpression -> variable LESS_THAN variable
-Rule 28    booleanExpression -> variable GREATER_THAN_OR_EQUALS variable
-Rule 29    booleanExpression -> variable LESS_THAN_OR_EQUALS variable
-Rule 30    if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
-Rule 31    function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
-Rule 32    parameter -> varType ID
-Rule 33    parametersList -> parameter
-Rule 34    parametersList -> parameter COMMA parametersList
-Rule 35    parameters -> parametersList
-Rule 36    parameters -> empty
-Rule 37    empty -> <empty>
+Rule 5     statement -> while
+Rule 6     statement -> for
+Rule 7     assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON
+Rule 8     declaration -> varType ID SEMICOLON
+Rule 9     variable -> INT
+Rule 10    variable -> DOUBLE
+Rule 11    variable -> STRING
+Rule 12    variable -> BOOL
+Rule 13    variable -> NULL
+Rule 14    variable -> ID
+Rule 15    varType -> INT_TYPE
+Rule 16    varType -> STRING_TYPE
+Rule 17    varType -> NUM_TYPE
+Rule 18    varType -> DOUBLE_TYPE
+Rule 19    varType -> BOOL_TYPE
+Rule 20    varType -> LIST_TYPE
+Rule 21    varType -> MAP_TYPE
+Rule 22    varType -> VAR
+Rule 23    varType -> CONST
+Rule 24    varType -> FINAL
+Rule 25    varType -> VOID
+Rule 26    booleanExpression -> variable EQUALS variable
+Rule 27    booleanExpression -> variable NOT_EQUALS variable
+Rule 28    booleanExpression -> variable GREATER_THAN variable
+Rule 29    booleanExpression -> variable LESS_THAN variable
+Rule 30    booleanExpression -> variable GREATER_THAN_OR_EQUALS variable
+Rule 31    booleanExpression -> variable LESS_THAN_OR_EQUALS variable
+Rule 32    if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+Rule 33    if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+Rule 34    if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+Rule 35    while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+Rule 36    while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+Rule 37    for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+Rule 38    for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+Rule 39    increment -> ID PLUS PLUS
+Rule 40    function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+Rule 41    parameter -> varType ID
+Rule 42    parametersList -> parameter
+Rule 43    parametersList -> parameter COMMA parametersList
+Rule 44    parameters -> parametersList
+Rule 45    parameters -> empty
+Rule 46    empty -> <empty>
 
 Terminals, with rules where they appear
 
 ABSTRACT             : 
 AND                  : 
-ASSIGN_OPERATOR      : 5
-BOOL                 : 10
-BOOL_TYPE            : 17
+ASSIGN_OPERATOR      : 7
+BOOL                 : 12
+BOOL_TYPE            : 19
 BREAK                : 
 COLON                : 
-COMMA                : 34
+COMMA                : 43
 COMMENT_BLOCK        : 
 COMMENT_LINE         : 
-CONST                : 21
+CONST                : 23
 CONTINUE             : 
 DEFAULT              : 
 DIVIDE               : 
 DOT                  : 
-DOUBLE               : 8
-DOUBLE_TYPE          : 16
-ELSE                 : 
+DOUBLE               : 10
+DOUBLE_TYPE          : 18
+ELSE                 : 33
 ENUM                 : 
-EQUALS               : 24
+EQUALS               : 26
 EXPORT               : 
-FINAL                : 22
+FINAL                : 24
 FINALLY              : 
-FOR                  : 
-GREATER_THAN         : 26
-GREATER_THAN_OR_EQUALS : 28
-ID                   : 5 6 12 31 32
-IF                   : 30
+FOR                  : 37 38
+GREATER_THAN         : 28
+GREATER_THAN_OR_EQUALS : 30
+ID                   : 7 8 14 39 40 41
+IF                   : 32 33 34
 IMPORT               : 
-INT                  : 7
-INT_TYPE             : 13
+INT                  : 9
+INT_TYPE             : 15
 LATE                 : 
-LBRACE               : 30 31
+LBRACE               : 32 33 33 34 35 36 37 38 40
 LBRACKET             : 
-LESS_THAN            : 27
-LESS_THAN_OR_EQUALS  : 29
-LIST_TYPE            : 18
-LPARENTHESIS         : 30 31
-MAP_TYPE             : 19
+LESS_THAN            : 29
+LESS_THAN_OR_EQUALS  : 31
+LIST_TYPE            : 20
+LPARENTHESIS         : 32 33 34 35 36 37 38 40
+MAP_TYPE             : 21
 MINUS                : 
 NOT                  : 
-NOT_EQUALS           : 25
-NULL                 : 11
-NUM_TYPE             : 15
+NOT_EQUALS           : 27
+NULL                 : 13
+NUM_TYPE             : 17
 OR                   : 
-PLUS                 : 
-RBRACE               : 30 31
+PLUS                 : 39 39
+RBRACE               : 32 33 33 34 35 36 37 38 40
 RBRACKET             : 
 RETURN               : 
-RPARENTHESIS         : 30 31
-SEMICOLON            : 5 6
+RPARENTHESIS         : 32 33 34 35 36 37 38 40
+SEMICOLON            : 7 8 37 38
 STATIC               : 
-STRING               : 9
-STRING_TYPE          : 14
+STRING               : 11
+STRING_TYPE          : 16
 TIMES                : 
 TYPEDEF              : 
-VAR                  : 20
-VOID                 : 23
-WHILE                : 
+VAR                  : 22
+VOID                 : 25
+WHILE                : 35 36
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignation          : 2
-booleanExpression    : 30
+assignation          : 2 37 38
+booleanExpression    : 32 33 34 35 36 37 38
 declaration          : 1
-empty                : 36
+empty                : 45
+for                  : 6
 function             : 3
 if                   : 4
-parameter            : 33 34
-parameters           : 31
-parametersList       : 34 35
-statement            : 30 31 0
-varType              : 5 6 31 32
-variable             : 5 24 24 25 25 26 26 27 27 28 28 29 29
+increment            : 37 38
+parameter            : 42 43
+parameters           : 40
+parametersList       : 43 44
+statement            : 32 33 33 35 37 40 0
+varType              : 7 8 40 41
+variable             : 7 26 26 27 27 28 28 29 29 30 30 31 31
+while                : 5
 
 Parsing method: LALR
 
@@ -159,41 +167,53 @@ state 0
     (2) statement -> . assignation
     (3) statement -> . function
     (4) statement -> . if
-    (6) declaration -> . varType ID SEMICOLON
-    (5) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
-    (31) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
-    (30) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
-    (13) varType -> . INT_TYPE
-    (14) varType -> . STRING_TYPE
-    (15) varType -> . NUM_TYPE
-    (16) varType -> . DOUBLE_TYPE
-    (17) varType -> . BOOL_TYPE
-    (18) varType -> . LIST_TYPE
-    (19) varType -> . MAP_TYPE
-    (20) varType -> . VAR
-    (21) varType -> . CONST
-    (22) varType -> . FINAL
-    (23) varType -> . VOID
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
 
-    IF              shift and go to state 7
-    INT_TYPE        shift and go to state 8
-    STRING_TYPE     shift and go to state 9
-    NUM_TYPE        shift and go to state 10
-    DOUBLE_TYPE     shift and go to state 11
-    BOOL_TYPE       shift and go to state 12
-    LIST_TYPE       shift and go to state 13
-    MAP_TYPE        shift and go to state 14
-    VAR             shift and go to state 15
-    CONST           shift and go to state 16
-    FINAL           shift and go to state 17
-    VOID            shift and go to state 18
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
 
     statement                      shift and go to state 1
     declaration                    shift and go to state 2
     assignation                    shift and go to state 3
     function                       shift and go to state 4
     if                             shift and go to state 5
-    varType                        shift and go to state 6
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+    varType                        shift and go to state 8
 
 state 1
 
@@ -235,692 +255,1190 @@ state 5
 
 state 6
 
-    (6) declaration -> varType . ID SEMICOLON
-    (5) assignation -> varType . ID ASSIGN_OPERATOR variable SEMICOLON
-    (31) function -> varType . ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (5) statement -> while .
 
-    ID              shift and go to state 19
+    $end            reduce using rule 5 (statement -> while .)
+    RBRACE          reduce using rule 5 (statement -> while .)
 
 
 state 7
 
-    (30) if -> IF . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (6) statement -> for .
 
-    LPARENTHESIS    shift and go to state 20
+    $end            reduce using rule 6 (statement -> for .)
+    RBRACE          reduce using rule 6 (statement -> for .)
 
 
 state 8
 
-    (13) varType -> INT_TYPE .
+    (8) declaration -> varType . ID SEMICOLON
+    (7) assignation -> varType . ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> varType . ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
 
-    ID              reduce using rule 13 (varType -> INT_TYPE .)
+    ID              shift and go to state 23
 
 
 state 9
 
-    (14) varType -> STRING_TYPE .
+    (32) if -> IF . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> IF . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> IF . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
 
-    ID              reduce using rule 14 (varType -> STRING_TYPE .)
+    LPARENTHESIS    shift and go to state 24
 
 
 state 10
 
-    (15) varType -> NUM_TYPE .
+    (35) while -> WHILE . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> WHILE . LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
 
-    ID              reduce using rule 15 (varType -> NUM_TYPE .)
+    LPARENTHESIS    shift and go to state 25
 
 
 state 11
 
-    (16) varType -> DOUBLE_TYPE .
+    (37) for -> FOR . LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR . LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
 
-    ID              reduce using rule 16 (varType -> DOUBLE_TYPE .)
+    LPARENTHESIS    shift and go to state 26
 
 
 state 12
 
-    (17) varType -> BOOL_TYPE .
+    (15) varType -> INT_TYPE .
 
-    ID              reduce using rule 17 (varType -> BOOL_TYPE .)
+    ID              reduce using rule 15 (varType -> INT_TYPE .)
 
 
 state 13
 
-    (18) varType -> LIST_TYPE .
+    (16) varType -> STRING_TYPE .
 
-    ID              reduce using rule 18 (varType -> LIST_TYPE .)
+    ID              reduce using rule 16 (varType -> STRING_TYPE .)
 
 
 state 14
 
-    (19) varType -> MAP_TYPE .
+    (17) varType -> NUM_TYPE .
 
-    ID              reduce using rule 19 (varType -> MAP_TYPE .)
+    ID              reduce using rule 17 (varType -> NUM_TYPE .)
 
 
 state 15
 
-    (20) varType -> VAR .
+    (18) varType -> DOUBLE_TYPE .
 
-    ID              reduce using rule 20 (varType -> VAR .)
+    ID              reduce using rule 18 (varType -> DOUBLE_TYPE .)
 
 
 state 16
 
-    (21) varType -> CONST .
+    (19) varType -> BOOL_TYPE .
 
-    ID              reduce using rule 21 (varType -> CONST .)
+    ID              reduce using rule 19 (varType -> BOOL_TYPE .)
 
 
 state 17
 
-    (22) varType -> FINAL .
+    (20) varType -> LIST_TYPE .
 
-    ID              reduce using rule 22 (varType -> FINAL .)
+    ID              reduce using rule 20 (varType -> LIST_TYPE .)
 
 
 state 18
 
-    (23) varType -> VOID .
+    (21) varType -> MAP_TYPE .
 
-    ID              reduce using rule 23 (varType -> VOID .)
+    ID              reduce using rule 21 (varType -> MAP_TYPE .)
 
 
 state 19
 
-    (6) declaration -> varType ID . SEMICOLON
-    (5) assignation -> varType ID . ASSIGN_OPERATOR variable SEMICOLON
-    (31) function -> varType ID . LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (22) varType -> VAR .
 
-    SEMICOLON       shift and go to state 21
-    ASSIGN_OPERATOR shift and go to state 22
-    LPARENTHESIS    shift and go to state 23
+    ID              reduce using rule 22 (varType -> VAR .)
 
 
 state 20
 
-    (30) if -> IF LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE statement RBRACE
-    (24) booleanExpression -> . variable EQUALS variable
-    (25) booleanExpression -> . variable NOT_EQUALS variable
-    (26) booleanExpression -> . variable GREATER_THAN variable
-    (27) booleanExpression -> . variable LESS_THAN variable
-    (28) booleanExpression -> . variable GREATER_THAN_OR_EQUALS variable
-    (29) booleanExpression -> . variable LESS_THAN_OR_EQUALS variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (23) varType -> CONST .
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    ID              reduce using rule 23 (varType -> CONST .)
 
-    booleanExpression              shift and go to state 24
-    variable                       shift and go to state 25
 
 state 21
 
-    (6) declaration -> varType ID SEMICOLON .
+    (24) varType -> FINAL .
 
-    $end            reduce using rule 6 (declaration -> varType ID SEMICOLON .)
-    RBRACE          reduce using rule 6 (declaration -> varType ID SEMICOLON .)
+    ID              reduce using rule 24 (varType -> FINAL .)
 
 
 state 22
 
-    (5) assignation -> varType ID ASSIGN_OPERATOR . variable SEMICOLON
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (25) varType -> VOID .
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    ID              reduce using rule 25 (varType -> VOID .)
 
-    variable                       shift and go to state 32
 
 state 23
 
-    (31) function -> varType ID LPARENTHESIS . parameters RPARENTHESIS LBRACE statement RBRACE
-    (35) parameters -> . parametersList
-    (36) parameters -> . empty
-    (33) parametersList -> . parameter
-    (34) parametersList -> . parameter COMMA parametersList
-    (37) empty -> .
-    (32) parameter -> . varType ID
-    (13) varType -> . INT_TYPE
-    (14) varType -> . STRING_TYPE
-    (15) varType -> . NUM_TYPE
-    (16) varType -> . DOUBLE_TYPE
-    (17) varType -> . BOOL_TYPE
-    (18) varType -> . LIST_TYPE
-    (19) varType -> . MAP_TYPE
-    (20) varType -> . VAR
-    (21) varType -> . CONST
-    (22) varType -> . FINAL
-    (23) varType -> . VOID
+    (8) declaration -> varType ID . SEMICOLON
+    (7) assignation -> varType ID . ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> varType ID . LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
 
-    RPARENTHESIS    reduce using rule 37 (empty -> .)
-    INT_TYPE        shift and go to state 8
-    STRING_TYPE     shift and go to state 9
-    NUM_TYPE        shift and go to state 10
-    DOUBLE_TYPE     shift and go to state 11
-    BOOL_TYPE       shift and go to state 12
-    LIST_TYPE       shift and go to state 13
-    MAP_TYPE        shift and go to state 14
-    VAR             shift and go to state 15
-    CONST           shift and go to state 16
-    FINAL           shift and go to state 17
-    VOID            shift and go to state 18
+    SEMICOLON       shift and go to state 27
+    ASSIGN_OPERATOR shift and go to state 28
+    LPARENTHESIS    shift and go to state 29
 
-    varType                        shift and go to state 33
-    parameters                     shift and go to state 34
-    parametersList                 shift and go to state 35
-    empty                          shift and go to state 36
-    parameter                      shift and go to state 37
 
 state 24
 
-    (30) if -> IF LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> IF LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> IF LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> IF LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE RBRACE
+    (26) booleanExpression -> . variable EQUALS variable
+    (27) booleanExpression -> . variable NOT_EQUALS variable
+    (28) booleanExpression -> . variable GREATER_THAN variable
+    (29) booleanExpression -> . variable LESS_THAN variable
+    (30) booleanExpression -> . variable GREATER_THAN_OR_EQUALS variable
+    (31) booleanExpression -> . variable LESS_THAN_OR_EQUALS variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    RPARENTHESIS    shift and go to state 38
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    booleanExpression              shift and go to state 30
+    variable                       shift and go to state 31
 
 state 25
 
-    (24) booleanExpression -> variable . EQUALS variable
-    (25) booleanExpression -> variable . NOT_EQUALS variable
-    (26) booleanExpression -> variable . GREATER_THAN variable
-    (27) booleanExpression -> variable . LESS_THAN variable
-    (28) booleanExpression -> variable . GREATER_THAN_OR_EQUALS variable
-    (29) booleanExpression -> variable . LESS_THAN_OR_EQUALS variable
+    (35) while -> WHILE LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> WHILE LPARENTHESIS . booleanExpression RPARENTHESIS LBRACE RBRACE
+    (26) booleanExpression -> . variable EQUALS variable
+    (27) booleanExpression -> . variable NOT_EQUALS variable
+    (28) booleanExpression -> . variable GREATER_THAN variable
+    (29) booleanExpression -> . variable LESS_THAN variable
+    (30) booleanExpression -> . variable GREATER_THAN_OR_EQUALS variable
+    (31) booleanExpression -> . variable LESS_THAN_OR_EQUALS variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    EQUALS          shift and go to state 39
-    NOT_EQUALS      shift and go to state 40
-    GREATER_THAN    shift and go to state 41
-    LESS_THAN       shift and go to state 42
-    GREATER_THAN_OR_EQUALS shift and go to state 43
-    LESS_THAN_OR_EQUALS shift and go to state 44
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    booleanExpression              shift and go to state 38
+    variable                       shift and go to state 31
 
 state 26
 
-    (7) variable -> INT .
+    (37) for -> FOR LPARENTHESIS . assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS . assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
 
-    EQUALS          reduce using rule 7 (variable -> INT .)
-    NOT_EQUALS      reduce using rule 7 (variable -> INT .)
-    GREATER_THAN    reduce using rule 7 (variable -> INT .)
-    LESS_THAN       reduce using rule 7 (variable -> INT .)
-    GREATER_THAN_OR_EQUALS reduce using rule 7 (variable -> INT .)
-    LESS_THAN_OR_EQUALS reduce using rule 7 (variable -> INT .)
-    SEMICOLON       reduce using rule 7 (variable -> INT .)
-    RPARENTHESIS    reduce using rule 7 (variable -> INT .)
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
 
+    assignation                    shift and go to state 39
+    varType                        shift and go to state 40
 
 state 27
 
-    (8) variable -> DOUBLE .
+    (8) declaration -> varType ID SEMICOLON .
 
-    EQUALS          reduce using rule 8 (variable -> DOUBLE .)
-    NOT_EQUALS      reduce using rule 8 (variable -> DOUBLE .)
-    GREATER_THAN    reduce using rule 8 (variable -> DOUBLE .)
-    LESS_THAN       reduce using rule 8 (variable -> DOUBLE .)
-    GREATER_THAN_OR_EQUALS reduce using rule 8 (variable -> DOUBLE .)
-    LESS_THAN_OR_EQUALS reduce using rule 8 (variable -> DOUBLE .)
-    SEMICOLON       reduce using rule 8 (variable -> DOUBLE .)
-    RPARENTHESIS    reduce using rule 8 (variable -> DOUBLE .)
+    $end            reduce using rule 8 (declaration -> varType ID SEMICOLON .)
+    RBRACE          reduce using rule 8 (declaration -> varType ID SEMICOLON .)
 
 
 state 28
 
-    (9) variable -> STRING .
+    (7) assignation -> varType ID ASSIGN_OPERATOR . variable SEMICOLON
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    EQUALS          reduce using rule 9 (variable -> STRING .)
-    NOT_EQUALS      reduce using rule 9 (variable -> STRING .)
-    GREATER_THAN    reduce using rule 9 (variable -> STRING .)
-    LESS_THAN       reduce using rule 9 (variable -> STRING .)
-    GREATER_THAN_OR_EQUALS reduce using rule 9 (variable -> STRING .)
-    LESS_THAN_OR_EQUALS reduce using rule 9 (variable -> STRING .)
-    SEMICOLON       reduce using rule 9 (variable -> STRING .)
-    RPARENTHESIS    reduce using rule 9 (variable -> STRING .)
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    variable                       shift and go to state 41
 
 state 29
 
-    (10) variable -> BOOL .
+    (40) function -> varType ID LPARENTHESIS . parameters RPARENTHESIS LBRACE statement RBRACE
+    (44) parameters -> . parametersList
+    (45) parameters -> . empty
+    (42) parametersList -> . parameter
+    (43) parametersList -> . parameter COMMA parametersList
+    (46) empty -> .
+    (41) parameter -> . varType ID
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
 
-    EQUALS          reduce using rule 10 (variable -> BOOL .)
-    NOT_EQUALS      reduce using rule 10 (variable -> BOOL .)
-    GREATER_THAN    reduce using rule 10 (variable -> BOOL .)
-    LESS_THAN       reduce using rule 10 (variable -> BOOL .)
-    GREATER_THAN_OR_EQUALS reduce using rule 10 (variable -> BOOL .)
-    LESS_THAN_OR_EQUALS reduce using rule 10 (variable -> BOOL .)
-    SEMICOLON       reduce using rule 10 (variable -> BOOL .)
-    RPARENTHESIS    reduce using rule 10 (variable -> BOOL .)
+    RPARENTHESIS    reduce using rule 46 (empty -> .)
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
 
+    varType                        shift and go to state 42
+    parameters                     shift and go to state 43
+    parametersList                 shift and go to state 44
+    empty                          shift and go to state 45
+    parameter                      shift and go to state 46
 
 state 30
 
-    (11) variable -> NULL .
-
-    EQUALS          reduce using rule 11 (variable -> NULL .)
-    NOT_EQUALS      reduce using rule 11 (variable -> NULL .)
-    GREATER_THAN    reduce using rule 11 (variable -> NULL .)
-    LESS_THAN       reduce using rule 11 (variable -> NULL .)
-    GREATER_THAN_OR_EQUALS reduce using rule 11 (variable -> NULL .)
-    LESS_THAN_OR_EQUALS reduce using rule 11 (variable -> NULL .)
-    SEMICOLON       reduce using rule 11 (variable -> NULL .)
-    RPARENTHESIS    reduce using rule 11 (variable -> NULL .)
-
-
-state 31
-
-    (12) variable -> ID .
-
-    EQUALS          reduce using rule 12 (variable -> ID .)
-    NOT_EQUALS      reduce using rule 12 (variable -> ID .)
-    GREATER_THAN    reduce using rule 12 (variable -> ID .)
-    LESS_THAN       reduce using rule 12 (variable -> ID .)
-    GREATER_THAN_OR_EQUALS reduce using rule 12 (variable -> ID .)
-    LESS_THAN_OR_EQUALS reduce using rule 12 (variable -> ID .)
-    SEMICOLON       reduce using rule 12 (variable -> ID .)
-    RPARENTHESIS    reduce using rule 12 (variable -> ID .)
-
-
-state 32
-
-    (5) assignation -> varType ID ASSIGN_OPERATOR variable . SEMICOLON
-
-    SEMICOLON       shift and go to state 45
-
-
-state 33
-
-    (32) parameter -> varType . ID
-
-    ID              shift and go to state 46
-
-
-state 34
-
-    (31) function -> varType ID LPARENTHESIS parameters . RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> IF LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> IF LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> IF LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE RBRACE
 
     RPARENTHESIS    shift and go to state 47
 
 
+state 31
+
+    (26) booleanExpression -> variable . EQUALS variable
+    (27) booleanExpression -> variable . NOT_EQUALS variable
+    (28) booleanExpression -> variable . GREATER_THAN variable
+    (29) booleanExpression -> variable . LESS_THAN variable
+    (30) booleanExpression -> variable . GREATER_THAN_OR_EQUALS variable
+    (31) booleanExpression -> variable . LESS_THAN_OR_EQUALS variable
+
+    EQUALS          shift and go to state 48
+    NOT_EQUALS      shift and go to state 49
+    GREATER_THAN    shift and go to state 50
+    LESS_THAN       shift and go to state 51
+    GREATER_THAN_OR_EQUALS shift and go to state 52
+    LESS_THAN_OR_EQUALS shift and go to state 53
+
+
+state 32
+
+    (9) variable -> INT .
+
+    EQUALS          reduce using rule 9 (variable -> INT .)
+    NOT_EQUALS      reduce using rule 9 (variable -> INT .)
+    GREATER_THAN    reduce using rule 9 (variable -> INT .)
+    LESS_THAN       reduce using rule 9 (variable -> INT .)
+    GREATER_THAN_OR_EQUALS reduce using rule 9 (variable -> INT .)
+    LESS_THAN_OR_EQUALS reduce using rule 9 (variable -> INT .)
+    SEMICOLON       reduce using rule 9 (variable -> INT .)
+    RPARENTHESIS    reduce using rule 9 (variable -> INT .)
+
+
+state 33
+
+    (10) variable -> DOUBLE .
+
+    EQUALS          reduce using rule 10 (variable -> DOUBLE .)
+    NOT_EQUALS      reduce using rule 10 (variable -> DOUBLE .)
+    GREATER_THAN    reduce using rule 10 (variable -> DOUBLE .)
+    LESS_THAN       reduce using rule 10 (variable -> DOUBLE .)
+    GREATER_THAN_OR_EQUALS reduce using rule 10 (variable -> DOUBLE .)
+    LESS_THAN_OR_EQUALS reduce using rule 10 (variable -> DOUBLE .)
+    SEMICOLON       reduce using rule 10 (variable -> DOUBLE .)
+    RPARENTHESIS    reduce using rule 10 (variable -> DOUBLE .)
+
+
+state 34
+
+    (11) variable -> STRING .
+
+    EQUALS          reduce using rule 11 (variable -> STRING .)
+    NOT_EQUALS      reduce using rule 11 (variable -> STRING .)
+    GREATER_THAN    reduce using rule 11 (variable -> STRING .)
+    LESS_THAN       reduce using rule 11 (variable -> STRING .)
+    GREATER_THAN_OR_EQUALS reduce using rule 11 (variable -> STRING .)
+    LESS_THAN_OR_EQUALS reduce using rule 11 (variable -> STRING .)
+    SEMICOLON       reduce using rule 11 (variable -> STRING .)
+    RPARENTHESIS    reduce using rule 11 (variable -> STRING .)
+
+
 state 35
 
-    (35) parameters -> parametersList .
+    (12) variable -> BOOL .
 
-    RPARENTHESIS    reduce using rule 35 (parameters -> parametersList .)
+    EQUALS          reduce using rule 12 (variable -> BOOL .)
+    NOT_EQUALS      reduce using rule 12 (variable -> BOOL .)
+    GREATER_THAN    reduce using rule 12 (variable -> BOOL .)
+    LESS_THAN       reduce using rule 12 (variable -> BOOL .)
+    GREATER_THAN_OR_EQUALS reduce using rule 12 (variable -> BOOL .)
+    LESS_THAN_OR_EQUALS reduce using rule 12 (variable -> BOOL .)
+    SEMICOLON       reduce using rule 12 (variable -> BOOL .)
+    RPARENTHESIS    reduce using rule 12 (variable -> BOOL .)
 
 
 state 36
 
-    (36) parameters -> empty .
+    (13) variable -> NULL .
 
-    RPARENTHESIS    reduce using rule 36 (parameters -> empty .)
+    EQUALS          reduce using rule 13 (variable -> NULL .)
+    NOT_EQUALS      reduce using rule 13 (variable -> NULL .)
+    GREATER_THAN    reduce using rule 13 (variable -> NULL .)
+    LESS_THAN       reduce using rule 13 (variable -> NULL .)
+    GREATER_THAN_OR_EQUALS reduce using rule 13 (variable -> NULL .)
+    LESS_THAN_OR_EQUALS reduce using rule 13 (variable -> NULL .)
+    SEMICOLON       reduce using rule 13 (variable -> NULL .)
+    RPARENTHESIS    reduce using rule 13 (variable -> NULL .)
 
 
 state 37
 
-    (33) parametersList -> parameter .
-    (34) parametersList -> parameter . COMMA parametersList
+    (14) variable -> ID .
 
-    RPARENTHESIS    reduce using rule 33 (parametersList -> parameter .)
-    COMMA           shift and go to state 48
+    EQUALS          reduce using rule 14 (variable -> ID .)
+    NOT_EQUALS      reduce using rule 14 (variable -> ID .)
+    GREATER_THAN    reduce using rule 14 (variable -> ID .)
+    LESS_THAN       reduce using rule 14 (variable -> ID .)
+    GREATER_THAN_OR_EQUALS reduce using rule 14 (variable -> ID .)
+    LESS_THAN_OR_EQUALS reduce using rule 14 (variable -> ID .)
+    SEMICOLON       reduce using rule 14 (variable -> ID .)
+    RPARENTHESIS    reduce using rule 14 (variable -> ID .)
 
 
 state 38
 
-    (30) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE statement RBRACE
+    (35) while -> WHILE LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> WHILE LPARENTHESIS booleanExpression . RPARENTHESIS LBRACE RBRACE
 
-    LBRACE          shift and go to state 49
+    RPARENTHESIS    shift and go to state 54
 
 
 state 39
 
-    (24) booleanExpression -> variable EQUALS . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (37) for -> FOR LPARENTHESIS assignation . booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation . booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (26) booleanExpression -> . variable EQUALS variable
+    (27) booleanExpression -> . variable NOT_EQUALS variable
+    (28) booleanExpression -> . variable GREATER_THAN variable
+    (29) booleanExpression -> . variable LESS_THAN variable
+    (30) booleanExpression -> . variable GREATER_THAN_OR_EQUALS variable
+    (31) booleanExpression -> . variable LESS_THAN_OR_EQUALS variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
-    variable                       shift and go to state 50
+    booleanExpression              shift and go to state 55
+    variable                       shift and go to state 31
 
 state 40
 
-    (25) booleanExpression -> variable NOT_EQUALS . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (7) assignation -> varType . ID ASSIGN_OPERATOR variable SEMICOLON
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    ID              shift and go to state 56
 
-    variable                       shift and go to state 51
 
 state 41
 
-    (26) booleanExpression -> variable GREATER_THAN . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (7) assignation -> varType ID ASSIGN_OPERATOR variable . SEMICOLON
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    SEMICOLON       shift and go to state 57
 
-    variable                       shift and go to state 52
 
 state 42
 
-    (27) booleanExpression -> variable LESS_THAN . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (41) parameter -> varType . ID
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    ID              shift and go to state 58
 
-    variable                       shift and go to state 53
 
 state 43
 
-    (28) booleanExpression -> variable GREATER_THAN_OR_EQUALS . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (40) function -> varType ID LPARENTHESIS parameters . RPARENTHESIS LBRACE statement RBRACE
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    RPARENTHESIS    shift and go to state 59
 
-    variable                       shift and go to state 54
 
 state 44
 
-    (29) booleanExpression -> variable LESS_THAN_OR_EQUALS . variable
-    (7) variable -> . INT
-    (8) variable -> . DOUBLE
-    (9) variable -> . STRING
-    (10) variable -> . BOOL
-    (11) variable -> . NULL
-    (12) variable -> . ID
+    (44) parameters -> parametersList .
 
-    INT             shift and go to state 26
-    DOUBLE          shift and go to state 27
-    STRING          shift and go to state 28
-    BOOL            shift and go to state 29
-    NULL            shift and go to state 30
-    ID              shift and go to state 31
+    RPARENTHESIS    reduce using rule 44 (parameters -> parametersList .)
 
-    variable                       shift and go to state 55
 
 state 45
 
-    (5) assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .
+    (45) parameters -> empty .
 
-    $end            reduce using rule 5 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
-    RBRACE          reduce using rule 5 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    RPARENTHESIS    reduce using rule 45 (parameters -> empty .)
 
 
 state 46
 
-    (32) parameter -> varType ID .
+    (42) parametersList -> parameter .
+    (43) parametersList -> parameter . COMMA parametersList
 
-    COMMA           reduce using rule 32 (parameter -> varType ID .)
-    RPARENTHESIS    reduce using rule 32 (parameter -> varType ID .)
+    RPARENTHESIS    reduce using rule 42 (parametersList -> parameter .)
+    COMMA           shift and go to state 60
 
 
 state 47
 
-    (31) function -> varType ID LPARENTHESIS parameters RPARENTHESIS . LBRACE statement RBRACE
+    (32) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE statement RBRACE
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE RBRACE
 
-    LBRACE          shift and go to state 56
+    LBRACE          shift and go to state 61
 
 
 state 48
 
-    (34) parametersList -> parameter COMMA . parametersList
-    (33) parametersList -> . parameter
-    (34) parametersList -> . parameter COMMA parametersList
-    (32) parameter -> . varType ID
-    (13) varType -> . INT_TYPE
-    (14) varType -> . STRING_TYPE
-    (15) varType -> . NUM_TYPE
-    (16) varType -> . DOUBLE_TYPE
-    (17) varType -> . BOOL_TYPE
-    (18) varType -> . LIST_TYPE
-    (19) varType -> . MAP_TYPE
-    (20) varType -> . VAR
-    (21) varType -> . CONST
-    (22) varType -> . FINAL
-    (23) varType -> . VOID
+    (26) booleanExpression -> variable EQUALS . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    INT_TYPE        shift and go to state 8
-    STRING_TYPE     shift and go to state 9
-    NUM_TYPE        shift and go to state 10
-    DOUBLE_TYPE     shift and go to state 11
-    BOOL_TYPE       shift and go to state 12
-    LIST_TYPE       shift and go to state 13
-    MAP_TYPE        shift and go to state 14
-    VAR             shift and go to state 15
-    CONST           shift and go to state 16
-    FINAL           shift and go to state 17
-    VOID            shift and go to state 18
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
-    parameter                      shift and go to state 37
-    parametersList                 shift and go to state 57
-    varType                        shift and go to state 33
+    variable                       shift and go to state 62
 
 state 49
 
-    (30) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . statement RBRACE
-    (1) statement -> . declaration
-    (2) statement -> . assignation
-    (3) statement -> . function
-    (4) statement -> . if
-    (6) declaration -> . varType ID SEMICOLON
-    (5) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
-    (31) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
-    (30) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
-    (13) varType -> . INT_TYPE
-    (14) varType -> . STRING_TYPE
-    (15) varType -> . NUM_TYPE
-    (16) varType -> . DOUBLE_TYPE
-    (17) varType -> . BOOL_TYPE
-    (18) varType -> . LIST_TYPE
-    (19) varType -> . MAP_TYPE
-    (20) varType -> . VAR
-    (21) varType -> . CONST
-    (22) varType -> . FINAL
-    (23) varType -> . VOID
+    (27) booleanExpression -> variable NOT_EQUALS . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    IF              shift and go to state 7
-    INT_TYPE        shift and go to state 8
-    STRING_TYPE     shift and go to state 9
-    NUM_TYPE        shift and go to state 10
-    DOUBLE_TYPE     shift and go to state 11
-    BOOL_TYPE       shift and go to state 12
-    LIST_TYPE       shift and go to state 13
-    MAP_TYPE        shift and go to state 14
-    VAR             shift and go to state 15
-    CONST           shift and go to state 16
-    FINAL           shift and go to state 17
-    VOID            shift and go to state 18
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
-    statement                      shift and go to state 58
-    declaration                    shift and go to state 2
-    assignation                    shift and go to state 3
-    function                       shift and go to state 4
-    if                             shift and go to state 5
-    varType                        shift and go to state 6
+    variable                       shift and go to state 63
 
 state 50
 
-    (24) booleanExpression -> variable EQUALS variable .
+    (28) booleanExpression -> variable GREATER_THAN . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    RPARENTHESIS    reduce using rule 24 (booleanExpression -> variable EQUALS variable .)
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    variable                       shift and go to state 64
 
 state 51
 
-    (25) booleanExpression -> variable NOT_EQUALS variable .
+    (29) booleanExpression -> variable LESS_THAN . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    RPARENTHESIS    reduce using rule 25 (booleanExpression -> variable NOT_EQUALS variable .)
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    variable                       shift and go to state 65
 
 state 52
 
-    (26) booleanExpression -> variable GREATER_THAN variable .
+    (30) booleanExpression -> variable GREATER_THAN_OR_EQUALS . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    RPARENTHESIS    reduce using rule 26 (booleanExpression -> variable GREATER_THAN variable .)
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    variable                       shift and go to state 66
 
 state 53
 
-    (27) booleanExpression -> variable LESS_THAN variable .
+    (31) booleanExpression -> variable LESS_THAN_OR_EQUALS . variable
+    (9) variable -> . INT
+    (10) variable -> . DOUBLE
+    (11) variable -> . STRING
+    (12) variable -> . BOOL
+    (13) variable -> . NULL
+    (14) variable -> . ID
 
-    RPARENTHESIS    reduce using rule 27 (booleanExpression -> variable LESS_THAN variable .)
+    INT             shift and go to state 32
+    DOUBLE          shift and go to state 33
+    STRING          shift and go to state 34
+    BOOL            shift and go to state 35
+    NULL            shift and go to state 36
+    ID              shift and go to state 37
 
+    variable                       shift and go to state 67
 
 state 54
 
-    (28) booleanExpression -> variable GREATER_THAN_OR_EQUALS variable .
+    (35) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE statement RBRACE
+    (36) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS . LBRACE RBRACE
 
-    RPARENTHESIS    reduce using rule 28 (booleanExpression -> variable GREATER_THAN_OR_EQUALS variable .)
+    LBRACE          shift and go to state 68
 
 
 state 55
 
-    (29) booleanExpression -> variable LESS_THAN_OR_EQUALS variable .
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression . SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression . SEMICOLON increment RPARENTHESIS LBRACE RBRACE
 
-    RPARENTHESIS    reduce using rule 29 (booleanExpression -> variable LESS_THAN_OR_EQUALS variable .)
+    SEMICOLON       shift and go to state 69
 
 
 state 56
 
-    (31) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE . statement RBRACE
-    (1) statement -> . declaration
-    (2) statement -> . assignation
-    (3) statement -> . function
-    (4) statement -> . if
-    (6) declaration -> . varType ID SEMICOLON
-    (5) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
-    (31) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
-    (30) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
-    (13) varType -> . INT_TYPE
-    (14) varType -> . STRING_TYPE
-    (15) varType -> . NUM_TYPE
-    (16) varType -> . DOUBLE_TYPE
-    (17) varType -> . BOOL_TYPE
-    (18) varType -> . LIST_TYPE
-    (19) varType -> . MAP_TYPE
-    (20) varType -> . VAR
-    (21) varType -> . CONST
-    (22) varType -> . FINAL
-    (23) varType -> . VOID
+    (7) assignation -> varType ID . ASSIGN_OPERATOR variable SEMICOLON
 
-    IF              shift and go to state 7
-    INT_TYPE        shift and go to state 8
-    STRING_TYPE     shift and go to state 9
-    NUM_TYPE        shift and go to state 10
-    DOUBLE_TYPE     shift and go to state 11
-    BOOL_TYPE       shift and go to state 12
-    LIST_TYPE       shift and go to state 13
-    MAP_TYPE        shift and go to state 14
-    VAR             shift and go to state 15
-    CONST           shift and go to state 16
-    FINAL           shift and go to state 17
-    VOID            shift and go to state 18
+    ASSIGN_OPERATOR shift and go to state 28
 
-    varType                        shift and go to state 6
-    statement                      shift and go to state 59
-    declaration                    shift and go to state 2
-    assignation                    shift and go to state 3
-    function                       shift and go to state 4
-    if                             shift and go to state 5
 
 state 57
 
-    (34) parametersList -> parameter COMMA parametersList .
+    (7) assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .
 
-    RPARENTHESIS    reduce using rule 34 (parametersList -> parameter COMMA parametersList .)
+    $end            reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    INT             reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    DOUBLE          reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    STRING          reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    BOOL            reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    NULL            reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    ID              reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
+    RBRACE          reduce using rule 7 (assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON .)
 
 
 state 58
 
-    (30) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement . RBRACE
+    (41) parameter -> varType ID .
 
-    RBRACE          shift and go to state 60
+    COMMA           reduce using rule 41 (parameter -> varType ID .)
+    RPARENTHESIS    reduce using rule 41 (parameter -> varType ID .)
 
 
 state 59
 
-    (31) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement . RBRACE
+    (40) function -> varType ID LPARENTHESIS parameters RPARENTHESIS . LBRACE statement RBRACE
 
-    RBRACE          shift and go to state 61
+    LBRACE          shift and go to state 70
 
 
 state 60
 
-    (30) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .
+    (43) parametersList -> parameter COMMA . parametersList
+    (42) parametersList -> . parameter
+    (43) parametersList -> . parameter COMMA parametersList
+    (41) parameter -> . varType ID
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
 
-    $end            reduce using rule 30 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
-    RBRACE          reduce using rule 30 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
 
+    parameter                      shift and go to state 46
+    parametersList                 shift and go to state 71
+    varType                        shift and go to state 42
 
 state 61
 
-    (31) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .
+    (32) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . statement RBRACE
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . RBRACE
+    (1) statement -> . declaration
+    (2) statement -> . assignation
+    (3) statement -> . function
+    (4) statement -> . if
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
 
-    $end            reduce using rule 31 (function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .)
-    RBRACE          reduce using rule 31 (function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .)
+    RBRACE          shift and go to state 73
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
+
+    statement                      shift and go to state 72
+    declaration                    shift and go to state 2
+    assignation                    shift and go to state 3
+    function                       shift and go to state 4
+    if                             shift and go to state 5
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+    varType                        shift and go to state 8
+
+state 62
+
+    (26) booleanExpression -> variable EQUALS variable .
+
+    RPARENTHESIS    reduce using rule 26 (booleanExpression -> variable EQUALS variable .)
+    SEMICOLON       reduce using rule 26 (booleanExpression -> variable EQUALS variable .)
+
+
+state 63
+
+    (27) booleanExpression -> variable NOT_EQUALS variable .
+
+    RPARENTHESIS    reduce using rule 27 (booleanExpression -> variable NOT_EQUALS variable .)
+    SEMICOLON       reduce using rule 27 (booleanExpression -> variable NOT_EQUALS variable .)
+
+
+state 64
+
+    (28) booleanExpression -> variable GREATER_THAN variable .
+
+    RPARENTHESIS    reduce using rule 28 (booleanExpression -> variable GREATER_THAN variable .)
+    SEMICOLON       reduce using rule 28 (booleanExpression -> variable GREATER_THAN variable .)
+
+
+state 65
+
+    (29) booleanExpression -> variable LESS_THAN variable .
+
+    RPARENTHESIS    reduce using rule 29 (booleanExpression -> variable LESS_THAN variable .)
+    SEMICOLON       reduce using rule 29 (booleanExpression -> variable LESS_THAN variable .)
+
+
+state 66
+
+    (30) booleanExpression -> variable GREATER_THAN_OR_EQUALS variable .
+
+    RPARENTHESIS    reduce using rule 30 (booleanExpression -> variable GREATER_THAN_OR_EQUALS variable .)
+    SEMICOLON       reduce using rule 30 (booleanExpression -> variable GREATER_THAN_OR_EQUALS variable .)
+
+
+state 67
+
+    (31) booleanExpression -> variable LESS_THAN_OR_EQUALS variable .
+
+    RPARENTHESIS    reduce using rule 31 (booleanExpression -> variable LESS_THAN_OR_EQUALS variable .)
+    SEMICOLON       reduce using rule 31 (booleanExpression -> variable LESS_THAN_OR_EQUALS variable .)
+
+
+state 68
+
+    (35) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . statement RBRACE
+    (36) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE . RBRACE
+    (1) statement -> . declaration
+    (2) statement -> . assignation
+    (3) statement -> . function
+    (4) statement -> . if
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
+
+    RBRACE          shift and go to state 75
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
+
+    statement                      shift and go to state 74
+    declaration                    shift and go to state 2
+    assignation                    shift and go to state 3
+    function                       shift and go to state 4
+    if                             shift and go to state 5
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+    varType                        shift and go to state 8
+
+state 69
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON . increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON . increment RPARENTHESIS LBRACE RBRACE
+    (39) increment -> . ID PLUS PLUS
+
+    ID              shift and go to state 77
+
+    increment                      shift and go to state 76
+
+state 70
+
+    (40) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE . statement RBRACE
+    (1) statement -> . declaration
+    (2) statement -> . assignation
+    (3) statement -> . function
+    (4) statement -> . if
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
+
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
+
+    varType                        shift and go to state 8
+    statement                      shift and go to state 78
+    declaration                    shift and go to state 2
+    assignation                    shift and go to state 3
+    function                       shift and go to state 4
+    if                             shift and go to state 5
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+
+state 71
+
+    (43) parametersList -> parameter COMMA parametersList .
+
+    RPARENTHESIS    reduce using rule 43 (parametersList -> parameter COMMA parametersList .)
+
+
+state 72
+
+    (32) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement . RBRACE
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement . RBRACE ELSE LBRACE statement RBRACE
+
+    RBRACE          shift and go to state 79
+
+
+state 73
+
+    (34) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .
+
+    $end            reduce using rule 34 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .)
+    RBRACE          reduce using rule 34 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .)
+
+
+state 74
+
+    (35) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement . RBRACE
+
+    RBRACE          shift and go to state 80
+
+
+state 75
+
+    (36) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .
+
+    $end            reduce using rule 36 (while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .)
+    RBRACE          reduce using rule 36 (while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE .)
+
+
+state 76
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment . RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment . RPARENTHESIS LBRACE RBRACE
+
+    RPARENTHESIS    shift and go to state 81
+
+
+state 77
+
+    (39) increment -> ID . PLUS PLUS
+
+    PLUS            shift and go to state 82
+
+
+state 78
+
+    (40) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement . RBRACE
+
+    RBRACE          shift and go to state 83
+
+
+state 79
+
+    (32) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE . ELSE LBRACE statement RBRACE
+
+    $end            reduce using rule 32 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
+    RBRACE          reduce using rule 32 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
+    ELSE            shift and go to state 84
+
+
+state 80
+
+    (35) while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .
+
+    $end            reduce using rule 35 (while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
+    RBRACE          reduce using rule 35 (while -> WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE .)
+
+
+state 81
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS . LBRACE statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS . LBRACE RBRACE
+
+    LBRACE          shift and go to state 85
+
+
+state 82
+
+    (39) increment -> ID PLUS . PLUS
+
+    PLUS            shift and go to state 86
+
+
+state 83
+
+    (40) function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .
+
+    $end            reduce using rule 40 (function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .)
+    RBRACE          reduce using rule 40 (function -> varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE .)
+
+
+state 84
+
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE . LBRACE statement RBRACE
+
+    LBRACE          shift and go to state 87
+
+
+state 85
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE . statement RBRACE
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE . RBRACE
+    (1) statement -> . declaration
+    (2) statement -> . assignation
+    (3) statement -> . function
+    (4) statement -> . if
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
+
+    RBRACE          shift and go to state 89
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
+
+    assignation                    shift and go to state 3
+    statement                      shift and go to state 88
+    declaration                    shift and go to state 2
+    function                       shift and go to state 4
+    if                             shift and go to state 5
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+    varType                        shift and go to state 8
+
+state 86
+
+    (39) increment -> ID PLUS PLUS .
+
+    RPARENTHESIS    reduce using rule 39 (increment -> ID PLUS PLUS .)
+
+
+state 87
+
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE . statement RBRACE
+    (1) statement -> . declaration
+    (2) statement -> . assignation
+    (3) statement -> . function
+    (4) statement -> . if
+    (5) statement -> . while
+    (6) statement -> . for
+    (8) declaration -> . varType ID SEMICOLON
+    (7) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
+    (40) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
+    (32) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (33) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE
+    (34) if -> . IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (35) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE
+    (36) while -> . WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE
+    (37) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    (38) for -> . FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE
+    (15) varType -> . INT_TYPE
+    (16) varType -> . STRING_TYPE
+    (17) varType -> . NUM_TYPE
+    (18) varType -> . DOUBLE_TYPE
+    (19) varType -> . BOOL_TYPE
+    (20) varType -> . LIST_TYPE
+    (21) varType -> . MAP_TYPE
+    (22) varType -> . VAR
+    (23) varType -> . CONST
+    (24) varType -> . FINAL
+    (25) varType -> . VOID
+
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    FOR             shift and go to state 11
+    INT_TYPE        shift and go to state 12
+    STRING_TYPE     shift and go to state 13
+    NUM_TYPE        shift and go to state 14
+    DOUBLE_TYPE     shift and go to state 15
+    BOOL_TYPE       shift and go to state 16
+    LIST_TYPE       shift and go to state 17
+    MAP_TYPE        shift and go to state 18
+    VAR             shift and go to state 19
+    CONST           shift and go to state 20
+    FINAL           shift and go to state 21
+    VOID            shift and go to state 22
+
+    statement                      shift and go to state 90
+    declaration                    shift and go to state 2
+    assignation                    shift and go to state 3
+    function                       shift and go to state 4
+    if                             shift and go to state 5
+    while                          shift and go to state 6
+    for                            shift and go to state 7
+    varType                        shift and go to state 8
+
+state 88
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement . RBRACE
+
+    RBRACE          shift and go to state 91
+
+
+state 89
+
+    (38) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE .
+
+    $end            reduce using rule 38 (for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE .)
+    RBRACE          reduce using rule 38 (for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE .)
+
+
+state 90
+
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement . RBRACE
+
+    RBRACE          shift and go to state 92
+
+
+state 91
+
+    (37) for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE .
+
+    $end            reduce using rule 37 (for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE .)
+    RBRACE          reduce using rule 37 (for -> FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE .)
+
+
+state 92
+
+    (33) if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE .
+
+    $end            reduce using rule 33 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE .)
+    RBRACE          reduce using rule 33 (if -> IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statement RBRACE ELSE LBRACE statement RBRACE .)
 
