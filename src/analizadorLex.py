@@ -22,6 +22,7 @@ reserved = {
     'continue': 'CONTINUE',
     'export': 'EXPORT',
     'finally': 'FINALLY',
+    'class': 'CLASS',
     # Kevin Salazar - fin
 
     # Diego Flores - inicio
@@ -45,6 +46,7 @@ tokens = list(reserved.values()) + [
     # Literales y tipos de datos
     'ID',
     'PLUS', 'MINUS', 'DIVIDE', 'TIMES',
+    'INCREMENT', 'DECREMENT',
     'AND', 'OR', 'NOT',
     'EQUALS', 'NOT_EQUALS',
     'GREATER_THAN', 'LESS_THAN',
@@ -60,31 +62,35 @@ tokens = list(reserved.values()) + [
 ]
 
 # Operadores y delimitadores
+t_INCREMENT = r'\+\+'
+t_DECREMENT = r'--'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_DIVIDE = r'/'
 t_TIMES = r'\*'
+
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
 t_EQUALS = r'=='
 t_NOT_EQUALS = r'!='
-t_GREATER_THAN = r'>'
-t_LESS_THAN = r'<'
 t_GREATER_THAN_OR_EQUALS = r'>='
 t_LESS_THAN_OR_EQUALS = r'<='
+t_GREATER_THAN = r'>'
+t_LESS_THAN = r'<'
+
 t_ASSIGN_OPERATOR = r'='
 t_LPARENTHESIS = r'\('
 t_RPARENTHESIS = r'\)'
-t_SEMICOLON = r'\;'
+t_SEMICOLON = r';'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
 t_DOT = r'\.'
 t_COMMA = r','
 t_COLON = r':'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
-t_MODULE = r'\%'
+t_MODULE = r'%'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
@@ -125,7 +131,7 @@ def t_STRING(t):
     return t
 
 # Control de líneas
-def t_ignore_newline(t):
+def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
     pass
