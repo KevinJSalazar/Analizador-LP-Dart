@@ -30,6 +30,7 @@ reserved = {
     'bool': 'BOOL_TYPE',
     'List': 'LIST_TYPE',
     'Map': 'MAP_TYPE',
+    'Set': 'SET_TYPE',
     'null' : 'NULL'
 }
 

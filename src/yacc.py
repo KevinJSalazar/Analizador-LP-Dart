@@ -5,14 +5,15 @@ start = 'statement'
 
 def p_statement(p):
     '''statement : expression
-                | list
                 | declaration
                 | assignation
                 | function
                 | if
                 | while
                 | for
-                | list'''
+                | list
+                | set
+                | map'''
 
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
@@ -95,12 +96,47 @@ def p_for(p):
     '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
             | FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE'''
 
-def p_listIntValues(p):
-    '''listIntValue : listIntValue COMMA INT'''
+def p_listIntValue(p):
+    '''listIntValue : listIntValue COMMA INT
+                    | INT
+                    | '''
+def p_listStringValue(p):
+    '''listStringValue : listStringValue COMMA STRING
+                        | STRING
+                        | '''
+def p_listDoubleValue(p):
+    '''listDoubleValue : listDoubleValue COMMA DOUBLE 
+                        | DOUBLE
+                        | '''
+def p_listBoolValue(p):
+    '''listBoolValue : listBoolValue COMMA BOOL
+                        | BOOL
+                        | '''
+    
+def p_mapValues_multiple(p):
+    '''mapValues : mapValues COMMA mapPair'''
+    
+def p_mapValues_single(p):
+    '''mapValues : mapPair'''
+
+def p_mapPair(p):
+    '''mapPair : variable COLON variable'''
 
 def p_list(p):
-    '''list : LIST_TYPE LESS_THAN primitive GREATER_THAN ID ASSIGN_OPERATOR L_LBRACKET listIntValue t_RBRACKET SEMICOLON'''
-    
+    '''list : LIST_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACKET listIntValue RBRACKET SEMICOLON
+        | LIST_TYPE LESS_THAN STRING_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACKET listStringValue RBRACKET SEMICOLON
+        | LIST_TYPE LESS_THAN DOUBLE_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACKET listDoubleValue RBRACKET SEMICOLON
+        | LIST_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACKET listBoolValue RBRACKET SEMICOLON'''
+
+def p_set(p):
+    '''set : SET_TYPE LESS_THAN STRING_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listStringValue RBRACE SEMICOLON
+            | SET_TYPE LESS_THAN DOUBLE_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listDoubleValue RBRACE SEMICOLON
+            | SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
+            | SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON'''
+   
+def p_map(p):
+    '''map : MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON'''
+
 def p_increment(p):
     '''increment : ID PLUS PLUS'''
 
@@ -120,6 +156,10 @@ def p_parameters(p):
     
 def p_empty(p) : 
     'empty : '
+
+# Error rule for syntax errors
+def p_error(p):
+    print("Syntax error in input!")    
 
 
 # Build the parser
