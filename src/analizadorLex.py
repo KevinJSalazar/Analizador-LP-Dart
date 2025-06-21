@@ -30,7 +30,7 @@ reserved = {
     'num': 'NUM_TYPE',
     'String': 'STRING_TYPE',
     'bool': 'BOOL_TYPE',
-    'Null': 'NULL_TYPE',
+    'null': 'NULL_TYPE',
     # Diego Flores - fin
 
     # Alex Vizuete - inicio
@@ -42,9 +42,6 @@ reserved = {
 
 # Tokens generales
 tokens = list(reserved.values()) + [
-    # Comentarios
-    'COMMENT_LINE',
-    'COMMENT_BLOCK',
     # Literales y tipos de datos
     'ID',
     'PLUS', 'MINUS', 'DIVIDE', 'TIMES',
@@ -59,7 +56,7 @@ tokens = list(reserved.values()) + [
     'DOT', 'COMMA', 'COLON',
     'ASSIGN_OPERATOR',
     'LBRACKET', 'RBRACKET',
-    'TILDE',
+    'MODULE',
 ]
 
 # Operadores y delimitadores
@@ -87,19 +84,17 @@ t_COMMA = r','
 t_COLON = r':'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
-t_TILDE = r'~'
+t_MODULE = r'\%'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
 
 # Comentarios
-def t_COMMENT_LINE(t):
+def t_ignore_COMMENT_LINE(t):
     r'//.*'
-    return t
 
-def t_COMMENT_BLOCK(t):
+def t_ignore_COMMENT_BLOCK(t):
     r'/\*[\s\S]*?\*/'
-    return t
 
 # Literales numéricas y booleanas
 def t_DOUBLE(t):
@@ -130,7 +125,7 @@ def t_STRING(t):
     return t
 
 # Control de líneas
-def t_newline(t):
+def t_ignore_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
     pass
