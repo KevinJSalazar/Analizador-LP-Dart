@@ -3,8 +3,8 @@ from analizadorSintax import parser
 from datetime import datetime
 import os
 
-input_folder = "./Algoritmos/"
-output_folder = "./Logs/"
+input_folder = "../Algoritmos/"
+output_folder = "../LogsSintax/"
 
 for filename in os.listdir(input_folder):
     file_path = os.path.join(input_folder, filename)
