@@ -5,12 +5,14 @@ start = 'statement'
 
 def p_statement(p):
     '''statement : expression
+                | list
                 | declaration
                 | assignation
                 | function
                 | if
                 | while
-                | for'''
+                | for
+                | list'''
 
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
@@ -65,6 +67,13 @@ def p_varType(p):
                 | FINAL
                 | VOID'''
     
+def p_primitive(p):
+    '''primitive : INT_TYPE
+                | STRING_TYPE
+                | NUM_TYPE
+                | DOUBLE_TYPE
+                | BOOL_TYPE'''
+    
 def p_booleanExpression(p):
     '''booleanExpression : variable EQUALS variable
                         | variable NOT_EQUALS variable
@@ -83,8 +92,14 @@ def p_while(p):
             | WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE RBRACE'''
 
 def p_for(p):
-    '''for  : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
+    '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statement RBRACE
             | FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE RBRACE'''
+
+def p_listIntValues(p):
+    '''listIntValue : listIntValue COMMA INT'''
+
+def p_list(p):
+    '''list : LIST_TYPE LESS_THAN primitive GREATER_THAN ID ASSIGN_OPERATOR L_LBRACKET listIntValue t_RBRACKET SEMICOLON'''
     
 def p_increment(p):
     '''increment : ID PLUS PLUS'''
