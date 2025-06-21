@@ -1,0 +1,203 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABSTRACT
+    AND
+    BREAK
+    COLON
+    COMMA
+    COMMENT_BLOCK
+    COMMENT_LINE
+    CONTINUE
+    DEFAULT
+    DIVIDE
+    DOT
+    ELSE
+    ENUM
+    EXPORT
+    FINALLY
+    FOR
+    IF
+    IMPORT
+    LATE
+    LBRACE
+    LBRACKET
+    LPARENTHESIS
+    MINUS
+    NOT
+    NULL_TYPE
+    OR
+    PLUS
+    RBRACE
+    RBRACKET
+    RETURN
+    RPARENTHESIS
+    SET_TYPE
+    STATIC
+    TILDE
+    TIMES
+    TYPEDEF
+    VOID
+    WHILE
+
+Grammar
+
+Rule 0     S' -> variable
+Rule 1     variable -> INT
+Rule 2     variable -> DOUBLE
+Rule 3     variable -> STRING
+Rule 4     variable -> BOOL
+Rule 5     variable -> NULL
+Rule 6     varType -> INT_TYPE
+Rule 7     varType -> STRING_TYPE
+Rule 8     varType -> NUM_TYPE
+Rule 9     varType -> DOUBLE_TYPE
+Rule 10    varType -> BOOL_TYPE
+Rule 11    varType -> LIST_TYPE
+Rule 12    varType -> MAP_TYPE
+Rule 13    varType -> VAR
+Rule 14    varType -> CONST
+Rule 15    varType -> FINAL
+Rule 16    booleanExpression -> variable EQUALS variable
+Rule 17    booleanExpression -> variable NOT_EQUALS variable
+Rule 18    booleanExpression -> variable GREATER_THAN variable
+Rule 19    booleanExpression -> variable LESS_THAN variable
+Rule 20    booleanExpression -> variable GREATER_THAN_OR_EQUALS variable
+Rule 21    booleanExpression -> variable LESS_THAN_OR_EQUALS variable
+Rule 22    declaration -> CONST ID ASSIGN_OPERATOR variable SEMICOLON
+Rule 23    declaration -> VAR ID ASSIGN_OPERATOR variable SEMICOLON
+Rule 24    declaration -> FINAL ID ASSIGN_OPERATOR variable SEMICOLON
+
+Terminals, with rules where they appear
+
+ABSTRACT             : 
+AND                  : 
+ASSIGN_OPERATOR      : 22 23 24
+BOOL                 : 4
+BOOL_TYPE            : 10
+BREAK                : 
+COLON                : 
+COMMA                : 
+COMMENT_BLOCK        : 
+COMMENT_LINE         : 
+CONST                : 14 22
+CONTINUE             : 
+DEFAULT              : 
+DIVIDE               : 
+DOT                  : 
+DOUBLE               : 2
+DOUBLE_TYPE          : 9
+ELSE                 : 
+ENUM                 : 
+EQUALS               : 16
+EXPORT               : 
+FINAL                : 15 24
+FINALLY              : 
+FOR                  : 
+GREATER_THAN         : 18
+GREATER_THAN_OR_EQUALS : 20
+ID                   : 22 23 24
+IF                   : 
+IMPORT               : 
+INT                  : 1
+INT_TYPE             : 6
+LATE                 : 
+LBRACE               : 
+LBRACKET             : 
+LESS_THAN            : 19
+LESS_THAN_OR_EQUALS  : 21
+LIST_TYPE            : 11
+LPARENTHESIS         : 
+MAP_TYPE             : 12
+MINUS                : 
+NOT                  : 
+NOT_EQUALS           : 17
+NULL                 : 5
+NULL_TYPE            : 
+NUM_TYPE             : 8
+OR                   : 
+PLUS                 : 
+RBRACE               : 
+RBRACKET             : 
+RETURN               : 
+RPARENTHESIS         : 
+SEMICOLON            : 22 23 24
+SET_TYPE             : 
+STATIC               : 
+STRING               : 3
+STRING_TYPE          : 7
+TILDE                : 
+TIMES                : 
+TYPEDEF              : 
+VAR                  : 13 23
+VOID                 : 
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+booleanExpression    : 
+declaration          : 
+varType              : 
+variable             : 16 16 17 17 18 18 19 19 20 20 21 21 22 23 24 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . variable
+    (1) variable -> . INT
+    (2) variable -> . DOUBLE
+    (3) variable -> . STRING
+    (4) variable -> . BOOL
+    (5) variable -> . NULL
+
+    INT             shift and go to state 2
+    DOUBLE          shift and go to state 3
+    STRING          shift and go to state 4
+    BOOL            shift and go to state 5
+    NULL            shift and go to state 6
+
+    variable                       shift and go to state 1
+
+state 1
+
+    (0) S' -> variable .
+
+
+
+state 2
+
+    (1) variable -> INT .
+
+    $end            reduce using rule 1 (variable -> INT .)
+
+
+state 3
+
+    (2) variable -> DOUBLE .
+
+    $end            reduce using rule 2 (variable -> DOUBLE .)
+
+
+state 4
+
+    (3) variable -> STRING .
+
+    $end            reduce using rule 3 (variable -> STRING .)
+
+
+state 5
+
+    (4) variable -> BOOL .
+
+    $end            reduce using rule 4 (variable -> BOOL .)
+
+
+state 6
+
+    (5) variable -> NULL .
+
+    $end            reduce using rule 5 (variable -> NULL .)
+
