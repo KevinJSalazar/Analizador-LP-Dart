@@ -28,6 +28,9 @@ def p_statement(p):
                  | print
                  | input
                  | class_def
+                 | enum
+                 | try
+                 | switch
                  | empty'''
 
 # Declaración
@@ -37,6 +40,9 @@ def p_declaration(p):
 # Asignación
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
+
+def p_assignation_no_type(p):
+    'assignation : ID ASSIGN_OPERATOR variable SEMICOLON'
 
 # Tipos de datos
 def p_varType(p):
@@ -75,7 +81,8 @@ def p_expression_term(p):
 
 def p_term_operations(p):
     '''term : term TIMES factor
-            | term DIVIDE factor'''
+            | term DIVIDE factor
+            | term MODULE factor'''
     p[0] = ('binop', p[2], p[1], p[3])
 
 def p_term_factor(p):
@@ -120,9 +127,38 @@ def p_increment(p):
 def p_function(p):
     'function : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE'
 
-# Función tipo flecha
 def p_function_arrow(p):
     'function : varType ID LPARENTHESIS parameters RPARENTHESIS ARROW expression SEMICOLON'
+
+# Tipedef
+def p_typedef(p):
+    'typedef : TYPEDEF ID ASSIGN_OPERATOR varType FUNCTION LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
+
+# Enum
+def p_enum(p):
+    'enum : ENUM ID LBRACE enum_values RBRACE'
+
+def p_enum_values(p):
+    '''enum_values : enum_values COMMA ID
+                   | ID'''
+
+# Try-finally
+def p_try(p):
+    'try : TRY LBRACE statements RBRACE FINALLY LBRACE statements RBRACE'
+
+# Switch-case
+def p_switch(p):
+    'switch : SWITCH LPARENTHESIS variable RPARENTHESIS LBRACE cases default_case RBRACE'
+
+def p_cases(p):
+    '''cases : cases case
+             | case'''
+
+def p_case(p):
+    'case : CASE variable COLON statements BREAK SEMICOLON'
+
+def p_default_case(p):
+    'default_case : DEFAULT COLON statements'
 
 # Parámetros
 def p_parameters(p):
