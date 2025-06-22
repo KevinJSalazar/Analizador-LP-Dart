@@ -1,53 +1,65 @@
 import ply.lex as lex
 
-# Kevin Salazar - inicio
 reserved = {
+    # === Palabras clave de control de flujo ===
     'if': 'IF',
     'else': 'ELSE',
     'for': 'FOR',
-    'return': 'RETURN',
     'while': 'WHILE',
+    'switch': 'SWITCH',
+    'case': 'CASE',
+    'default': 'DEFAULT',
+    'break': 'BREAK',
+    'continue': 'CONTINUE',
+    'return': 'RETURN',
+    'try': 'TRY',
+    'finally': 'FINALLY',
+
+    # === Declaración de variables y constantes ===
     'var': 'VAR',
     'const': 'CONST',
     'final': 'FINAL',
     'late': 'LATE',
+
+    # === Declaración de funciones y clases ===
     'void': 'VOID',
-    'enum': 'ENUM',
+    'class': 'CLASS',
     'static': 'STATIC',
-    'import': 'IMPORT',
     'abstract': 'ABSTRACT',
     'typedef': 'TYPEDEF',
-    'break': 'BREAK',
-    'default': 'DEFAULT',
-    'continue': 'CONTINUE',
-    'export': 'EXPORT',
-    'finally': 'FINALLY',
-    # Kevin Salazar - fin
+    'enum': 'ENUM',
 
-    # Diego Flores - inicio
+    # === Importación y exportación ===
+    'import': 'IMPORT',
+    'export': 'EXPORT',
+
+    # === Tipos de datos primitivos ===  # Diego Flores
     'double': 'DOUBLE_TYPE',
     'int': 'INT_TYPE',
     'num': 'NUM_TYPE',
     'String': 'STRING_TYPE',
     'bool': 'BOOL_TYPE',
-    'Null': 'NULL_TYPE',
-    # Diego Flores - fin
+    'true': 'TRUE',
+    'false': 'FALSE',
+    'null': 'NULL_TYPE',
 
-    # Alex Vizuete - inicio
+    # === Estructuras de datos ===  # Alex Vizuete
     'List': 'LIST_TYPE',
     'Set': 'SET_TYPE',
     'Map': 'MAP_TYPE',
-    # Alex Vizuete - fin
+    
+    # === Entrada/Salida ===
+    'print': 'PRINT',
+    'stdin': 'STDIN',
+    'readLineSync': 'READ',
 }
 
 # Tokens generales
 tokens = list(reserved.values()) + [
-    # Comentarios
-    'COMMENT_LINE',
-    'COMMENT_BLOCK',
     # Literales y tipos de datos
     'ID',
-    'PLUS', 'MINUS', 'DIVIDE', 'TIMES',
+    'PLUS', 'MINUS', 'DIVIDE', 'TIMES', 'MODULE',
+    'INCREMENT', 'DECREMENT',
     'AND', 'OR', 'NOT',
     'EQUALS', 'NOT_EQUALS',
     'GREATER_THAN', 'LESS_THAN',
@@ -57,49 +69,52 @@ tokens = list(reserved.values()) + [
     'LPARENTHESIS', 'RPARENTHESIS',
     'SEMICOLON', 'LBRACE', 'RBRACE',
     'DOT', 'COMMA', 'COLON',
-    'ASSIGN_OPERATOR',
+    'ASSIGN_OPERATOR', 'ARROW',
     'LBRACKET', 'RBRACKET',
-    'TILDE',
+    
 ]
 
 # Operadores y delimitadores
+t_INCREMENT = r'\+\+'
+t_DECREMENT = r'--'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_DIVIDE = r'/'
 t_TIMES = r'\*'
+
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
 t_EQUALS = r'=='
 t_NOT_EQUALS = r'!='
-t_GREATER_THAN = r'>'
-t_LESS_THAN = r'<'
 t_GREATER_THAN_OR_EQUALS = r'>='
 t_LESS_THAN_OR_EQUALS = r'<='
+t_GREATER_THAN = r'>'
+t_LESS_THAN = r'<'
+
 t_ASSIGN_OPERATOR = r'='
 t_LPARENTHESIS = r'\('
 t_RPARENTHESIS = r'\)'
-t_SEMICOLON = r'\;'
+t_SEMICOLON = r';'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
 t_DOT = r'\.'
 t_COMMA = r','
 t_COLON = r':'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
-t_TILDE = r'~'
+t_ARROW = r'=>'
+t_MODULE = r'%'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
 
 # Comentarios
-def t_COMMENT_LINE(t):
+def t_ignore_COMMENT_LINE(t):
     r'//.*'
-    return t
 
-def t_COMMENT_BLOCK(t):
+def t_ignore_COMMENT_BLOCK(t):
     r'/\*[\s\S]*?\*/'
-    return t
 
 # Literales numéricas y booleanas
 def t_DOUBLE(t):

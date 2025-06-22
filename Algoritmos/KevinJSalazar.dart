@@ -33,6 +33,6 @@ int dividir(int a, int b) {
         case 0:
             return -1;
         default:
-            return a ~/ b;
+            return a / b;
     }
 }
