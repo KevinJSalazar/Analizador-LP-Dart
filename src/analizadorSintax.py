@@ -1,6 +1,9 @@
 import ply.yacc as yacc
-from analizadorLex import tokens
+from analizadorLex import tokens, build_lexer
 
+lexer = build_lexer()
+# Aquí se guardan los errores
+errores = []
 start = 'program'
 
 # Programa compuesto de múltiples sentencias
@@ -118,7 +121,8 @@ def p_while(p):
     '''while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'''
 
 def p_for(p):
-    '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE'''
+    '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
+           | FOR LPARENTHESIS assignation booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
 
 def p_increment(p):
     '''increment : ID INCREMENT'''
@@ -199,12 +203,28 @@ def p_empty(p):
 # Errores
 def p_error(p):
     if p:
-        print(f"Syntax error at token '{p.value}', line {p.lineno}")
-        with open('logs/sintactico-kevin-21062025-17h30.txt', 'a') as f:
-            f.write(f"Syntax error at token '{p.value}', line {p.lineno}\n")
+        error_msg = f"Error de sintaxis en la línea {p.lineno}, token: '{p.value}'"
     else:
-        print("Syntax error at EOF")
+        error_msg = "Error de sintaxis: fin inesperado de entrada"
+    errores.append(error_msg)
 
 # Función para construir el parser
 def build_parser():
     return yacc.yacc()
+
+def analizar_archivo(ruta_codigo, ruta_errores):
+    lexer = build_lexer()   # crea un lexer nuevo
+    parser = build_parser() # crea un parser nuevo
+
+    global errores
+    errores = []            # limpia errores acumulados
+    with open(ruta_codigo, 'r', encoding='utf-8') as f:
+        codigo = f.read()
+    parser.parse(codigo, lexer=lexer)
+    
+    with open(ruta_errores, 'w', encoding='utf-8') as f:
+        if errores:
+            for e in errores:
+                f.write(e + '\n')
+        else:
+            f.write("No se encontraron errores de sintaxis.\n")

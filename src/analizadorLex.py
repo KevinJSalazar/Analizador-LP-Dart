@@ -69,7 +69,7 @@ tokens = list(reserved.values()) + [
     'LPARENTHESIS', 'RPARENTHESIS',
     'SEMICOLON', 'LBRACE', 'RBRACE',
     'DOT', 'COMMA', 'COLON',
-    'ASSIGN_OPERATOR',
+    'ASSIGN_OPERATOR', 'ARROW',
     'LBRACKET', 'RBRACKET',
     
 ]
