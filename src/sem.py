@@ -72,7 +72,7 @@ def inferNumericType(var):
 def isVariableTypeCompatibleWithVarType(varType, variableType):
     allowed = {
         'int': ['int'],
-        'double': ['int', 'double'],  
+        'double': ['double'],  
         'String': ['String'],
         'bool': ['bool'],
         'null': ['null'],
