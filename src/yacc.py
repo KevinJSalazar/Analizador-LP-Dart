@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lex import tokens
-
+from sem import symbol_table, addSymbol, printTable, inferType, inferIDType, inferNumericType, unifyTypes
 start = 'statement'
 
 def p_statement(p):
@@ -17,21 +17,37 @@ def p_statement(p):
 
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
+    type = p[4]
+    name = p[2]
+    addSymbol(name, type)
+    printTable()
 
 def p_declaration(p):
     'declaration : varType ID SEMICOLON'
 
-def p_numeric(p):
-    '''numeric : INT
-               | DOUBLE'''
-
-def p_plusOperation(p):
-    'expression : expression PLUS term'
 def p_minuxOperation(p):
     'expression : expression MINUS term'
      
+
+def p_plusOperation(p):
+    'expression : expression PLUS term'
+    print(f"[expression] Unificando {p[1]} con {p[3]}")
+    p[0] = unifyTypes(p[1], p[3])
+
 def p_expressionTerm(p):
     'expression : term'
+    p[0] = p[1]
+
+def p_termValue(p):
+    'term : numeric'    
+    p[0] = p[1]
+
+def p_numeric(p):
+    '''numeric : INT
+               | DOUBLE'''
+    print(f"[numeric] token type: {p.slice[1].type}, value: {p[1]}")
+    p[0] = inferNumericType(p[1])
+
 
 def p_termTimes(p):
     'term : term TIMES numeric'
@@ -42,8 +58,9 @@ def p_termDivide(p):
 def p_termModule(p):
     'term : term MODULE numeric'
 
-def p_termValue(p):
-    'term : numeric'
+
+
+
 
 def p_variable(p):
     '''variable : INT 
@@ -54,6 +71,25 @@ def p_variable(p):
                 | ID
                 | expression
                 '''
+    token = p.slice[1].type # it points to p[1], however it gives us access to attributes such as value and token
+    var = p[1]
+    print(f"[variable] p[1] = {p[1]}")
+    if( token in ['INT', 'DOUBLE', 'STRING', 'BOOL', 'NULL']):
+        p[0] = inferType(var)
+    elif (token == "ID"):
+        type = inferIDType(var)
+        if(type is None):
+            print(f"variable " + var + " is not defined")
+        p[0] = type   
+    else:
+        p[0] = p[1]
+
+
+
+        
+
+
+
 
 def p_varType(p):
     '''varType : INT_TYPE 

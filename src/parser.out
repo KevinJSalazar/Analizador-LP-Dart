@@ -36,15 +36,15 @@ Rule 9     statement -> set
 Rule 10    statement -> map
 Rule 11    assignation -> varType ID ASSIGN_OPERATOR variable SEMICOLON
 Rule 12    declaration -> varType ID SEMICOLON
-Rule 13    numeric -> INT
-Rule 14    numeric -> DOUBLE
-Rule 15    expression -> expression PLUS term
-Rule 16    expression -> expression MINUS term
-Rule 17    expression -> term
-Rule 18    term -> term TIMES numeric
-Rule 19    term -> term DIVIDE numeric
-Rule 20    term -> term MODULE numeric
-Rule 21    term -> numeric
+Rule 13    expression -> expression MINUS term
+Rule 14    expression -> expression PLUS term
+Rule 15    expression -> term
+Rule 16    term -> numeric
+Rule 17    numeric -> INT
+Rule 18    numeric -> DOUBLE
+Rule 19    term -> term TIMES numeric
+Rule 20    term -> term DIVIDE numeric
+Rule 21    term -> term MODULE numeric
 Rule 22    variable -> INT
 Rule 23    variable -> DOUBLE
 Rule 24    variable -> STRING
@@ -129,9 +129,9 @@ COMMENT_LINE         :
 CONST                : 37
 CONTINUE             : 
 DEFAULT              : 
-DIVIDE               : 19
+DIVIDE               : 20
 DOT                  : 
-DOUBLE               : 14 23 64 65
+DOUBLE               : 18 23 64 65
 DOUBLE_TYPE          : 32 43 75 78
 ELSE                 : 52
 ENUM                 : 
@@ -145,7 +145,7 @@ GREATER_THAN_OR_EQUALS : 49
 ID                   : 11 12 27 73 74 75 76 77 78 79 80 81 82 83 84
 IF                   : 51 52 53
 IMPORT               : 
-INT                  : 13 22 58 59
+INT                  : 17 22 58 59
 INT_TYPE             : 29 40 73 79
 LATE                 : 
 LBRACE               : 51 52 52 53 54 55 56 57 77 78 79 80 81 83
@@ -155,14 +155,14 @@ LESS_THAN_OR_EQUALS  : 50
 LIST_TYPE            : 34 73 74 75 76
 LPARENTHESIS         : 51 52 53 54 55 56 57 83
 MAP_TYPE             : 35 81
-MINUS                : 16
-MODULE               : 20
+MINUS                : 13
+MODULE               : 21
 NOT                  : 
 NOT_EQUALS           : 46
 NULL                 : 26
 NUM_TYPE             : 31 42
 OR                   : 
-PLUS                 : 15 82 82
+PLUS                 : 14 82 82
 RBRACE               : 51 52 52 53 54 55 56 57 77 78 79 80 81 83
 RBRACKET             : 73 74 75 76
 RETURN               : 
@@ -172,7 +172,7 @@ SET_TYPE             : 77 78 79 80
 STATIC               : 
 STRING               : 24 61 62
 STRING_TYPE          : 30 41 74 77
-TIMES                : 18
+TIMES                : 19
 TYPEDEF              : 
 VAR                  : 36
 VOID                 : 39
@@ -185,7 +185,7 @@ assignation          : 3 56 57
 booleanExpression    : 51 52 53 54 55 56 57
 declaration          : 2
 empty                : 88
-expression           : 1 15 16 28
+expression           : 1 13 14 28
 for                  : 7
 function             : 4
 if                   : 5
@@ -198,14 +198,14 @@ listStringValue      : 61 74 77
 map                  : 10
 mapPair              : 70 71
 mapValues            : 70 81
-numeric              : 18 19 20 21
+numeric              : 16 19 20 21
 parameter            : 85 86
 parameters           : 83
 parametersList       : 86 87
 primitive            : 81 81
 set                  : 9
 statement            : 51 52 52 54 56 83 0
-term                 : 15 16 17 18 19 20
+term                 : 13 14 15 19 20 21
 varType              : 11 12 83 84
 variable             : 11 45 45 46 46 47 47 48 48 49 49 50 50 72 72
 while                : 6
@@ -225,9 +225,9 @@ state 0
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -247,10 +247,10 @@ state 0
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -262,8 +262,8 @@ state 0
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     IF              shift and go to state 14
     WHILE           shift and go to state 15
@@ -307,13 +307,13 @@ state 1
 state 2
 
     (1) statement -> expression .
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
+    (13) expression -> expression . MINUS term
+    (14) expression -> expression . PLUS term
 
     $end            reduce using rule 1 (statement -> expression .)
     RBRACE          reduce using rule 1 (statement -> expression .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
+    MINUS           shift and go to state 32
+    PLUS            shift and go to state 33
 
 
 state 3
@@ -390,25 +390,25 @@ state 11
 
 state 12
 
-    (17) expression -> term .
-    (18) term -> term . TIMES numeric
-    (19) term -> term . DIVIDE numeric
-    (20) term -> term . MODULE numeric
+    (15) expression -> term .
+    (19) term -> term . TIMES numeric
+    (20) term -> term . DIVIDE numeric
+    (21) term -> term . MODULE numeric
 
-    PLUS            reduce using rule 17 (expression -> term .)
-    MINUS           reduce using rule 17 (expression -> term .)
-    $end            reduce using rule 17 (expression -> term .)
-    EQUALS          reduce using rule 17 (expression -> term .)
-    NOT_EQUALS      reduce using rule 17 (expression -> term .)
-    GREATER_THAN    reduce using rule 17 (expression -> term .)
-    LESS_THAN       reduce using rule 17 (expression -> term .)
-    GREATER_THAN_OR_EQUALS reduce using rule 17 (expression -> term .)
-    LESS_THAN_OR_EQUALS reduce using rule 17 (expression -> term .)
-    SEMICOLON       reduce using rule 17 (expression -> term .)
-    RPARENTHESIS    reduce using rule 17 (expression -> term .)
-    RBRACE          reduce using rule 17 (expression -> term .)
-    COLON           reduce using rule 17 (expression -> term .)
-    COMMA           reduce using rule 17 (expression -> term .)
+    MINUS           reduce using rule 15 (expression -> term .)
+    PLUS            reduce using rule 15 (expression -> term .)
+    $end            reduce using rule 15 (expression -> term .)
+    EQUALS          reduce using rule 15 (expression -> term .)
+    NOT_EQUALS      reduce using rule 15 (expression -> term .)
+    GREATER_THAN    reduce using rule 15 (expression -> term .)
+    LESS_THAN       reduce using rule 15 (expression -> term .)
+    GREATER_THAN_OR_EQUALS reduce using rule 15 (expression -> term .)
+    LESS_THAN_OR_EQUALS reduce using rule 15 (expression -> term .)
+    SEMICOLON       reduce using rule 15 (expression -> term .)
+    RPARENTHESIS    reduce using rule 15 (expression -> term .)
+    RBRACE          reduce using rule 15 (expression -> term .)
+    COLON           reduce using rule 15 (expression -> term .)
+    COMMA           reduce using rule 15 (expression -> term .)
     TIMES           shift and go to state 34
     DIVIDE          shift and go to state 35
     MODULE          shift and go to state 36
@@ -509,25 +509,25 @@ state 23
 
 state 24
 
-    (21) term -> numeric .
+    (16) term -> numeric .
 
-    TIMES           reduce using rule 21 (term -> numeric .)
-    DIVIDE          reduce using rule 21 (term -> numeric .)
-    MODULE          reduce using rule 21 (term -> numeric .)
-    PLUS            reduce using rule 21 (term -> numeric .)
-    MINUS           reduce using rule 21 (term -> numeric .)
-    $end            reduce using rule 21 (term -> numeric .)
-    EQUALS          reduce using rule 21 (term -> numeric .)
-    NOT_EQUALS      reduce using rule 21 (term -> numeric .)
-    GREATER_THAN    reduce using rule 21 (term -> numeric .)
-    LESS_THAN       reduce using rule 21 (term -> numeric .)
-    GREATER_THAN_OR_EQUALS reduce using rule 21 (term -> numeric .)
-    LESS_THAN_OR_EQUALS reduce using rule 21 (term -> numeric .)
-    SEMICOLON       reduce using rule 21 (term -> numeric .)
-    RPARENTHESIS    reduce using rule 21 (term -> numeric .)
-    RBRACE          reduce using rule 21 (term -> numeric .)
-    COLON           reduce using rule 21 (term -> numeric .)
-    COMMA           reduce using rule 21 (term -> numeric .)
+    TIMES           reduce using rule 16 (term -> numeric .)
+    DIVIDE          reduce using rule 16 (term -> numeric .)
+    MODULE          reduce using rule 16 (term -> numeric .)
+    MINUS           reduce using rule 16 (term -> numeric .)
+    PLUS            reduce using rule 16 (term -> numeric .)
+    $end            reduce using rule 16 (term -> numeric .)
+    EQUALS          reduce using rule 16 (term -> numeric .)
+    NOT_EQUALS      reduce using rule 16 (term -> numeric .)
+    GREATER_THAN    reduce using rule 16 (term -> numeric .)
+    LESS_THAN       reduce using rule 16 (term -> numeric .)
+    GREATER_THAN_OR_EQUALS reduce using rule 16 (term -> numeric .)
+    LESS_THAN_OR_EQUALS reduce using rule 16 (term -> numeric .)
+    SEMICOLON       reduce using rule 16 (term -> numeric .)
+    RPARENTHESIS    reduce using rule 16 (term -> numeric .)
+    RBRACE          reduce using rule 16 (term -> numeric .)
+    COLON           reduce using rule 16 (term -> numeric .)
+    COMMA           reduce using rule 16 (term -> numeric .)
 
 
 state 25
@@ -567,59 +567,59 @@ state 29
 
 state 30
 
-    (13) numeric -> INT .
+    (17) numeric -> INT .
 
-    TIMES           reduce using rule 13 (numeric -> INT .)
-    DIVIDE          reduce using rule 13 (numeric -> INT .)
-    MODULE          reduce using rule 13 (numeric -> INT .)
-    PLUS            reduce using rule 13 (numeric -> INT .)
-    MINUS           reduce using rule 13 (numeric -> INT .)
-    $end            reduce using rule 13 (numeric -> INT .)
-    EQUALS          reduce using rule 13 (numeric -> INT .)
-    NOT_EQUALS      reduce using rule 13 (numeric -> INT .)
-    GREATER_THAN    reduce using rule 13 (numeric -> INT .)
-    LESS_THAN       reduce using rule 13 (numeric -> INT .)
-    GREATER_THAN_OR_EQUALS reduce using rule 13 (numeric -> INT .)
-    LESS_THAN_OR_EQUALS reduce using rule 13 (numeric -> INT .)
-    SEMICOLON       reduce using rule 13 (numeric -> INT .)
-    RPARENTHESIS    reduce using rule 13 (numeric -> INT .)
-    RBRACE          reduce using rule 13 (numeric -> INT .)
-    COLON           reduce using rule 13 (numeric -> INT .)
-    COMMA           reduce using rule 13 (numeric -> INT .)
+    TIMES           reduce using rule 17 (numeric -> INT .)
+    DIVIDE          reduce using rule 17 (numeric -> INT .)
+    MODULE          reduce using rule 17 (numeric -> INT .)
+    MINUS           reduce using rule 17 (numeric -> INT .)
+    PLUS            reduce using rule 17 (numeric -> INT .)
+    $end            reduce using rule 17 (numeric -> INT .)
+    EQUALS          reduce using rule 17 (numeric -> INT .)
+    NOT_EQUALS      reduce using rule 17 (numeric -> INT .)
+    GREATER_THAN    reduce using rule 17 (numeric -> INT .)
+    LESS_THAN       reduce using rule 17 (numeric -> INT .)
+    GREATER_THAN_OR_EQUALS reduce using rule 17 (numeric -> INT .)
+    LESS_THAN_OR_EQUALS reduce using rule 17 (numeric -> INT .)
+    SEMICOLON       reduce using rule 17 (numeric -> INT .)
+    RPARENTHESIS    reduce using rule 17 (numeric -> INT .)
+    RBRACE          reduce using rule 17 (numeric -> INT .)
+    COLON           reduce using rule 17 (numeric -> INT .)
+    COMMA           reduce using rule 17 (numeric -> INT .)
 
 
 state 31
 
-    (14) numeric -> DOUBLE .
+    (18) numeric -> DOUBLE .
 
-    TIMES           reduce using rule 14 (numeric -> DOUBLE .)
-    DIVIDE          reduce using rule 14 (numeric -> DOUBLE .)
-    MODULE          reduce using rule 14 (numeric -> DOUBLE .)
-    PLUS            reduce using rule 14 (numeric -> DOUBLE .)
-    MINUS           reduce using rule 14 (numeric -> DOUBLE .)
-    $end            reduce using rule 14 (numeric -> DOUBLE .)
-    EQUALS          reduce using rule 14 (numeric -> DOUBLE .)
-    NOT_EQUALS      reduce using rule 14 (numeric -> DOUBLE .)
-    GREATER_THAN    reduce using rule 14 (numeric -> DOUBLE .)
-    LESS_THAN       reduce using rule 14 (numeric -> DOUBLE .)
-    GREATER_THAN_OR_EQUALS reduce using rule 14 (numeric -> DOUBLE .)
-    LESS_THAN_OR_EQUALS reduce using rule 14 (numeric -> DOUBLE .)
-    SEMICOLON       reduce using rule 14 (numeric -> DOUBLE .)
-    RPARENTHESIS    reduce using rule 14 (numeric -> DOUBLE .)
-    RBRACE          reduce using rule 14 (numeric -> DOUBLE .)
-    COLON           reduce using rule 14 (numeric -> DOUBLE .)
-    COMMA           reduce using rule 14 (numeric -> DOUBLE .)
+    TIMES           reduce using rule 18 (numeric -> DOUBLE .)
+    DIVIDE          reduce using rule 18 (numeric -> DOUBLE .)
+    MODULE          reduce using rule 18 (numeric -> DOUBLE .)
+    MINUS           reduce using rule 18 (numeric -> DOUBLE .)
+    PLUS            reduce using rule 18 (numeric -> DOUBLE .)
+    $end            reduce using rule 18 (numeric -> DOUBLE .)
+    EQUALS          reduce using rule 18 (numeric -> DOUBLE .)
+    NOT_EQUALS      reduce using rule 18 (numeric -> DOUBLE .)
+    GREATER_THAN    reduce using rule 18 (numeric -> DOUBLE .)
+    LESS_THAN       reduce using rule 18 (numeric -> DOUBLE .)
+    GREATER_THAN_OR_EQUALS reduce using rule 18 (numeric -> DOUBLE .)
+    LESS_THAN_OR_EQUALS reduce using rule 18 (numeric -> DOUBLE .)
+    SEMICOLON       reduce using rule 18 (numeric -> DOUBLE .)
+    RPARENTHESIS    reduce using rule 18 (numeric -> DOUBLE .)
+    RBRACE          reduce using rule 18 (numeric -> DOUBLE .)
+    COLON           reduce using rule 18 (numeric -> DOUBLE .)
+    COMMA           reduce using rule 18 (numeric -> DOUBLE .)
 
 
 state 32
 
-    (15) expression -> expression PLUS . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> expression MINUS . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 30
     DOUBLE          shift and go to state 31
@@ -629,13 +629,13 @@ state 32
 
 state 33
 
-    (16) expression -> expression MINUS . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (14) expression -> expression PLUS . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 30
     DOUBLE          shift and go to state 31
@@ -645,9 +645,9 @@ state 33
 
 state 34
 
-    (18) term -> term TIMES . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (19) term -> term TIMES . numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 30
     DOUBLE          shift and go to state 31
@@ -656,9 +656,9 @@ state 34
 
 state 35
 
-    (19) term -> term DIVIDE . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (20) term -> term DIVIDE . numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 30
     DOUBLE          shift and go to state 31
@@ -667,9 +667,9 @@ state 35
 
 state 36
 
-    (20) term -> term MODULE . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (21) term -> term MODULE . numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 30
     DOUBLE          shift and go to state 31
@@ -705,15 +705,15 @@ state 38
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -745,15 +745,15 @@ state 39
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -845,25 +845,25 @@ state 43
 
 state 44
 
-    (15) expression -> expression PLUS term .
-    (18) term -> term . TIMES numeric
-    (19) term -> term . DIVIDE numeric
-    (20) term -> term . MODULE numeric
+    (13) expression -> expression MINUS term .
+    (19) term -> term . TIMES numeric
+    (20) term -> term . DIVIDE numeric
+    (21) term -> term . MODULE numeric
 
-    PLUS            reduce using rule 15 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 15 (expression -> expression PLUS term .)
-    $end            reduce using rule 15 (expression -> expression PLUS term .)
-    EQUALS          reduce using rule 15 (expression -> expression PLUS term .)
-    NOT_EQUALS      reduce using rule 15 (expression -> expression PLUS term .)
-    GREATER_THAN    reduce using rule 15 (expression -> expression PLUS term .)
-    LESS_THAN       reduce using rule 15 (expression -> expression PLUS term .)
-    GREATER_THAN_OR_EQUALS reduce using rule 15 (expression -> expression PLUS term .)
-    LESS_THAN_OR_EQUALS reduce using rule 15 (expression -> expression PLUS term .)
-    SEMICOLON       reduce using rule 15 (expression -> expression PLUS term .)
-    RPARENTHESIS    reduce using rule 15 (expression -> expression PLUS term .)
-    RBRACE          reduce using rule 15 (expression -> expression PLUS term .)
-    COLON           reduce using rule 15 (expression -> expression PLUS term .)
-    COMMA           reduce using rule 15 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 13 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 13 (expression -> expression MINUS term .)
+    $end            reduce using rule 13 (expression -> expression MINUS term .)
+    EQUALS          reduce using rule 13 (expression -> expression MINUS term .)
+    NOT_EQUALS      reduce using rule 13 (expression -> expression MINUS term .)
+    GREATER_THAN    reduce using rule 13 (expression -> expression MINUS term .)
+    LESS_THAN       reduce using rule 13 (expression -> expression MINUS term .)
+    GREATER_THAN_OR_EQUALS reduce using rule 13 (expression -> expression MINUS term .)
+    LESS_THAN_OR_EQUALS reduce using rule 13 (expression -> expression MINUS term .)
+    SEMICOLON       reduce using rule 13 (expression -> expression MINUS term .)
+    RPARENTHESIS    reduce using rule 13 (expression -> expression MINUS term .)
+    RBRACE          reduce using rule 13 (expression -> expression MINUS term .)
+    COLON           reduce using rule 13 (expression -> expression MINUS term .)
+    COMMA           reduce using rule 13 (expression -> expression MINUS term .)
     TIMES           shift and go to state 34
     DIVIDE          shift and go to state 35
     MODULE          shift and go to state 36
@@ -871,25 +871,25 @@ state 44
 
 state 45
 
-    (16) expression -> expression MINUS term .
-    (18) term -> term . TIMES numeric
-    (19) term -> term . DIVIDE numeric
-    (20) term -> term . MODULE numeric
+    (14) expression -> expression PLUS term .
+    (19) term -> term . TIMES numeric
+    (20) term -> term . DIVIDE numeric
+    (21) term -> term . MODULE numeric
 
-    PLUS            reduce using rule 16 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 16 (expression -> expression MINUS term .)
-    $end            reduce using rule 16 (expression -> expression MINUS term .)
-    EQUALS          reduce using rule 16 (expression -> expression MINUS term .)
-    NOT_EQUALS      reduce using rule 16 (expression -> expression MINUS term .)
-    GREATER_THAN    reduce using rule 16 (expression -> expression MINUS term .)
-    LESS_THAN       reduce using rule 16 (expression -> expression MINUS term .)
-    GREATER_THAN_OR_EQUALS reduce using rule 16 (expression -> expression MINUS term .)
-    LESS_THAN_OR_EQUALS reduce using rule 16 (expression -> expression MINUS term .)
-    SEMICOLON       reduce using rule 16 (expression -> expression MINUS term .)
-    RPARENTHESIS    reduce using rule 16 (expression -> expression MINUS term .)
-    RBRACE          reduce using rule 16 (expression -> expression MINUS term .)
-    COLON           reduce using rule 16 (expression -> expression MINUS term .)
-    COMMA           reduce using rule 16 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 14 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 14 (expression -> expression PLUS term .)
+    $end            reduce using rule 14 (expression -> expression PLUS term .)
+    EQUALS          reduce using rule 14 (expression -> expression PLUS term .)
+    NOT_EQUALS      reduce using rule 14 (expression -> expression PLUS term .)
+    GREATER_THAN    reduce using rule 14 (expression -> expression PLUS term .)
+    LESS_THAN       reduce using rule 14 (expression -> expression PLUS term .)
+    GREATER_THAN_OR_EQUALS reduce using rule 14 (expression -> expression PLUS term .)
+    LESS_THAN_OR_EQUALS reduce using rule 14 (expression -> expression PLUS term .)
+    SEMICOLON       reduce using rule 14 (expression -> expression PLUS term .)
+    RPARENTHESIS    reduce using rule 14 (expression -> expression PLUS term .)
+    RBRACE          reduce using rule 14 (expression -> expression PLUS term .)
+    COLON           reduce using rule 14 (expression -> expression PLUS term .)
+    COMMA           reduce using rule 14 (expression -> expression PLUS term .)
     TIMES           shift and go to state 34
     DIVIDE          shift and go to state 35
     MODULE          shift and go to state 36
@@ -897,71 +897,71 @@ state 45
 
 state 46
 
-    (18) term -> term TIMES numeric .
+    (19) term -> term TIMES numeric .
 
-    TIMES           reduce using rule 18 (term -> term TIMES numeric .)
-    DIVIDE          reduce using rule 18 (term -> term TIMES numeric .)
-    MODULE          reduce using rule 18 (term -> term TIMES numeric .)
-    PLUS            reduce using rule 18 (term -> term TIMES numeric .)
-    MINUS           reduce using rule 18 (term -> term TIMES numeric .)
-    $end            reduce using rule 18 (term -> term TIMES numeric .)
-    EQUALS          reduce using rule 18 (term -> term TIMES numeric .)
-    NOT_EQUALS      reduce using rule 18 (term -> term TIMES numeric .)
-    GREATER_THAN    reduce using rule 18 (term -> term TIMES numeric .)
-    LESS_THAN       reduce using rule 18 (term -> term TIMES numeric .)
-    GREATER_THAN_OR_EQUALS reduce using rule 18 (term -> term TIMES numeric .)
-    LESS_THAN_OR_EQUALS reduce using rule 18 (term -> term TIMES numeric .)
-    SEMICOLON       reduce using rule 18 (term -> term TIMES numeric .)
-    RPARENTHESIS    reduce using rule 18 (term -> term TIMES numeric .)
-    RBRACE          reduce using rule 18 (term -> term TIMES numeric .)
-    COLON           reduce using rule 18 (term -> term TIMES numeric .)
-    COMMA           reduce using rule 18 (term -> term TIMES numeric .)
+    TIMES           reduce using rule 19 (term -> term TIMES numeric .)
+    DIVIDE          reduce using rule 19 (term -> term TIMES numeric .)
+    MODULE          reduce using rule 19 (term -> term TIMES numeric .)
+    MINUS           reduce using rule 19 (term -> term TIMES numeric .)
+    PLUS            reduce using rule 19 (term -> term TIMES numeric .)
+    $end            reduce using rule 19 (term -> term TIMES numeric .)
+    EQUALS          reduce using rule 19 (term -> term TIMES numeric .)
+    NOT_EQUALS      reduce using rule 19 (term -> term TIMES numeric .)
+    GREATER_THAN    reduce using rule 19 (term -> term TIMES numeric .)
+    LESS_THAN       reduce using rule 19 (term -> term TIMES numeric .)
+    GREATER_THAN_OR_EQUALS reduce using rule 19 (term -> term TIMES numeric .)
+    LESS_THAN_OR_EQUALS reduce using rule 19 (term -> term TIMES numeric .)
+    SEMICOLON       reduce using rule 19 (term -> term TIMES numeric .)
+    RPARENTHESIS    reduce using rule 19 (term -> term TIMES numeric .)
+    RBRACE          reduce using rule 19 (term -> term TIMES numeric .)
+    COLON           reduce using rule 19 (term -> term TIMES numeric .)
+    COMMA           reduce using rule 19 (term -> term TIMES numeric .)
 
 
 state 47
 
-    (19) term -> term DIVIDE numeric .
+    (20) term -> term DIVIDE numeric .
 
-    TIMES           reduce using rule 19 (term -> term DIVIDE numeric .)
-    DIVIDE          reduce using rule 19 (term -> term DIVIDE numeric .)
-    MODULE          reduce using rule 19 (term -> term DIVIDE numeric .)
-    PLUS            reduce using rule 19 (term -> term DIVIDE numeric .)
-    MINUS           reduce using rule 19 (term -> term DIVIDE numeric .)
-    $end            reduce using rule 19 (term -> term DIVIDE numeric .)
-    EQUALS          reduce using rule 19 (term -> term DIVIDE numeric .)
-    NOT_EQUALS      reduce using rule 19 (term -> term DIVIDE numeric .)
-    GREATER_THAN    reduce using rule 19 (term -> term DIVIDE numeric .)
-    LESS_THAN       reduce using rule 19 (term -> term DIVIDE numeric .)
-    GREATER_THAN_OR_EQUALS reduce using rule 19 (term -> term DIVIDE numeric .)
-    LESS_THAN_OR_EQUALS reduce using rule 19 (term -> term DIVIDE numeric .)
-    SEMICOLON       reduce using rule 19 (term -> term DIVIDE numeric .)
-    RPARENTHESIS    reduce using rule 19 (term -> term DIVIDE numeric .)
-    RBRACE          reduce using rule 19 (term -> term DIVIDE numeric .)
-    COLON           reduce using rule 19 (term -> term DIVIDE numeric .)
-    COMMA           reduce using rule 19 (term -> term DIVIDE numeric .)
+    TIMES           reduce using rule 20 (term -> term DIVIDE numeric .)
+    DIVIDE          reduce using rule 20 (term -> term DIVIDE numeric .)
+    MODULE          reduce using rule 20 (term -> term DIVIDE numeric .)
+    MINUS           reduce using rule 20 (term -> term DIVIDE numeric .)
+    PLUS            reduce using rule 20 (term -> term DIVIDE numeric .)
+    $end            reduce using rule 20 (term -> term DIVIDE numeric .)
+    EQUALS          reduce using rule 20 (term -> term DIVIDE numeric .)
+    NOT_EQUALS      reduce using rule 20 (term -> term DIVIDE numeric .)
+    GREATER_THAN    reduce using rule 20 (term -> term DIVIDE numeric .)
+    LESS_THAN       reduce using rule 20 (term -> term DIVIDE numeric .)
+    GREATER_THAN_OR_EQUALS reduce using rule 20 (term -> term DIVIDE numeric .)
+    LESS_THAN_OR_EQUALS reduce using rule 20 (term -> term DIVIDE numeric .)
+    SEMICOLON       reduce using rule 20 (term -> term DIVIDE numeric .)
+    RPARENTHESIS    reduce using rule 20 (term -> term DIVIDE numeric .)
+    RBRACE          reduce using rule 20 (term -> term DIVIDE numeric .)
+    COLON           reduce using rule 20 (term -> term DIVIDE numeric .)
+    COMMA           reduce using rule 20 (term -> term DIVIDE numeric .)
 
 
 state 48
 
-    (20) term -> term MODULE numeric .
+    (21) term -> term MODULE numeric .
 
-    TIMES           reduce using rule 20 (term -> term MODULE numeric .)
-    DIVIDE          reduce using rule 20 (term -> term MODULE numeric .)
-    MODULE          reduce using rule 20 (term -> term MODULE numeric .)
-    PLUS            reduce using rule 20 (term -> term MODULE numeric .)
-    MINUS           reduce using rule 20 (term -> term MODULE numeric .)
-    $end            reduce using rule 20 (term -> term MODULE numeric .)
-    EQUALS          reduce using rule 20 (term -> term MODULE numeric .)
-    NOT_EQUALS      reduce using rule 20 (term -> term MODULE numeric .)
-    GREATER_THAN    reduce using rule 20 (term -> term MODULE numeric .)
-    LESS_THAN       reduce using rule 20 (term -> term MODULE numeric .)
-    GREATER_THAN_OR_EQUALS reduce using rule 20 (term -> term MODULE numeric .)
-    LESS_THAN_OR_EQUALS reduce using rule 20 (term -> term MODULE numeric .)
-    SEMICOLON       reduce using rule 20 (term -> term MODULE numeric .)
-    RPARENTHESIS    reduce using rule 20 (term -> term MODULE numeric .)
-    RBRACE          reduce using rule 20 (term -> term MODULE numeric .)
-    COLON           reduce using rule 20 (term -> term MODULE numeric .)
-    COMMA           reduce using rule 20 (term -> term MODULE numeric .)
+    TIMES           reduce using rule 21 (term -> term MODULE numeric .)
+    DIVIDE          reduce using rule 21 (term -> term MODULE numeric .)
+    MODULE          reduce using rule 21 (term -> term MODULE numeric .)
+    MINUS           reduce using rule 21 (term -> term MODULE numeric .)
+    PLUS            reduce using rule 21 (term -> term MODULE numeric .)
+    $end            reduce using rule 21 (term -> term MODULE numeric .)
+    EQUALS          reduce using rule 21 (term -> term MODULE numeric .)
+    NOT_EQUALS      reduce using rule 21 (term -> term MODULE numeric .)
+    GREATER_THAN    reduce using rule 21 (term -> term MODULE numeric .)
+    LESS_THAN       reduce using rule 21 (term -> term MODULE numeric .)
+    GREATER_THAN_OR_EQUALS reduce using rule 21 (term -> term MODULE numeric .)
+    LESS_THAN_OR_EQUALS reduce using rule 21 (term -> term MODULE numeric .)
+    SEMICOLON       reduce using rule 21 (term -> term MODULE numeric .)
+    RPARENTHESIS    reduce using rule 21 (term -> term MODULE numeric .)
+    RBRACE          reduce using rule 21 (term -> term MODULE numeric .)
+    COLON           reduce using rule 21 (term -> term MODULE numeric .)
+    COMMA           reduce using rule 21 (term -> term MODULE numeric .)
 
 
 state 49
@@ -982,15 +982,15 @@ state 50
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1073,35 +1073,35 @@ state 53
 state 54
 
     (22) variable -> INT .
-    (13) numeric -> INT .
+    (17) numeric -> INT .
 
-  ! reduce/reduce conflict for EQUALS resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for NOT_EQUALS resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for GREATER_THAN resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for LESS_THAN resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for GREATER_THAN_OR_EQUALS resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for LESS_THAN_OR_EQUALS resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for RPARENTHESIS resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for COLON resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for RBRACE resolved using rule 13 (numeric -> INT .)
-  ! reduce/reduce conflict for COMMA resolved using rule 13 (numeric -> INT .)
-    TIMES           reduce using rule 13 (numeric -> INT .)
-    DIVIDE          reduce using rule 13 (numeric -> INT .)
-    MODULE          reduce using rule 13 (numeric -> INT .)
-    PLUS            reduce using rule 13 (numeric -> INT .)
-    MINUS           reduce using rule 13 (numeric -> INT .)
-    EQUALS          reduce using rule 13 (numeric -> INT .)
-    NOT_EQUALS      reduce using rule 13 (numeric -> INT .)
-    GREATER_THAN    reduce using rule 13 (numeric -> INT .)
-    LESS_THAN       reduce using rule 13 (numeric -> INT .)
-    GREATER_THAN_OR_EQUALS reduce using rule 13 (numeric -> INT .)
-    LESS_THAN_OR_EQUALS reduce using rule 13 (numeric -> INT .)
-    SEMICOLON       reduce using rule 13 (numeric -> INT .)
-    RPARENTHESIS    reduce using rule 13 (numeric -> INT .)
-    COLON           reduce using rule 13 (numeric -> INT .)
-    RBRACE          reduce using rule 13 (numeric -> INT .)
-    COMMA           reduce using rule 13 (numeric -> INT .)
+  ! reduce/reduce conflict for EQUALS resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for NOT_EQUALS resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for GREATER_THAN resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for LESS_THAN resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for GREATER_THAN_OR_EQUALS resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for LESS_THAN_OR_EQUALS resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for RPARENTHESIS resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for COLON resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for RBRACE resolved using rule 17 (numeric -> INT .)
+  ! reduce/reduce conflict for COMMA resolved using rule 17 (numeric -> INT .)
+    TIMES           reduce using rule 17 (numeric -> INT .)
+    DIVIDE          reduce using rule 17 (numeric -> INT .)
+    MODULE          reduce using rule 17 (numeric -> INT .)
+    MINUS           reduce using rule 17 (numeric -> INT .)
+    PLUS            reduce using rule 17 (numeric -> INT .)
+    EQUALS          reduce using rule 17 (numeric -> INT .)
+    NOT_EQUALS      reduce using rule 17 (numeric -> INT .)
+    GREATER_THAN    reduce using rule 17 (numeric -> INT .)
+    LESS_THAN       reduce using rule 17 (numeric -> INT .)
+    GREATER_THAN_OR_EQUALS reduce using rule 17 (numeric -> INT .)
+    LESS_THAN_OR_EQUALS reduce using rule 17 (numeric -> INT .)
+    SEMICOLON       reduce using rule 17 (numeric -> INT .)
+    RPARENTHESIS    reduce using rule 17 (numeric -> INT .)
+    COLON           reduce using rule 17 (numeric -> INT .)
+    RBRACE          reduce using rule 17 (numeric -> INT .)
+    COMMA           reduce using rule 17 (numeric -> INT .)
 
   ! EQUALS          [ reduce using rule 22 (variable -> INT .) ]
   ! NOT_EQUALS      [ reduce using rule 22 (variable -> INT .) ]
@@ -1119,35 +1119,35 @@ state 54
 state 55
 
     (23) variable -> DOUBLE .
-    (14) numeric -> DOUBLE .
+    (18) numeric -> DOUBLE .
 
-  ! reduce/reduce conflict for EQUALS resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for NOT_EQUALS resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for GREATER_THAN resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for LESS_THAN resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for GREATER_THAN_OR_EQUALS resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for LESS_THAN_OR_EQUALS resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for RPARENTHESIS resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for COLON resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for RBRACE resolved using rule 14 (numeric -> DOUBLE .)
-  ! reduce/reduce conflict for COMMA resolved using rule 14 (numeric -> DOUBLE .)
-    TIMES           reduce using rule 14 (numeric -> DOUBLE .)
-    DIVIDE          reduce using rule 14 (numeric -> DOUBLE .)
-    MODULE          reduce using rule 14 (numeric -> DOUBLE .)
-    PLUS            reduce using rule 14 (numeric -> DOUBLE .)
-    MINUS           reduce using rule 14 (numeric -> DOUBLE .)
-    EQUALS          reduce using rule 14 (numeric -> DOUBLE .)
-    NOT_EQUALS      reduce using rule 14 (numeric -> DOUBLE .)
-    GREATER_THAN    reduce using rule 14 (numeric -> DOUBLE .)
-    LESS_THAN       reduce using rule 14 (numeric -> DOUBLE .)
-    GREATER_THAN_OR_EQUALS reduce using rule 14 (numeric -> DOUBLE .)
-    LESS_THAN_OR_EQUALS reduce using rule 14 (numeric -> DOUBLE .)
-    SEMICOLON       reduce using rule 14 (numeric -> DOUBLE .)
-    RPARENTHESIS    reduce using rule 14 (numeric -> DOUBLE .)
-    COLON           reduce using rule 14 (numeric -> DOUBLE .)
-    RBRACE          reduce using rule 14 (numeric -> DOUBLE .)
-    COMMA           reduce using rule 14 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for EQUALS resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for NOT_EQUALS resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for GREATER_THAN resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for LESS_THAN resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for GREATER_THAN_OR_EQUALS resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for LESS_THAN_OR_EQUALS resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for RPARENTHESIS resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for COLON resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for RBRACE resolved using rule 18 (numeric -> DOUBLE .)
+  ! reduce/reduce conflict for COMMA resolved using rule 18 (numeric -> DOUBLE .)
+    TIMES           reduce using rule 18 (numeric -> DOUBLE .)
+    DIVIDE          reduce using rule 18 (numeric -> DOUBLE .)
+    MODULE          reduce using rule 18 (numeric -> DOUBLE .)
+    MINUS           reduce using rule 18 (numeric -> DOUBLE .)
+    PLUS            reduce using rule 18 (numeric -> DOUBLE .)
+    EQUALS          reduce using rule 18 (numeric -> DOUBLE .)
+    NOT_EQUALS      reduce using rule 18 (numeric -> DOUBLE .)
+    GREATER_THAN    reduce using rule 18 (numeric -> DOUBLE .)
+    LESS_THAN       reduce using rule 18 (numeric -> DOUBLE .)
+    GREATER_THAN_OR_EQUALS reduce using rule 18 (numeric -> DOUBLE .)
+    LESS_THAN_OR_EQUALS reduce using rule 18 (numeric -> DOUBLE .)
+    SEMICOLON       reduce using rule 18 (numeric -> DOUBLE .)
+    RPARENTHESIS    reduce using rule 18 (numeric -> DOUBLE .)
+    COLON           reduce using rule 18 (numeric -> DOUBLE .)
+    RBRACE          reduce using rule 18 (numeric -> DOUBLE .)
+    COMMA           reduce using rule 18 (numeric -> DOUBLE .)
 
   ! EQUALS          [ reduce using rule 23 (variable -> DOUBLE .) ]
   ! NOT_EQUALS      [ reduce using rule 23 (variable -> DOUBLE .) ]
@@ -1233,8 +1233,8 @@ state 59
 state 60
 
     (28) variable -> expression .
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
+    (13) expression -> expression . MINUS term
+    (14) expression -> expression . PLUS term
 
     EQUALS          reduce using rule 28 (variable -> expression .)
     NOT_EQUALS      reduce using rule 28 (variable -> expression .)
@@ -1247,8 +1247,8 @@ state 60
     COLON           reduce using rule 28 (variable -> expression .)
     RBRACE          reduce using rule 28 (variable -> expression .)
     COMMA           reduce using rule 28 (variable -> expression .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
+    MINUS           shift and go to state 32
+    PLUS            shift and go to state 33
 
 
 state 61
@@ -1276,15 +1276,15 @@ state 62
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1486,15 +1486,15 @@ state 87
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1518,15 +1518,15 @@ state 88
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1550,15 +1550,15 @@ state 89
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1582,15 +1582,15 @@ state 90
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1614,15 +1614,15 @@ state 91
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1646,15 +1646,15 @@ state 92
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -1842,9 +1842,9 @@ state 109
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -1864,10 +1864,10 @@ state 109
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -1879,8 +1879,8 @@ state 109
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     RBRACE          shift and go to state 130
     IF              shift and go to state 14
@@ -1978,9 +1978,9 @@ state 116
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -2000,10 +2000,10 @@ state 116
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -2015,8 +2015,8 @@ state 116
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     RBRACE          shift and go to state 132
     IF              shift and go to state 14
@@ -2138,9 +2138,9 @@ state 127
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -2160,10 +2160,10 @@ state 127
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -2175,8 +2175,8 @@ state 127
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     IF              shift and go to state 14
     WHILE           shift and go to state 15
@@ -2507,9 +2507,9 @@ state 160
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -2529,10 +2529,10 @@ state 160
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -2544,8 +2544,8 @@ state 160
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     RBRACE          shift and go to state 177
     IF              shift and go to state 14
@@ -2716,9 +2716,9 @@ state 175
     (8) statement -> . list
     (9) statement -> . set
     (10) statement -> . map
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
     (12) declaration -> . varType ID SEMICOLON
     (11) assignation -> . varType ID ASSIGN_OPERATOR variable SEMICOLON
     (83) function -> . varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statement RBRACE
@@ -2738,10 +2738,10 @@ state 175
     (79) set -> . SET_TYPE LESS_THAN INT_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listIntValue RBRACE SEMICOLON
     (80) set -> . SET_TYPE LESS_THAN BOOL_TYPE GREATER_THAN ID ASSIGN_OPERATOR LBRACE listBoolValue RBRACE SEMICOLON
     (81) map -> . MAP_TYPE LESS_THAN primitive COMMA primitive GREATER_THAN ID ASSIGN_OPERATOR LBRACE mapValues RBRACE SEMICOLON
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
     (29) varType -> . INT_TYPE
     (30) varType -> . STRING_TYPE
     (31) varType -> . NUM_TYPE
@@ -2753,8 +2753,8 @@ state 175
     (37) varType -> . CONST
     (38) varType -> . FINAL
     (39) varType -> . VOID
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     IF              shift and go to state 14
     WHILE           shift and go to state 15
@@ -2901,15 +2901,15 @@ state 190
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -3083,15 +3083,15 @@ state 209
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
@@ -3123,15 +3123,15 @@ state 211
     (26) variable -> . NULL
     (27) variable -> . ID
     (28) variable -> . expression
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . term
-    (18) term -> . term TIMES numeric
-    (19) term -> . term DIVIDE numeric
-    (20) term -> . term MODULE numeric
-    (21) term -> . numeric
-    (13) numeric -> . INT
-    (14) numeric -> . DOUBLE
+    (13) expression -> . expression MINUS term
+    (14) expression -> . expression PLUS term
+    (15) expression -> . term
+    (16) term -> . numeric
+    (19) term -> . term TIMES numeric
+    (20) term -> . term DIVIDE numeric
+    (21) term -> . term MODULE numeric
+    (17) numeric -> . INT
+    (18) numeric -> . DOUBLE
 
     INT             shift and go to state 54
     DOUBLE          shift and go to state 55
