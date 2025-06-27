@@ -26,17 +26,30 @@ def inferIDType(variable):
    else:
       return None
      
-def inferType(variable):
-    if(isinstance(variable, int)):
-      return "int"
-    if(isinstance(variable, float)):
-      return "double"
-    elif(isinstance(variable, str)):
-        return "str"
-    elif(isinstance(variable, bool)):
-        return "bool" 
-    else:
-       return "NULL"
+# def inferType(variable):
+#     if(isinstance(variable, int)):
+#       return "int"
+#     if(isinstance(variable, float)):
+#       return "double"
+#     elif(isinstance(variable, str)):
+#         return "str"
+#     elif(isinstance(variable, bool)):
+#         return "bool" 
+#     else:
+#        return "NULL"
+
+#DID NOT WORK BECAUSE OF INCOMPATIBILITY BETWEEN DART AND PYTHON BOOLEAN VALUES.
+
+
+def inferTypeFromToken(token_type):
+    mapping = {
+        'INT': 'int',
+        'DOUBLE': 'double',
+        'STRING': 'String',
+        'BOOL': 'bool',
+        'NULL': 'NULL'
+    }
+    return mapping.get(token_type, 'unknown')
 
 def unifyTypes(type1, type2):
     if(type1 == type2):
@@ -54,4 +67,38 @@ def inferNumericType(var):
    if(isinstance(var, int)):
       return "int"
    return "double"
+
+
+def isVariableTypeCompatibleWithVarType(varType, variableType):
+    allowed = {
+        'int': ['int'],
+        'double': ['int', 'double'],  
+        'String': ['String'],
+        'bool': ['bool'],
+        'null': ['null'],
+    }
+    if varType not in allowed:
+       return False
+    return variableType in allowed[varType]
+
+# def inferPrimitiveType(token):
+#     allowed = {
+#     'INT_TYPE': 'int',
+#     'STRING_TYPE': 'str',
+#     'DOUBLE_TYPE': 'double',
+#     'BOOL_TYPE': 'bool',
+#     'LIST_TYPE': 'List',
+#     'MAP_TYPE': 'Map',
+#     'VAR': '',
+#     'CONST': '',
+#     'FINAL' : '',
+#     'VOID' : 'VOID',
+#    }
+#     if(token in allowed):
+#         return allowed[token]
+#     return None
+    
+    
+
+ 
 

@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lex import tokens
-from sem import symbol_table, addSymbol, printTable, inferType, inferIDType, inferNumericType, unifyTypes
+from sem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableTypeCompatibleWithVarType, inferTypeFromToken
 start = 'statement'
 
 def p_statement(p):
@@ -17,10 +17,22 @@ def p_statement(p):
 
 def p_assignation(p):
     'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
-    type = p[4]
+    variableType = p[4]
     name = p[2]
-    addSymbol(name, type)
-    printTable()
+    varType = p[1]
+    print(f"PRINTING varType p[0] : '{varType}'  ")
+    print(f"PRINTING variableType p[4] : '{variableType}'  ")
+
+
+    if(isVariableTypeCompatibleWithVarType(varType, variableType)):
+            addSymbol(name, variableType)
+            printTable()
+    else:
+        print(f"ERROR. IS NOT POSSIBLE TO ASSIGN '{variableType}' TO '{varType}' ")
+        printTable()
+
+    
+
 
 def p_declaration(p):
     'declaration : varType ID SEMICOLON'
@@ -58,10 +70,6 @@ def p_termDivide(p):
 def p_termModule(p):
     'term : term MODULE numeric'
 
-
-
-
-
 def p_variable(p):
     '''variable : INT 
                 | DOUBLE 
@@ -73,9 +81,9 @@ def p_variable(p):
                 '''
     token = p.slice[1].type # it points to p[1], however it gives us access to attributes such as value and token
     var = p[1]
-    print(f"[variable] p[1] = {p[1]}")
+    print(f"[variable] p[1] = {p[1]} and it's type {token}")
     if( token in ['INT', 'DOUBLE', 'STRING', 'BOOL', 'NULL']):
-        p[0] = inferType(var)
+        p[0] = inferTypeFromToken(token)
     elif (token == "ID"):
         type = inferIDType(var)
         if(type is None):
@@ -103,6 +111,10 @@ def p_varType(p):
                 | CONST 
                 | FINAL
                 | VOID'''
+    
+    p[0] = p[1]
+
+
     
 def p_primitive(p):
     '''primitive : INT_TYPE
