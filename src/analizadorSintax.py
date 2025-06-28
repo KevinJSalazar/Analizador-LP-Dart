@@ -6,6 +6,11 @@ lexer = build_lexer()
 errores = []
 start = 'program'
 
+precedence = (
+    ('nonassoc', 'IFX'),   # if sin else
+    ('nonassoc', 'ELSE'),  # else se asocia con el último if
+)
+
 # Programa compuesto de múltiples sentencias
 def p_program(p):
     '''program : statements'''
@@ -20,10 +25,17 @@ def p_statements(p):
         p[0] = [p[1]]
 
 # Sentencias principales
+def p_statement_block(p):
+    'statement : LBRACE statements RBRACE'
+    p[0] = ('block', p[2])
+
 def p_statement(p):
     '''statement : expression SEMICOLON
-                 | declaration
-                 | assignation
+                 | declaration SEMICOLON
+                 | assignation SEMICOLON
+                 | increment SEMICOLON
+                 | decrement SEMICOLON
+                 | import SEMICOLON
                  | function
                  | if
                  | while
@@ -38,29 +50,93 @@ def p_statement(p):
 
 # Declaración
 def p_declaration(p):
-    'declaration : varType ID SEMICOLON'
+    '''declaration : declaration_modifier varType ID 
+                   | declaration_modifier ID 
+                   | varType ID'''
+    if len(p) == 4:
+        p[0] = ('declaration', p[1], p[2], p[3])
+    elif len(p) == 3:
+        p[0] = ('declaration', p[1], None, p[2])
+    else:
+        p[0] = ('declaration', None, p[1], p[2])
+
+def p_declaration_list_init(p):
+    'declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'
+    p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
+
+def p_list_literal(p):
+    'list_literal : LBRACKET list_elements RBRACKET'
+    p[0] = ('list', p[2])
+
+def p_list_elements(p):
+    '''list_elements : list_elements COMMA variable
+                     | variable
+                     | empty'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    elif len(p) == 2 and p[1] != None:
+        p[0] = [p[1]]
+    else:
+        p[0] = []
+
+def p_declaration_map_init(p):
+    'declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'
+    p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
+
+def p_map_literal(p):
+    'map_literal : LBRACE map_elements RBRACE'
+    p[0] = ('map', p[2])
+
+def p_map_elements(p):
+    '''map_elements : map_elements COMMA map_pair
+                   | map_pair
+                   | empty'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    elif len(p) == 2 and p[1] is not None:
+        p[0] = [p[1]]
+    else:
+        p[0] = []
+
+def p_map_pair(p):
+    'map_pair : variable COLON variable'
+    p[0] = (p[1], p[3])
+
+def p_import(p):
+    'import : IMPORT STRING SEMICOLON'
+    p[0] = ('import', p[2])
 
 # Asignación
+def p_compound_assignation(p):
+    '''assignation : ID PLUS_EQUALS expression
+                   | ID MINUS_EQUALS expression
+                   | ID TIMES_EQUALS expression
+                   | ID DIVIDE_EQUALS expression'''
+    p[0] = ('compound_assign', p[2], p[1], p[3])
+
 def p_assignation(p):
-    'assignation : varType ID ASSIGN_OPERATOR variable SEMICOLON'
+    'assignation : declaration ASSIGN_OPERATOR variable'
+    p[0] = ('assign', p[1], p[2], p[3])
 
 def p_assignation_no_type(p):
-    'assignation : ID ASSIGN_OPERATOR variable SEMICOLON'
+    'assignation : ID ASSIGN_OPERATOR variable'
 
 # Tipos de datos
 def p_varType(p):
-    '''varType : INT_TYPE 
-               | STRING_TYPE 
-               | NUM_TYPE 
-               | DOUBLE_TYPE 
-               | BOOL_TYPE 
-               | LIST_TYPE 
-               | MAP_TYPE 
-               | SET_TYPE
-               | VAR 
-               | CONST 
-               | FINAL 
-               | VOID'''
+    '''varType   : INT_TYPE 
+                 | STRING_TYPE 
+                 | NUM_TYPE 
+                 | DOUBLE_TYPE 
+                 | BOOL_TYPE 
+                 | LIST_TYPE 
+                 | MAP_TYPE 
+                 | SET_TYPE
+                 | VOID'''
+
+def p_declaration_modifier(p):
+    '''declaration_modifier : VAR 
+                            | CONST 
+                            | FINAL'''
 
 # Variables y expresiones básicas
 def p_variable(p):
@@ -92,43 +168,83 @@ def p_term_factor(p):
     'term : factor'
     p[0] = p[1]
 
+def p_variable_array_access(p):
+    'factor : ID LBRACKET expression RBRACKET'
+    p[0] = ('array_access', p[1], p[3])
+
+def p_variable_member_access(p):
+    'factor : ID DOT ID'
+    p[0] = ('member_access', p[1], p[3])
+
+def p_factor_id(p):
+    'factor : ID'
+    p[0] = ('id', p[1])
+
+def p_factor_parens(p):
+    'factor : LPARENTHESIS expression RPARENTHESIS'
+    p[0] = p[2]
+
 def p_factor_numeric(p):
     '''factor : INT
               | DOUBLE'''
-    p[0] = ('num', p[1])
+    if isinstance(p[1], int):
+        p[0] = ('int', p[1])
+    else:
+        p[0] = ('double', p[1])
 
 # Expresiones booleanas
-def p_boolean_expression(p):
+def p_boolean_expression_comparison(p):
     '''booleanExpression : variable EQUALS variable
                          | variable NOT_EQUALS variable
                          | variable GREATER_THAN variable
                          | variable LESS_THAN variable
                          | variable GREATER_THAN_OR_EQUALS variable
-                         | variable LESS_THAN_OR_EQUALS variable
-                         | booleanExpression AND booleanExpression
+                         | variable LESS_THAN_OR_EQUALS variable'''
+    p[0] = ('boolop', p[2], p[1], p[3])
+
+def p_boolean_expression_logic(p):
+    '''booleanExpression : booleanExpression AND booleanExpression
                          | booleanExpression OR booleanExpression'''
-    if len(p) == 4:
-        p[0] = ('boolop', p[2], p[1], p[3])
-    else:
-        p[0] = p[1]
+    p[0] = ('boolop', p[2], p[1], p[3])
+
+def p_boolean_expression_paren(p):
+    'booleanExpression : LPARENTHESIS booleanExpression RPARENTHESIS'
+    p[0] = p[2]
+
+def p_boolean_expression_variable(p):
+    'booleanExpression : variable'
+    p[0] = p[1]
 
 # Estructuras de control
+# if sin else
 def p_if(p):
-    '''if : IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE
-          | IF LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE ELSE LBRACE statements RBRACE'''
+    'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement %prec IFX'
+    p[0] = ('if', p[3], p[5])
+
+# if con else
+def p_if_else(p):
+    'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement ELSE statement'
+    p[0] = ('if_else', p[3], p[5], p[7])
 
 def p_while(p):
     '''while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'''
 
 def p_for(p):
-    '''for : FOR LPARENTHESIS assignation booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
-           | FOR LPARENTHESIS assignation booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
+    '''for : FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
+           | FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
+    p[0] = ('for', p[3], p[5], p[7], p[10])
+
+def p_for_in(p):
+    'for : FOR LPARENTHESIS varType ID IN ID RPARENTHESIS LBRACE statements RBRACE'
+    p[0] = ('for_in', p[3], p[4], p[6], p[9])
 
 def p_increment(p):
-    '''increment : ID INCREMENT'''
+    'increment : ID INCREMENT'
+    p[0] = ('increment', p[1])
 
 def p_decrement(p):
-    '''decrement : ID DECREMENT'''
+    'decrement : ID DECREMENT'
+    p[0] = ('decrement', p[1])
 
 # Funciones
 def p_function(p):
@@ -178,7 +294,7 @@ def p_parameter(p):
 
 # Entrada/Salida
 def p_print(p):
-    'print : PRINT LPARENTHESIS expression RPARENTHESIS SEMICOLON'
+    'print : PRINT LPARENTHESIS variable RPARENTHESIS SEMICOLON'
 
 def p_input(p):
     'input : ID ASSIGN_OPERATOR STDIN DOT READ LPARENTHESIS RPARENTHESIS SEMICOLON'

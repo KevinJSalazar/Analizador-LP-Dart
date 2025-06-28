@@ -1,4 +1,4 @@
-typedef Operacion = int Function(int, int);
+// typedef Operacion = int Function(int, int);
 
 enum Estado { activo, inactivo }
 
