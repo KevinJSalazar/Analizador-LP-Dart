@@ -98,6 +98,9 @@ def isVariableTypeCompatibleWithVarType(varType, variableType):
 #         return allowed[token]
 #     return None
     
+
+    # int value = 3;
+    # bool flag = value;
     
 
  
