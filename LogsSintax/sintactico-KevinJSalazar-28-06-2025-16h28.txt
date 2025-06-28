@@ -1,0 +1,2 @@
+Error de sintaxis en la línea 34, token: '-'
+Error de sintaxis en la línea 37, token: '}'

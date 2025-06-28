@@ -1,11 +1,8 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
 
-# =========================
-# Configuración y utilidades
-# =========================
-
 lexer = build_lexer()
+# Aquí se guardan los errores
 errores = []
 start = 'program'
 
@@ -14,10 +11,7 @@ precedence = (
     ('nonassoc', 'ELSE'),  # else se asocia con el último if
 )
 
-# =========================
-# Programa principal
-# =========================
-
+# Programa compuesto de múltiples sentencias
 def p_program(p):
     '''program : statements'''
     p[0] = ('program', p[1])
@@ -30,10 +24,7 @@ def p_statements(p):
     else:
         p[0] = [p[1]]
 
-# =========================
 # Sentencias principales
-# =========================
-
 def p_statement_block(p):
     'statement : LBRACE statements RBRACE'
     p[0] = ('block', p[2])
@@ -60,10 +51,7 @@ def p_statement(p):
                  | CONTINUE SEMICOLON
                  | BREAK SEMICOLON'''
 
-# =========================
-# Declaraciones y asignaciones
-# =========================
-
+# Declaración
 def p_declaration(p):
     '''declaration : declaration_modifier varType ID 
                    | declaration_modifier ID 
@@ -79,48 +67,6 @@ def p_declaration_list_init(p):
     'declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'
     p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
 
-def p_declaration_map_init(p):
-    'declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'
-    p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
-
-def p_assignation(p):
-    'assignation : declaration ASSIGN_OPERATOR variable'
-    p[0] = ('assign', p[1], p[2], p[3])
-
-def p_assignation_no_type(p):
-    'assignation : ID ASSIGN_OPERATOR variable'
-
-def p_compound_assignation(p):
-    '''assignation : ID PLUS_EQUALS expression
-                   | ID MINUS_EQUALS expression
-                   | ID TIMES_EQUALS expression
-                   | ID DIVIDE_EQUALS expression'''
-    p[0] = ('compound_assign', p[2], p[1], p[3])
-
-def p_declaration_modifier(p):
-    '''declaration_modifier : CONST 
-                            | FINAL'''
-
-# =========================
-# Tipos de datos
-# =========================
-
-def p_varType(p):
-    '''varType   : INT_TYPE 
-                 | STRING_TYPE 
-                 | NUM_TYPE 
-                 | DOUBLE_TYPE 
-                 | BOOL_TYPE 
-                 | LIST_TYPE 
-                 | MAP_TYPE 
-                 | SET_TYPE
-                 | VAR
-                 | VOID'''
-
-# =========================
-# Literales y estructuras de datos
-# =========================
-
 def p_list_literal(p):
     'list_literal : LBRACKET list_elements RBRACKET'
     p[0] = ('list', p[2])
@@ -135,6 +81,10 @@ def p_list_elements(p):
         p[0] = [p[1]]
     else:
         p[0] = []
+
+def p_declaration_map_init(p):
+    'declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'
+    p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
 
 def p_map_literal(p):
     'map_literal : LBRACE map_elements RBRACE'
@@ -155,10 +105,51 @@ def p_map_pair(p):
     'map_pair : variable COLON variable'
     p[0] = (p[1], p[3])
 
-# =========================
-# Variables y expresiones básicas
-# =========================
+def p_import(p):
+    'import : IMPORT STRING SEMICOLON'
+    p[0] = ('import', p[2])
 
+def p_return(p):
+    '''return : RETURN variable
+              | RETURN'''
+    if len(p) == 4:
+        p[0] = ('return', p[2])
+    else:
+        p[0] = ('return', None)
+
+# Asignación
+def p_compound_assignation(p):
+    '''assignation : ID PLUS_EQUALS expression
+                   | ID MINUS_EQUALS expression
+                   | ID TIMES_EQUALS expression
+                   | ID DIVIDE_EQUALS expression'''
+    p[0] = ('compound_assign', p[2], p[1], p[3])
+
+def p_assignation(p):
+    'assignation : declaration ASSIGN_OPERATOR variable'
+    p[0] = ('assign', p[1], p[2], p[3])
+
+def p_assignation_no_type(p):
+    'assignation : ID ASSIGN_OPERATOR variable'
+
+# Tipos de datos
+def p_varType(p):
+    '''varType   : INT_TYPE 
+                 | STRING_TYPE 
+                 | NUM_TYPE 
+                 | DOUBLE_TYPE 
+                 | BOOL_TYPE 
+                 | LIST_TYPE 
+                 | MAP_TYPE 
+                 | SET_TYPE
+                 | VAR
+                 | VOID'''
+
+def p_declaration_modifier(p):
+    '''declaration_modifier : CONST 
+                            | FINAL'''
+
+# Variables y expresiones básicas
 def p_variable(p):
     '''variable : INT
                 | DOUBLE
@@ -169,10 +160,7 @@ def p_variable(p):
                 | function
                 | expression'''
 
-# =========================
 # Expresiones aritméticas
-# =========================
-
 def p_expression_operations(p):
     '''expression : expression PLUS term
                   | expression MINUS term'''
@@ -192,6 +180,22 @@ def p_term_factor(p):
     'term : factor'
     p[0] = p[1]
 
+def p_variable_array_access(p):
+    'factor : ID LBRACKET expression RBRACKET'
+    p[0] = ('array_access', p[1], p[3])
+
+def p_variable_member_access(p):
+    'factor : ID DOT ID'
+    p[0] = ('member_access', p[1], p[3])
+
+def p_factor_id(p):
+    'factor : ID'
+    p[0] = ('id', p[1])
+
+def p_factor_parens(p):
+    'factor : LPARENTHESIS expression RPARENTHESIS'
+    p[0] = p[2]
+
 def p_factor_unary_minus(p):
     'factor : MINUS factor'
     p[0] = ('uminus', p[2])
@@ -204,26 +208,7 @@ def p_factor_numeric(p):
     else:
         p[0] = ('double', p[1])
 
-def p_factor_id(p):
-    'factor : ID'
-    p[0] = ('id', p[1])
-
-def p_factor_parens(p):
-    'factor : LPARENTHESIS expression RPARENTHESIS'
-    p[0] = p[2]
-
-def p_variable_array_access(p):
-    'factor : ID LBRACKET expression RBRACKET'
-    p[0] = ('array_access', p[1], p[3])
-
-def p_variable_member_access(p):
-    'factor : ID DOT ID'
-    p[0] = ('member_access', p[1], p[3])
-
-# =========================
 # Expresiones booleanas
-# =========================
-
 def p_boolean_expression_comparison(p):
     '''booleanExpression : variable EQUALS variable
                          | variable NOT_EQUALS variable
@@ -246,25 +231,21 @@ def p_boolean_expression_variable(p):
     'booleanExpression : variable'
     p[0] = p[1]
 
-# =========================
 # Estructuras de control
-# =========================
-
-# If
+# if sin else
 def p_if(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement %prec IFX'
     p[0] = ('if', p[3], p[5])
 
+# if con else
 def p_if_else(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement ELSE statement'
     p[0] = ('if_else', p[3], p[5], p[7])
 
-# While
 def p_while(p):
     'while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'
     p[0] = ('while', p[3], p[6])
 
-# For clásico y for-in
 def p_for(p):
     '''for : FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
            | FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
@@ -281,6 +262,26 @@ def p_increment(p):
 def p_decrement(p):
     'decrement : ID DECREMENT'
     p[0] = ('decrement', p[1])
+
+# Funciones
+def p_function(p):
+    '''function : declaration LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
+                | ID LPARENTHESIS parameters RPARENTHESIS'''
+
+def p_function_arrow(p):
+    'function : declaration LPARENTHESIS parameters RPARENTHESIS ARROW expression SEMICOLON'
+
+# Tipedef
+def p_typedef(p):
+    'typedef : TYPEDEF ID ASSIGN_OPERATOR varType function LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
+
+# Enum
+def p_enum(p):
+    'enum : ENUM ID LBRACE enum_values RBRACE'
+
+def p_enum_values(p):
+    '''enum_values : enum_values COMMA ID
+                   | ID'''
 
 # Try-finally
 def p_try(p):
@@ -310,17 +311,7 @@ def p_default_case(p):
     'default_case : DEFAULT COLON statements'
     p[0] = ('default', p[3])
 
-# =========================
-# Funciones y parámetros
-# =========================
-
-def p_function(p):
-    '''function : declaration LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
-                | ID LPARENTHESIS parameters RPARENTHESIS'''
-
-def p_function_arrow(p):
-    'function : declaration LPARENTHESIS parameters RPARENTHESIS ARROW expression SEMICOLON'
-
+# Parámetros
 def p_parameters(p):
     '''parameters : parameters COMMA parameter
                   | parameter
@@ -328,22 +319,16 @@ def p_parameters(p):
 
 def p_parameter(p):
     '''parameter : varType ID
-                 | variable'''
+               | variable'''
 
-# =========================
 # Entrada/Salida
-# =========================
-
 def p_print(p):
     'print : PRINT LPARENTHESIS variable RPARENTHESIS SEMICOLON'
 
 def p_input(p):
     'input : ID ASSIGN_OPERATOR STDIN DOT READ LPARENTHESIS RPARENTHESIS SEMICOLON'
 
-# =========================
 # Clases y objetos
-# =========================
-
 def p_class_def(p):
     '''class_def : CLASS ID LBRACE class_members RBRACE'''
 
@@ -355,44 +340,12 @@ def p_class_member(p):
     '''class_member : varType ID SEMICOLON
                     | function'''
 
-# =========================
-# Enum y typedef
-# =========================
-
-def p_enum(p):
-    'enum : ENUM ID LBRACE enum_values RBRACE'
-
-def p_enum_values(p):
-    '''enum_values : enum_values COMMA ID
-                   | ID'''
-
-def p_typedef(p):
-    'typedef : TYPEDEF ID ASSIGN_OPERATOR varType function LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
-
-# =========================
-# Sentencias especiales
-# =========================
-
-def p_return(p):
-    '''return : RETURN variable
-              | RETURN'''
-    if len(p) == 3:
-        p[0] = ('return', p[2])
-    else:
-        p[0] = ('return', None)
-
-def p_import(p):
-    'import : IMPORT STRING SEMICOLON'
-    p[0] = ('import', p[2])
-
+# Empty
 def p_empty(p):
     'empty :'
     pass
 
-# =========================
-# Manejo de errores
-# =========================
-
+# Errores
 def p_error(p):
     if p:
         error_msg = f"Error de sintaxis en la línea {p.lineno}, token: '{p.value}'"
@@ -400,10 +353,7 @@ def p_error(p):
         error_msg = "Error de sintaxis: fin inesperado de entrada"
     errores.append(error_msg)
 
-# =========================
-# Construcción y análisis
-# =========================
-
+# Función para construir el parser
 def build_parser():
     return yacc.yacc()
 
