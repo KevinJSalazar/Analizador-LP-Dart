@@ -44,7 +44,7 @@ def p_statement(p):
                  | assignation SEMICOLON
                  | increment SEMICOLON
                  | decrement SEMICOLON
-                 | import SEMICOLON
+                 | import
                  | function
                  | if
                  | while
@@ -56,7 +56,7 @@ def p_statement(p):
                  | try
                  | switch
                  | empty
-                 | return
+                 | return SEMICOLON
                  | CONTINUE SEMICOLON
                  | BREAK SEMICOLON'''
 
@@ -76,12 +76,24 @@ def p_declaration(p):
         p[0] = ('declaration', None, p[1], p[2])
 
 def p_declaration_list_init(p):
-    'declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'
-    p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
+    '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
+                   | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
+    if len(p) == 8:
+        p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
+    else:
+        p[0] = ('declaration_list_init', ('List', p[4]), p[6], p[8])
+
+def p_declaration_other_list_init(p):
+    'declaration : declaration ASSIGN_OPERATOR LESS_THAN varType GREATER_THAN list_literal'
+    p[0] = ('declaration_other_list_init', p[1], p[4], p[6])
 
 def p_declaration_map_init(p):
-    'declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'
-    p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
+    '''declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal
+                   | declaration_modifier MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'''
+    if len(p) == 10:
+        p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
+    else:
+        p[0] = ('declaration_map_init', ('Map', p[4], p[6]), p[8], p[10])
 
 def p_assignation(p):
     'assignation : declaration ASSIGN_OPERATOR variable'
@@ -99,7 +111,8 @@ def p_compound_assignation(p):
 
 def p_declaration_modifier(p):
     '''declaration_modifier : CONST 
-                            | FINAL'''
+                            | FINAL
+                            | LATE'''
 
 # =========================
 # Tipos de datos
@@ -152,7 +165,8 @@ def p_map_elements(p):
         p[0] = []
 
 def p_map_pair(p):
-    'map_pair : variable COLON variable'
+    '''map_pair : variable COLON variable
+                | variable COLON booleanExpression'''
     p[0] = (p[1], p[3])
 
 # =========================
@@ -167,6 +181,7 @@ def p_variable(p):
                 | NULL
                 | ID
                 | function
+                | lambda
                 | expression'''
 
 # =========================
@@ -217,8 +232,13 @@ def p_variable_array_access(p):
     p[0] = ('array_access', p[1], p[3])
 
 def p_variable_member_access(p):
-    'factor : ID DOT ID'
-    p[0] = ('member_access', p[1], p[3])
+    '''factor : ID DOT function statement
+              | ID DOT function
+              | ID DOT ID'''
+    if len(p) == 5:
+        p[0] = ('member_call_block', p[1], p[3], p[4])
+    else:
+        p[0] = ('member_access', p[1], p[3])
 
 # =========================
 # Expresiones booleanas
@@ -325,10 +345,21 @@ def p_parameters(p):
     '''parameters : parameters COMMA parameter
                   | parameter
                   | empty'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    elif len(p) == 2 and p[1] is not None:
+        p[0] = [p[1]]
+    else:
+        p[0] = []
 
 def p_parameter(p):
-    '''parameter : varType ID
+    '''parameter : declaration
                  | variable'''
+    p[0] = p[1]
+
+def p_lambda(p):
+    'lambda : LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE'
+    p[0] = ('lambda', p[2], p[5])
 
 # =========================
 # Entrada/Salida
@@ -374,8 +405,8 @@ def p_typedef(p):
 # =========================
 
 def p_return(p):
-    '''return : RETURN variable SEMICOLON
-              | RETURN SEMICOLON'''
+    '''return : RETURN variable
+              | RETURN'''
     if len(p) == 3:
         p[0] = ('return', p[2])
     else:
