@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
+from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableTypeCompatibleWithVarType, inferTypeFromToken
 
 # =========================
 # Configuración y utilidades
@@ -430,6 +431,23 @@ def p_error(p):
     else:
         error_msg = "Error de sintaxis: fin inesperado de entrada"
     errores.append(error_msg)
+
+# =========================
+# Consola interactiva
+# =========================
+
+parser = yacc.yacc()
+
+if __name__ == '__main__':
+    while True:
+        try:
+            s = input('dart > ')
+        except EOFError:
+            break
+        if not s:
+            continue
+        result = parser.parse(s, lexer=lexer)
+        print(result)
 
 # =========================
 # Construcción y análisis
