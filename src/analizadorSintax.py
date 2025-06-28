@@ -46,7 +46,9 @@ def p_statement(p):
                  | enum
                  | try
                  | switch
-                 | empty'''
+                 | empty
+                 | CONTINUE SEMICOLON
+                 | BREAK SEMICOLON'''
 
 # Declaración
 def p_declaration(p):
@@ -227,7 +229,8 @@ def p_if_else(p):
     p[0] = ('if_else', p[3], p[5], p[7])
 
 def p_while(p):
-    '''while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'''
+    'while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'
+    p[0] = ('while', p[3], p[6])
 
 def p_for(p):
     '''for : FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
@@ -268,20 +271,28 @@ def p_enum_values(p):
 # Try-finally
 def p_try(p):
     'try : TRY LBRACE statements RBRACE FINALLY LBRACE statements RBRACE'
+    p[0] = ('try_finally', p[3], p[7])
 
 # Switch-case
 def p_switch(p):
     'switch : SWITCH LPARENTHESIS variable RPARENTHESIS LBRACE cases default_case RBRACE'
+    p[0] = ('switch', p[3], p[6], p[7])
 
 def p_cases(p):
     '''cases : cases case
              | case'''
+    if len(p) == 3:
+        p[0] = p[1] + [p[2]]
+    else:
+        p[0] = [p[1]]
 
 def p_case(p):
     'case : CASE variable COLON statements BREAK SEMICOLON'
+    p[0] = ('case', p[2], p[4])
 
 def p_default_case(p):
     'default_case : DEFAULT COLON statements'
+    p[0] = ('default', p[3])
 
 # Parámetros
 def p_parameters(p):
