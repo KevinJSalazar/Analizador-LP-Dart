@@ -56,7 +56,7 @@ def p_statement(p):
                  | try
                  | switch
                  | empty
-                 | return SEMICOLON
+                 | return
                  | CONTINUE SEMICOLON
                  | BREAK SEMICOLON'''
 
@@ -374,8 +374,8 @@ def p_typedef(p):
 # =========================
 
 def p_return(p):
-    '''return : RETURN variable
-              | RETURN'''
+    '''return : RETURN variable SEMICOLON
+              | RETURN SEMICOLON'''
     if len(p) == 3:
         p[0] = ('return', p[2])
     else:
