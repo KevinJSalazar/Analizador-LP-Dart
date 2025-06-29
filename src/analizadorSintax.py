@@ -8,7 +8,7 @@ from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, infe
 
 lexer = build_lexer()
 errores = []
-
+errores_semanticos = []
 start = 'program'
 
 precedence = (
@@ -109,10 +109,41 @@ def p_declaration_without_modifier(p):
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
                    | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
+    
     if len(p) == 8:
-        p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
+        print("is goes in")
+        var_type = p[3]      
+        var_name = p[5]      
+        list_literal = p[7]  # ('list', [3, 4, 5])
     else:
-        p[0] = ('declaration_list_init', ('List', p[4]), p[6], p[8])
+        var_type = p[4]
+        var_name = p[6]
+        list_literal = p[8]  # ('list', [...])
+
+    elements = list_literal[1]
+    p[0] = ('declaration_list_init', ('List', var_type), var_name, list_literal)
+
+    # Verificación semántica
+    line = p.lineno(6)  # donde está el ID
+    is_valid = True
+    print(f"THIS IS THE STRUCTURE OF ELEMENT '{elements}'")
+    for token in elements:
+        print(f"TOKEN VALUE '{token}' ")
+        if token != var_type:
+            print(f"INCOMPATIBILIDAD DE TIPOS")
+            is_valid = False
+            break
+    if is_valid:
+        print(f"[OK] Todos los elementos son compatibles con 'List<{var_type}>'")
+        addSymbol(var_name, f'List<{var_type}>')
+   
+    else:
+        errores_semanticos.append(
+            f"line {line}: cannot assign list with incompatible elements to List<{var_type}>"
+        )
+    printTable()
+
+ 
 
 def p_declaration_other_list_init(p):
     'declaration : declaration ASSIGN_OPERATOR LESS_THAN varType GREATER_THAN list_literal'
@@ -140,20 +171,48 @@ def p_assignation(p):
         print(f"the variable type is  '{variable}' ")
         if(isVariableCompatibleWithVarType(varType, variable)):
             addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
-            printTable()
+   
         else:
             print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' '")
-
     elif(declaration_type == 'declaration_list_init'):
-        print("d3e")
+        print("THIS IS A LIST")
     elif(declaration_type == 'declaration_other_list_init'):
         print("something")
     elif(declaration_type == 'declaration_map_init'):
         print("any")
     else:
         addError(line)
-
+    printTable
     p[0] = ('assign', p[1], p[2], p[3])
+
+
+
+
+    # def p_list_literal(p):
+    #     'list_literal : LBRACKET list_elements RBRACKET'
+    #     p[0] = ('list', p[2])
+
+
+    # def p_declaration_list_init(p):
+    # '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
+    #                | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
+    # if len(p) == 8:
+    #     p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
+    # else:
+    #     p[0] = ('declaration_list_init', ('List', p[4]), p[6], p[8])
+
+
+    # def p_list_elements(p):
+    # '''list_elements : list_elements COMMA variable
+    #                  | variable
+    #                  | empty'''
+    # if len(p) == 4:
+    #     p[0] = p[1] + [p[3]]
+    # elif len(p) == 2 and p[1] != None:
+    #     p[0] = [p[1]]
+    # else:
+    #     p[0] = []
+
 
 def p_assignation_no_type(p):
     'assignation : ID ASSIGN_OPERATOR variable'
@@ -573,3 +632,9 @@ def analizar_archivo(ruta_codigo, ruta_errores):
 #     '''declaration_modifier : VAR 
 #                             | CONST 
 #                             | FINAL'''
+
+
+
+
+def elementsCompatibleWithListType():
+    print(2)

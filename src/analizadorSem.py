@@ -15,6 +15,8 @@ def printTable():
 def inferIDType(variable):
     return symbol_table["variable"].get(variable, None)
 
+
+
 def inferTypeFromToken(token_type):
     mapping = {
         'INT': 'int',
@@ -24,6 +26,9 @@ def inferTypeFromToken(token_type):
         'NULL': 'null'
     }
     return mapping.get(token_type, 'unknown')
+
+
+    
 
 def unifyTypes(type1, type2):
     if type1 is None or type2 is None:
