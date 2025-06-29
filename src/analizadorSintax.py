@@ -4,6 +4,7 @@ from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVa
 
 lexer = build_lexer()
 errores = []
+errores_semantico = []
 log_semantico = []
 start = 'program'
 
@@ -27,7 +28,6 @@ def p_statements(p):
 
 def p_statement_block(p):
     'statement : LBRACE statements RBRACE'
-    p.lineno[2]
     p[0] = ('block', p[2])
 
 def p_statement(p):
@@ -50,6 +50,7 @@ def p_statement(p):
                  | empty
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
+                 | declaration_with_modifier
                  | BREAK SEMICOLON'''
     
 def p_declaration(p):
@@ -61,11 +62,15 @@ def p_declaration_with_modifier(p):
     '''declaration_with_modifier : declaration_modifier varType ID
                                  | declaration_modifier ID'''
     if len(p) == 4:
+        
         print("MATCH: declaration_modifier varType ID")
         p[0] = ('declaration', p[1], p[2], p[3])
     else:
         print("MATCH: declaration_modifier ID")
         p[0] = ('declaration', p[1], None, p[2])
+
+
+
 
 def p_declaration_without_modifier(p):
     'declaration_without_modifier : varType ID'
@@ -86,7 +91,6 @@ def p_declaration_list_init(p):
         list_literal = p[8]  
     elements = list_literal[1]
     p[0] = ('declaration_list_init', ('List', var_type), var_name, list_literal)
-
     line = p.lineno(6) 
     is_valid = True
     print(f"THIS IS THE STRUCTURE OF ELEMENT '{elements}'")
@@ -101,7 +105,7 @@ def p_declaration_list_init(p):
         addSymbol(var_name, f'List<{var_type}>')
    
     else:
-        errores_semanticos.append(
+        log_semantico.append(
             f"line {line}: cannot assign list with incompatible elements to List<{var_type}>"
         )
     printTable()
@@ -133,12 +137,18 @@ def p_assignation(p):
         print(f"the variable type is :'{variable}' ")
         if(isVariableCompatibleWithVarType(varType, variable)):
             addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
+            log_semantico.append(f"{varType} {variableName} = {variable}; VALID on line {line}")
+            printTable()
         else:
-            print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' '")
+            print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}''")
+            errores_semantico.append(
+            f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' ' on line {line}"
+        )
+
     else:
         addError(line)
 
-    printTable
+  
     p[0] = ('assign', p[1], p[2], p[3])
 
 
@@ -158,6 +168,8 @@ def p_declaration_modifier(p):
     '''declaration_modifier : CONST 
                             | FINAL
                             | LATE'''
+    p[0] = p[1]
+
 def p_varType(p):
     '''varType : INT_TYPE 
                  | STRING_TYPE 
