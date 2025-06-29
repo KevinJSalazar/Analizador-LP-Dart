@@ -25,3 +25,8 @@ for filename in os.listdir(input_folder):
                 if not tok:
                     break
                 outfile.write(str(tok) + "\n")
+
+
+
+
+

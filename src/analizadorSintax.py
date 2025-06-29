@@ -1,10 +1,10 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
-from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableCompatibleWithVarType, inferTypeFromToken
+from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVariableCompatibleWithVarType, inferTypeFromToken
 
 lexer = build_lexer()
 errores = []
-errores_semanticos = []
+log_semantico = []
 start = 'program'
 
 precedence = (
@@ -27,6 +27,7 @@ def p_statements(p):
 
 def p_statement_block(p):
     'statement : LBRACE statements RBRACE'
+    p.lineno[2]
     p[0] = ('block', p[2])
 
 def p_statement(p):
