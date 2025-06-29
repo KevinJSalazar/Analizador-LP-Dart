@@ -1,0 +1,8 @@
+Error de sintaxis en la línea 6, token: ';'
+Error de sintaxis en la línea 7, token: ';'
+Error de sintaxis en la línea 10, token: '<'
+Error de sintaxis en la línea 11, token: '=='
+Error de sintaxis en la línea 19, token: '<'
+Error de sintaxis en la línea 19, token: '++'
+Error de sintaxis en la línea 24, token: ','
+Error de sintaxis en la línea 34, token: 'return'

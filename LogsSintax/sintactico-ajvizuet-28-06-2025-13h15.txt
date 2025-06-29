@@ -1,0 +1,7 @@
+Error de sintaxis en la línea 5, token: '<'
+Error de sintaxis en la línea 15, token: 'Evaluating: $studentName (ID: $studentID)'
+Error de sintaxis en la línea 27, token: 'if'
+Error de sintaxis en la línea 29, token: '}'
+Error de sintaxis en la línea 36, token: 'Fail'
+Error de sintaxis en la línea 38, token: '}'
+Error de sintaxis en la línea 43, token: 'None'

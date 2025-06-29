@@ -5,6 +5,8 @@ reserved = {
     'if': 'IF',
     'else': 'ELSE',
     'for': 'FOR',
+    'in': 'IN',
+    
     'while': 'WHILE',
     'switch': 'SWITCH',
     'case': 'CASE',
@@ -60,6 +62,7 @@ tokens = list(reserved.values()) + [
     'ID',
     'PLUS', 'MINUS', 'DIVIDE', 'TIMES', 'MODULE',
     'INCREMENT', 'DECREMENT',
+    'PLUS_EQUALS', 'MINUS_EQUALS', 'TIMES_EQUALS', 'DIVIDE_EQUALS',
     'AND', 'OR', 'NOT',
     'EQUALS', 'NOT_EQUALS',
     'GREATER_THAN', 'LESS_THAN',
@@ -77,6 +80,10 @@ tokens = list(reserved.values()) + [
 # Operadores y delimitadores
 t_INCREMENT = r'\+\+'
 t_DECREMENT = r'--'
+t_PLUS_EQUALS = r'\+='
+t_MINUS_EQUALS = r'-='
+t_TIMES_EQUALS = r'\*='
+t_DIVIDE_EQUALS = r'/='
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_DIVIDE = r'/'

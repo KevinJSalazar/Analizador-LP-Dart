@@ -1,0 +1,7 @@
+Error de sintaxis en la línea 2, token: 'import'
+Error de sintaxis en la línea 7, token: 'double'
+Error de sintaxis en la línea 8, token: '<'
+Error de sintaxis en la línea 11, token: 'in'
+Error de sintaxis en la línea 12, token: '>'
+Error de sintaxis en la línea 20, token: 'in'
+Error de sintaxis en la línea 39, token: 'Sistema operativo en línea.'
