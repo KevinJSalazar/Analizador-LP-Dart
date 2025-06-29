@@ -168,7 +168,7 @@ def p_assignation(p):
         _, _, varType, variableName = declaration
         print(f"the variable's name is '{variableName}' ")
         print(f"varType is '{varType}' ")
-        print(f"the variable type is  '{variable}' ")
+        print(f"the variable type is :'{variable}' ")
         if(isVariableCompatibleWithVarType(varType, variable)):
             addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
    
