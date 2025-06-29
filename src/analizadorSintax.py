@@ -2,10 +2,6 @@ import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
 from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableCompatibleWithVarType, inferTypeFromToken
 
-# =========================
-# Configuración y utilidades
-# =========================
-
 lexer = build_lexer()
 errores = []
 errores_semanticos = []
@@ -16,9 +12,6 @@ precedence = (
     ('nonassoc', 'ELSE'),  # else se asocia con el último if
 )
 
-# =========================
-# Programa principal
-# =========================
 
 def p_program(p):
     '''program : statements'''
@@ -31,10 +24,6 @@ def p_statements(p):
         p[0] = p[1] + [p[2]]
     else:
         p[0] = [p[1]]
-
-# =========================
-# Sentencias principales
-# =========================
 
 def p_statement_block(p):
     'statement : LBRACE statements RBRACE'
@@ -57,17 +46,11 @@ def p_statement(p):
                  | enum
                  | try
                  | switch
-                 | list
-                 | set
-                 | map
                  | empty
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
                  | BREAK SEMICOLON'''
     
-# =========================
-# Declaraciones y asignaciones
-# =========================
 def p_declaration(p):
     '''declaration : declaration_with_modifier
                    | declaration_without_modifier'''
@@ -88,43 +71,22 @@ def p_declaration_without_modifier(p):
     print("MATCH: varType ID")
     p[0] = ('declaration', None, p[1], p[2])
 
-
-# def p_declaration(p): GENERABA CONFLICTO
-#     '''declaration : declaration_modifier varType ID 
-#                    | declaration_modifier ID 
-#                    | varType ID'''
-#     if len(p) == 4:
-#         print("it mathched format --> declaration_modifier varType ID ")
-#         p[0] = ('declaration', p[1], p[2], p[3])
-#     elif len(p) == 3:
-#         print(f"this is p[1] -> '{p[0]}' ")
-#         print(f"this is p[2] -> '{p[1]}' ")
-#         print(f"this is p[3] ->  '{p[2]}' ")
-#         print("it mathched format --> declaration_modifier ID ")
-#         p[0] = ('declaration', p[1], None, p[2])
-#     else:
-#         print("it mathched format --> varType ID")
-#         p[0] = ('declaration', None, p[1], p[2])
-
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
                    | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
-    
     if len(p) == 8:
         print("is goes in")
         var_type = p[3]      
         var_name = p[5]      
-        list_literal = p[7]  # ('list', [3, 4, 5])
+        list_literal = p[7]
     else:
         var_type = p[4]
         var_name = p[6]
-        list_literal = p[8]  # ('list', [...])
-
+        list_literal = p[8]  
     elements = list_literal[1]
     p[0] = ('declaration_list_init', ('List', var_type), var_name, list_literal)
 
-    # Verificación semántica
-    line = p.lineno(6)  # donde está el ID
+    line = p.lineno(6) 
     is_valid = True
     print(f"THIS IS THE STRUCTURE OF ELEMENT '{elements}'")
     for token in elements:
@@ -143,7 +105,6 @@ def p_declaration_list_init(p):
         )
     printTable()
 
- 
 
 def p_declaration_other_list_init(p):
     'declaration : declaration ASSIGN_OPERATOR LESS_THAN varType GREATER_THAN list_literal'
@@ -171,47 +132,13 @@ def p_assignation(p):
         print(f"the variable type is :'{variable}' ")
         if(isVariableCompatibleWithVarType(varType, variable)):
             addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
-   
         else:
             print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' '")
-    elif(declaration_type == 'declaration_list_init'):
-        print("THIS IS A LIST")
-    elif(declaration_type == 'declaration_other_list_init'):
-        print("something")
-    elif(declaration_type == 'declaration_map_init'):
-        print("any")
     else:
         addError(line)
+
     printTable
     p[0] = ('assign', p[1], p[2], p[3])
-
-
-
-
-    # def p_list_literal(p):
-    #     'list_literal : LBRACKET list_elements RBRACKET'
-    #     p[0] = ('list', p[2])
-
-
-    # def p_declaration_list_init(p):
-    # '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
-    #                | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
-    # if len(p) == 8:
-    #     p[0] = ('declaration_list_init', ('List', p[3]), p[5], p[7])
-    # else:
-    #     p[0] = ('declaration_list_init', ('List', p[4]), p[6], p[8])
-
-
-    # def p_list_elements(p):
-    # '''list_elements : list_elements COMMA variable
-    #                  | variable
-    #                  | empty'''
-    # if len(p) == 4:
-    #     p[0] = p[1] + [p[3]]
-    # elif len(p) == 2 and p[1] != None:
-    #     p[0] = [p[1]]
-    # else:
-    #     p[0] = []
 
 
 def p_assignation_no_type(p):
@@ -230,11 +157,6 @@ def p_declaration_modifier(p):
     '''declaration_modifier : CONST 
                             | FINAL
                             | LATE'''
-
-# =========================
-# Tipos de datos
-# =========================
-
 def p_varType(p):
     '''varType : INT_TYPE 
                  | STRING_TYPE 
@@ -248,11 +170,6 @@ def p_varType(p):
                  | VOID'''
     p[0] = p[1]
     print(f"hey you just printed the value '{p[1]}'" )
-
-# =========================
-# Literales y estructuras de datos
-# =========================
-
 def p_list_literal(p):
     'list_literal : LBRACKET list_elements RBRACKET'
     p[0] = ('list', p[2])
@@ -288,10 +205,6 @@ def p_map_pair(p):
                 | variable COLON booleanExpression'''
     p[0] = (p[1], p[3])
 
-# =========================
-# Variables y expresiones básicas
-# =========================
-
 def p_variable(p):
     '''variable : INT 
                 | DOUBLE 
@@ -309,9 +222,6 @@ def p_variable(p):
         p[0] = inferIDType(p[1])    
     else:
         print(token)   
-# =========================
-# Expresiones aritméticas
-# =========================
 
 def p_expression_operations(p):
     '''expression : expression PLUS term
@@ -364,11 +274,6 @@ def p_variable_member_access(p):
         p[0] = ('member_call_block', p[1], p[3], p[4])
     else:
         p[0] = ('member_access', p[1], p[3])
-
-# =========================
-# Expresiones booleanas
-# =========================
-
 def p_boolean_expression_comparison(p):
     '''booleanExpression : variable EQUALS variable
                          | variable NOT_EQUALS variable
@@ -390,12 +295,6 @@ def p_boolean_expression_paren(p):
 def p_boolean_expression_variable(p):
     'booleanExpression : variable'
     p[0] = p[1]
-
-# =========================
-# Estructuras de control
-# =========================
-
-# If
 def p_if(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement %prec IFX'
     p[0] = ('if', p[3], p[5])
@@ -404,12 +303,12 @@ def p_if_else(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement ELSE statement'
     p[0] = ('if_else', p[3], p[5], p[7])
 
-# While
+
 def p_while(p):
     'while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'
     p[0] = ('while', p[3], p[6])
 
-# For clásico y for-in
+
 def p_for(p):
     '''for : FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
            | FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
@@ -427,7 +326,6 @@ def p_decrement(p):
     'decrement : ID DECREMENT'
     p[0] = ('decrement', p[1])
 
-# Try-finally
 def p_try(p):
     'try : TRY LBRACE statements RBRACE FINALLY LBRACE statements RBRACE'
     p[0] = ('try_finally', p[3], p[7])
@@ -454,10 +352,6 @@ def p_case(p):
 def p_default_case(p):
     'default_case : DEFAULT COLON statements'
     p[0] = ('default', p[3])
-
-# =========================
-# Funciones y parámetros
-# =========================
 
 def p_function(p):
     '''function : declaration LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
@@ -486,19 +380,12 @@ def p_lambda(p):
     'lambda : LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE'
     p[0] = ('lambda', p[2], p[5])
 
-# =========================
-# Entrada/Salida
-# =========================
-
 def p_print(p):
     'print : PRINT LPARENTHESIS variable RPARENTHESIS SEMICOLON'
 
 def p_input(p):
     'input : ID ASSIGN_OPERATOR STDIN DOT READ LPARENTHESIS RPARENTHESIS SEMICOLON'
 
-# =========================
-# Clases y objetos
-# =========================
 
 def p_class_def(p):
     '''class_def : CLASS ID LBRACE class_members RBRACE'''
@@ -511,10 +398,6 @@ def p_class_member(p):
     '''class_member : varType ID SEMICOLON
                     | function'''
 
-# =========================
-# Enum y typedef
-# =========================
-
 def p_enum(p):
     'enum : ENUM ID LBRACE enum_values RBRACE'
 
@@ -524,10 +407,6 @@ def p_enum_values(p):
 
 def p_typedef(p):
     'typedef : TYPEDEF ID ASSIGN_OPERATOR varType function LPARENTHESIS parameters RPARENTHESIS SEMICOLON'
-
-# =========================
-# Sentencias especiales
-# =========================
 
 def p_return(p):
     '''return : RETURN variable
@@ -545,25 +424,6 @@ def p_empty(p):
     'empty :'
     pass
 
-
-def p_list(p):
-    '''list : '''  # Completa esta regla con la sintaxis esperada para una lista
-    pass
-
-
-def p_set(p):
-    '''set : '''  # Define la regla de conjuntos
-    pass
-
-
-def p_map(p):
-    '''map : '''  # Define la regla de mapas
-    pass
-
-# =========================
-# Manejo de errores
-# =========================
-
 def p_error(p):
     if p:
         error_msg = f"Error de sintaxis en la línea {p.lineno}, token: '{p.value}'"
@@ -572,9 +432,6 @@ def p_error(p):
     errores.append(error_msg)
 def addError():
     print(3)
-# =========================
-# Consola interactiva
-# =========================
 
 parser = yacc.yacc()
 
@@ -596,11 +453,6 @@ if __name__ == '__main__':
         result = parser.parse(s, lexer=lexer)
         print(result)
 
-
-# =========================
-# Construcción y análisis
-# =========================
-
 def build_parser():
     return yacc.yacc()
 
@@ -620,21 +472,3 @@ def analizar_archivo(ruta_codigo, ruta_errores):
                 f.write(e + '\n')
         else:
             f.write("No se encontraron errores de sintaxis.\n")
-
-
-    #         def p_assignation(p):
-    # 'assignation : declaration ASSIGN_OPERATOR variable'
-    # p[0] = ('assign', p[1], p[2], p[3])
-
-
-
-# def p_declaration_modifier(p):
-#     '''declaration_modifier : VAR 
-#                             | CONST 
-#                             | FINAL'''
-
-
-
-
-def elementsCompatibleWithListType():
-    print(2)

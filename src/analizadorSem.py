@@ -29,7 +29,6 @@ def inferTypeFromToken(token_type):
 
 
     
-
 def unifyTypes(type1, type2):
     if type1 is None or type2 is None:
         print(f"[unifyTypes] Uno de los tipos es None: {type1}, {type2}")
