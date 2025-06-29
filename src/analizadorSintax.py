@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
-from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableTypeCompatibleWithVarType, inferTypeFromToken
+from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, inferNumericType, unifyTypes, isVariableCompatibleWithVarType, inferTypeFromToken
 
 # =========================
 # Configuración y utilidades
@@ -63,24 +63,48 @@ def p_statement(p):
                  | empty
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
-                 | BREAK SEMICOLON
-                 | assignation_no_type
-                 '''
-
+                 | BREAK SEMICOLON'''
+    
 # =========================
 # Declaraciones y asignaciones
 # =========================
-
 def p_declaration(p):
-    '''declaration : declaration_modifier varType ID 
-                   | declaration_modifier ID 
-                   | varType ID'''
+    '''declaration : declaration_with_modifier
+                   | declaration_without_modifier'''
+    p[0] = p[1]
+
+def p_declaration_with_modifier(p):
+    '''declaration_with_modifier : declaration_modifier varType ID
+                                 | declaration_modifier ID'''
     if len(p) == 4:
+        print("MATCH: declaration_modifier varType ID")
         p[0] = ('declaration', p[1], p[2], p[3])
-    elif len(p) == 3:
-        p[0] = ('declaration', p[1], None, p[2])
     else:
-        p[0] = ('declaration', None, p[1], p[2])
+        print("MATCH: declaration_modifier ID")
+        p[0] = ('declaration', p[1], None, p[2])
+
+def p_declaration_without_modifier(p):
+    'declaration_without_modifier : varType ID'
+    print("MATCH: varType ID")
+    p[0] = ('declaration', None, p[1], p[2])
+
+
+# def p_declaration(p): GENERABA CONFLICTO
+#     '''declaration : declaration_modifier varType ID 
+#                    | declaration_modifier ID 
+#                    | varType ID'''
+#     if len(p) == 4:
+#         print("it mathched format --> declaration_modifier varType ID ")
+#         p[0] = ('declaration', p[1], p[2], p[3])
+#     elif len(p) == 3:
+#         print(f"this is p[1] -> '{p[0]}' ")
+#         print(f"this is p[2] -> '{p[1]}' ")
+#         print(f"this is p[3] ->  '{p[2]}' ")
+#         print("it mathched format --> declaration_modifier ID ")
+#         p[0] = ('declaration', p[1], None, p[2])
+#     else:
+#         print("it mathched format --> varType ID")
+#         p[0] = ('declaration', None, p[1], p[2])
 
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
@@ -103,11 +127,38 @@ def p_declaration_map_init(p):
         p[0] = ('declaration_map_init', ('Map', p[4], p[6]), p[8], p[10])
 
 def p_assignation(p):
-    'assignation : declaration ASSIGN_OPERATOR variable'
+    'assignation : declaration ASSIGN_OPERATOR variable' ##  varType ID
+    print("inside p_assignation")
+    declaration = p[1]
+    declaration_type = declaration[0]
+    line= p.lineno(2)
+    variable = p[3]
+    if(declaration_type == 'declaration'):
+        _, _, varType, variableName = declaration
+        print(f"the variable's name is '{variableName}' ")
+        print(f"varType is '{varType}' ")
+        print(f"the variable type is  '{variable}' ")
+        if(isVariableCompatibleWithVarType(varType, variable)):
+            addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
+            printTable()
+        else:
+            print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' '")
+
+    elif(declaration_type == 'declaration_list_init'):
+        print("d3e")
+    elif(declaration_type == 'declaration_other_list_init'):
+        print("something")
+    elif(declaration_type == 'declaration_map_init'):
+        print("any")
+    else:
+        addError(line)
+
     p[0] = ('assign', p[1], p[2], p[3])
 
 def p_assignation_no_type(p):
     'assignation : ID ASSIGN_OPERATOR variable'
+    p[0] = ('assign_no_type', p[1], p[3])
+
 
 def p_compound_assignation(p):
     '''assignation : ID PLUS_EQUALS expression
@@ -126,7 +177,7 @@ def p_declaration_modifier(p):
 # =========================
 
 def p_varType(p):
-    '''varType   : INT_TYPE 
+    '''varType : INT_TYPE 
                  | STRING_TYPE 
                  | NUM_TYPE 
                  | DOUBLE_TYPE 
@@ -136,6 +187,8 @@ def p_varType(p):
                  | SET_TYPE
                  | VAR
                  | VOID'''
+    p[0] = p[1]
+    print(f"hey you just printed the value '{p[1]}'" )
 
 # =========================
 # Literales y estructuras de datos
@@ -190,7 +243,13 @@ def p_variable(p):
                 | function
                 | lambda
                 | expression'''
-
+    token = p.slice[1].type
+    if(token in ['INT', 'DOUBLE', 'STRING', 'BOOL', 'NULL']):
+        p[0] = inferTypeFromToken(token)
+    elif (token == 'ID'):
+        p[0] = inferIDType(p[1])    
+    else:
+        print(token)   
 # =========================
 # Expresiones aritméticas
 # =========================
@@ -427,6 +486,21 @@ def p_empty(p):
     'empty :'
     pass
 
+
+def p_list(p):
+    '''list : '''  # Completa esta regla con la sintaxis esperada para una lista
+    pass
+
+
+def p_set(p):
+    '''set : '''  # Define la regla de conjuntos
+    pass
+
+
+def p_map(p):
+    '''map : '''  # Define la regla de mapas
+    pass
+
 # =========================
 # Manejo de errores
 # =========================
@@ -437,7 +511,8 @@ def p_error(p):
     else:
         error_msg = "Error de sintaxis: fin inesperado de entrada"
     errores.append(error_msg)
-
+def addError():
+    print(3)
 # =========================
 # Consola interactiva
 # =========================
@@ -445,6 +520,13 @@ def p_error(p):
 parser = yacc.yacc()
 
 if __name__ == '__main__':
+    print("\n=== Prueba del lexer ===")
+    test_lexer = build_lexer()
+    test_lexer.input("int x;")
+    for token in test_lexer:
+        print(f"type: {token.type}, value: {token.value}")
+    print("=== Fin de prueba del lexer ===\n")
+
     while True:
         try:
             s = input('dart > ')
@@ -454,6 +536,7 @@ if __name__ == '__main__':
             continue
         result = parser.parse(s, lexer=lexer)
         print(result)
+
 
 # =========================
 # Construcción y análisis

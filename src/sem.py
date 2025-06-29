@@ -21,7 +21,11 @@ def inferTypeFromToken(token_type):
         'DOUBLE': 'double',
         'STRING': 'String',
         'BOOL': 'bool',
-        'NULL': 'null'
+        'NULL': 'null',
+        'ID': None, # se debe de arreglar 
+        'function': None, # se debe de arreglar 
+        'lambda': None,        # se debe de arreglar 
+        'expression': None
     }
     return mapping.get(token_type, 'unknown')
 

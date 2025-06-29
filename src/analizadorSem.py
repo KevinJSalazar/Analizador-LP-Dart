@@ -44,7 +44,7 @@ def inferNumericType(var):
         return "int"
     return "double"
 
-def isVariableTypeCompatibleWithVarType(varType, variableType):
+def isVariableCompatibleWithVarType(varType, variableType):
     allowed = {
         'int': ['int'],
         'double': ['double', 'int'],  
