@@ -6,7 +6,7 @@ import 'dart:math';
 
 void main() {
   final double threshold = 30.5;
-  var temperatures = <double>[28.0, 31.2, 29.5, 32.1, 27.0];
+  List<double> = [28.0, 31.2, 29.5, 32.1, 27.0];
   List<double> highTemps = [];
 
   for (double temp in temperatures) {
@@ -15,11 +15,6 @@ void main() {
     } else {
       continue; // Temperatura no supera el umbral
     }
-  }
-
-  print("Temperaturas altas detectadas:");
-  for (var t in highTemps) {
-    print("- $t°C");
   }
 
   final Map<String, bool> estado = {
