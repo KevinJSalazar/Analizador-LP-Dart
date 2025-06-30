@@ -1,0 +1,11 @@
+=== VALID EXPRESSIONS ===
+Line 0: CHECK
+Line 0: CHECK
+Line 0: CHECK
+Line 0: CHECK
+Line 0: CHECK
+
+=== SEMANTIC ERRORS ===
+IS NOT POSSIBLE TO ASSIGN 'None TO TYPE 'int' ' on line 5
+Error at line 0: Missing return statement
+Error at line 0: cannot declare variable x as void type
