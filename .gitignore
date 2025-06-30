@@ -1,6 +1,5 @@
 #Virtual environment
 
 venv/
-
 src/parser.out
 src/parsetab.py
