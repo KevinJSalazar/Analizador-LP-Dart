@@ -16,8 +16,8 @@ for archivo in os.listdir(carpeta):
 
         # Extrae el nombre base del archivo sin extensión
         nombreAlgoritmo = archivo.split(".dart")[0]
-        fecha = datetime.now(ZoneInfo('America/Guayaquil')).strftime('%d-%m-%Y-%Hh%M')
-        direccionLog = f"{ruta_errores}semantico-{nombreAlgoritmo}-{fecha}.txt"
+        # fecha = datetime.now(ZoneInfo('America/Guayaquil')).strftime('%d-%m-%Y-%Hh%M')
+        direccionLog = f"{ruta_errores}semantico-{nombreAlgoritmo}.txt"
 
         # Limpiar logs antes de analizar
         errores_semantico.clear()

@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
-from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVariableCompatibleWithVarType, inferTypeFromToken, isDeclared
+from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVariableCompatibleWithVarType, inferTypeFromToken, unifyTypes, inferNumericType, pushScope, popScope
 
 lexer = build_lexer()
 errores = []
@@ -121,9 +121,64 @@ def p_declaration_map_init(p):
     '''declaration : MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal
                    | declaration_modifier MAP_TYPE LESS_THAN varType COMMA varType GREATER_THAN ID ASSIGN_OPERATOR map_literal'''
     if len(p) == 10:
-        p[0] = ('declaration_map_init', ('Map', p[3], p[5]), p[7], p[9])
+        key_type = p[3]
+        value_type = p[5]
+        var_name = p[7]
+        map_literal = p[9]
     else:
-        p[0] = ('declaration_map_init', ('Map', p[4], p[6]), p[8], p[10])
+        key_type = p[4]
+        value_type = p[6]
+        var_name = p[8]
+        map_literal = p[10]
+    elements = map_literal[1]
+    line = p.lineno(7)
+    is_valid = True
+    for pair in elements:
+        k, v = pair
+        if k != key_type or v != value_type:
+            is_valid = False
+            break
+    if is_valid:
+        addSymbol(var_name, f'Map<{key_type},{value_type}>')
+        log_semantico.append(f"ALL THE MAP'S PAIRS ARE COMPATIBLE WITH Map<{key_type},{value_type}> TYPE CHECK")
+    else:
+        errores_semantico.append(
+            f"IS NOT POSSIBLE TO ASSIGN MAP WITH INCOMPATIBLE PAIRS TO Map<{key_type},{value_type}> ON LINE {line}"
+        )
+    printTable()
+    p[0] = ('declaration_map_init', ('Map', key_type, value_type), var_name, map_literal)
+
+def p_declaration_set_init(p):
+    '''declaration : SET_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR set_literal
+                   | declaration_modifier SET_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR set_literal'''
+    if len(p) == 8:
+        var_type = p[3]
+        var_name = p[5]
+        set_literal = p[7]
+    else:
+        var_type = p[4]
+        var_name = p[6]
+        set_literal = p[8]
+    elements = set_literal[1]
+    line = p.lineno(5)
+    is_valid = True
+    for token in elements:
+        if token != var_type:
+            is_valid = False
+            break
+    if is_valid:
+        addSymbol(var_name, f'Set<{var_type}>')
+        log_semantico.append(f"ALL THE SET'S ELEMENTS ARE COMPATIBLE WITH {var_type} TYPE CHECK")
+    else:
+        errores_semantico.append(
+            f"IS NOT POSSIBLE TO ASSIGN SET WITH INCOMPATIBLE ELEMENTS TO Set<{var_type}> ON LINE {line}"
+        )
+    printTable()
+    p[0] = ('declaration_set_init', ('Set', var_type), var_name, set_literal)
+
+def p_set_literal(p):
+    'set_literal : LBRACE list_elements RBRACE'
+    p[0] = ('set', p[2])
 
 def p_assignation(p):
     'assignation : declaration ASSIGN_OPERATOR variable' ##  varType ID
@@ -235,10 +290,10 @@ def p_variable(p):
     elif (token == 'ID'):
         idType = inferIDType(p[1])
         if(idType == None):
-            errores_semantico.append(f"{p[1]} NOT DECLARED LINE {line} ")
+            errores_semantico.append(f"{p[1]} NOT DECLARED LINE {line}")
             p[0] = None
         else:
-            p[0] = inferIDType(p[1])    
+            p[0] = idType
     else:
         print(token)   
 
@@ -310,7 +365,7 @@ def p_boolean_expression_logic(p):
         p[0] = 'bool'
     else:
         errores_semantico.append(
-            f"Error semántico: operación lógica requiere operandos booleanos (línea {p.lineno(2)})"
+            f"LOGICAL OPERATION REQUIRES BOOLEAN OPERANDS LINE {p.lineno(2)}"
         )
         p[0] = 'error'
 
@@ -322,9 +377,9 @@ def p_boolean_expression_variable(p):
     'booleanExpression : variable'
     if p[1] == 'bool':
         p[0] = 'bool'
-    else:
+    elif p.lineno(1) != 0:
         errores_semantico.append(
-            f"Error semántico: se esperaba una variable booleana en expresión lógica (línea {p.lineno(1)})"
+             f"A BOOLEAN VARIABLE WAS EXPECTED IN LOGICAL EXPRESSION LINE {p.lineno(1)}"
         )
         p[0] = 'error'
 
@@ -332,7 +387,7 @@ def p_if(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement %prec IFX'
     if p[3] != 'bool':
         errores_semantico.append(
-            f"Error semántico: la condición del if debe ser booleana (línea {p.lineno(1)})"
+            f"THE CONDITION OF IF MUST BE BOOLEAN LINE {p.lineno(1)}"
         )
     p[0] = ('if', p[3], p[5])
 
@@ -340,7 +395,7 @@ def p_if_else(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement ELSE statement'
     if p[3] != 'bool':
         errores_semantico.append(
-            f"Error semántico: la condición del if-else debe ser booleana (línea {p.lineno(1)})"
+            f"THE CONDITION OF IF-ELSE MUST BE BOOLEAN LINE {p.lineno(1)}"
         )
     p[0] = ('if_else', p[3], p[5], p[7])
 
@@ -348,7 +403,7 @@ def p_while(p):
     'while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'
     if p[3] != 'bool':
         errores_semantico.append(
-            f"Error semántico: la condición del while debe ser booleana (línea {p.lineno(1)})"
+             f"THE CONDITION OF WHILE MUST BE BOOLEAN LINE {p.lineno(1)}"
         )
     p[0] = ('while', p[3], p[6])
 
@@ -357,13 +412,36 @@ def p_for(p):
            | FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
     if p[5] != 'bool':
         errores_semantico.append(
-            f"Error semántico: la condición del for debe ser booleana (línea {p.lineno(1)})"
+            f"THE CONDITION OF FOR MUST BE BOOLEAN LINE {p.lineno(1)}"
         )
     p[0] = ('for', p[3], p[5], p[7], p[10])
 
 def p_for_in(p):
-    'for : FOR LPARENTHESIS varType ID IN ID RPARENTHESIS LBRACE statements RBRACE'
-    p[0] = ('for_in', p[3], p[4], p[6], p[9])
+    'for : FOR LPARENTHESIS varType ID IN ID RPARENTHESIS for_in_block'
+    var_type = p[3]
+    var_name = p[4]
+    collection_id = p[6]
+    line = p.lineno(1)
+    collection_type = inferIDType(collection_id)
+    if collection_type is None:
+        errores_semantico.append(f"{collection_id} NOT DECLARED LINE {line}")
+    elif not (str(collection_type).startswith('List<') or str(collection_type).startswith('Set<')):
+        errores_semantico.append(f"{collection_id} IS NOT AN ITERABLE COLLECTION LINE {line}")
+    elif var_type not in str(collection_type):
+        errores_semantico.append(f"{var_type} IS NOT COMPATIBLE WITH ELEMENTS OF {collection_id} LINE {line}")
+    p[0] = ('for_in', var_type, var_name, collection_id, p[8])
+
+def p_for_in_block(p):
+    'for_in_block : LBRACE for_in_scope statements RBRACE'
+    p[0] = p[3]
+    popScope()  # Limpiar el scope al salir del bloque
+
+def p_for_in_scope(p):
+    'for_in_scope :'
+    var_type = p[-6]
+    var_name = p[-5]
+    pushScope()
+    addSymbol(var_name, var_type)
 
 def p_increment(p):
     'increment : ID INCREMENT'
@@ -380,6 +458,20 @@ def p_try(p):
 
 def p_switch(p):
     'switch : SWITCH LPARENTHESIS variable RPARENTHESIS LBRACE cases default_case RBRACE'
+    switch_type = p[3]
+    line = p.lineno(1)
+    # Solo int y String son válidos en Dart para switch
+    if switch_type not in ['int', 'String']:
+        errores_semantico.append(
+            f"SWITCH EXPRESSION TYPE '{switch_type}' NOT SUPPORTED LINE {line}"
+        )
+    # p[6] son los cases, p[7] es el default
+    for case in p[6]:
+        case_value_type = case[1]
+        if case_value_type != switch_type:
+            errores_semantico.append(
+                f"CASE VALUE TYPE '{case_value_type}' NOT COMPATIBLE WITH SWITCH TYPE '{switch_type}' LINE {line}"
+            )
     p[0] = ('switch', p[3], p[6], p[7])
 
 def p_cases(p):
