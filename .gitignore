@@ -2,9 +2,5 @@
 
 venv/
 
-LogsLex/
-
-LogsSintax/
-
 src/parser.out
 src/parsetab.py
