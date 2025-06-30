@@ -67,10 +67,10 @@ def p_declaration_with_modifier(p):
         print("MATCH: declaration_modifier varType ID")
         p[0] = ('declaration', p[1], p[2], p[3])
 
-        line = p.lineno(2)
+        line = p.lineno(3)
     
         if p[2] == 'void':
-            log_semantico.append(f'Error at line {line}: cannot declare variable {p[3]} as void type')
+            errores_semantico.append(f'Error at line {line}: cannot declare variable {p[3]} as void type')
         else:
             log_semantico.append(f'Line {line}: CHECK')
 
@@ -86,10 +86,10 @@ def p_declaration_without_modifier(p):
     print("MATCH: varType ID")
     p[0] = ('declaration', None, p[1], p[2])
 
-    line = p.lineno(1)
+    line = p.lineno(2)
     
     if p[1] == 'void':
-        log_semantico.append(f'Error at line {line}: cannot declare variable {p[2]} as void type')
+        errores_semantico.append(f'Error at line {line}: cannot declare variable {p[2]} as void type')
     else:
         log_semantico.append(f'Line {line}: CHECK')
 
@@ -392,18 +392,21 @@ def p_function(p):
     '''function : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
                 | ID LPARENTHESIS parameters RPARENTHESIS'''
     if len(p) == 9:
-        line = p.lineno(1)
+        line = p.lineno(2)
         if p[1] != 'void':
-            last_statement = p[7][-1]
-            print(last_statement)
-            if last_statement[0] == 'return':
-                return_var_type = last_statement[1]
-                if p[1] == return_var_type:
-                    log_semantico.append(f'Line {line}: CHECK')
-                else:
-                    log_semantico.append(f'Erro at line {line}: {p[1]} expected but found {return_var_type}')
-            else:
-                log_semantico.append(f'Error at line {line}: {p[1]} expected but found void')
+            statements = p[7]
+            return_present = False
+            for statement in statements:
+                if statement != None and statement[0] == 'return':
+                    return_present = True
+                    return_var_type = statement[1]
+                    if p[1] != return_var_type:
+                        errores_semantico.append(f'Error at line {line}: {p[1]} expected but found {return_var_type}')
+                    else:
+                        log_semantico.append(f'Line {line}: CHECK')
+            if not return_present:
+                errores_semantico.append(f'Error at line {line}: Missing return statement')
+
 
 
 def p_function_arrow(p):
