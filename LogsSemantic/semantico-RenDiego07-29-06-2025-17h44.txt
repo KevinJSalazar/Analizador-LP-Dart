@@ -1,0 +1,11 @@
+=== VALID EXPRESSIONS ===
+int x = int; VALID on line 3
+bool flag4 = bool; VALID on line 14
+
+=== SEMANTIC ERRORS ===
+IS NOT POSSIBLE TO ASSIGN 'String TO TYPE 'int' ' on line 5
+IS NOT POSSIBLE TO ASSIGN 'bool TO TYPE 'int' ' on line 7
+IS NOT POSSIBLE TO ASSIGN 'double TO TYPE 'int' ' on line 9
+IS NOT POSSIBLE TO ASSIGN 'int TO TYPE 'bool' ' on line 11
+IS NOT POSSIBLE TO ASSIGN 'String TO TYPE 'bool' ' on line 12
+IS NOT POSSIBLE TO ASSIGN 'double TO TYPE 'bool' ' on line 13
