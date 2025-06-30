@@ -50,7 +50,6 @@ def p_statement(p):
                  | empty
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
-                 | declaration_with_modifier
                  | BREAK SEMICOLON'''
     p[0] = p[1]
 
@@ -58,6 +57,7 @@ def p_declaration(p):
     '''declaration : declaration_with_modifier
                    | declaration_without_modifier'''
     p[0] = p[1]
+    addSymbol(p[1][3], p[1][2])
 
 def p_declaration_with_modifier(p):
     '''declaration_with_modifier : declaration_modifier varType ID
@@ -66,6 +66,14 @@ def p_declaration_with_modifier(p):
         
         print("MATCH: declaration_modifier varType ID")
         p[0] = ('declaration', p[1], p[2], p[3])
+
+        line = p.lineno(3)
+    
+        if p[2] == 'void':
+            errores_semantico.append(f'Error at line {line}: cannot declare variable {p[3]} as void type')
+        else:
+            log_semantico.append(f'Line {line}: CHECK')
+
     else:
         print("MATCH: declaration_modifier ID")
         p[0] = ('declaration', p[1], None, p[2])
@@ -77,6 +85,13 @@ def p_declaration_without_modifier(p):
     'declaration_without_modifier : varType ID'
     print("MATCH: varType ID")
     p[0] = ('declaration', None, p[1], p[2])
+
+    line = p.lineno(2)
+    
+    if p[1] == 'void':
+        errores_semantico.append(f'Error at line {line}: cannot declare variable {p[2]} as void type')
+    else:
+        log_semantico.append(f'Line {line}: CHECK')
 
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
@@ -374,8 +389,25 @@ def p_default_case(p):
     p[0] = ('default', p[3])
 
 def p_function(p):
-    '''function : declaration LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
+    '''function : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
                 | ID LPARENTHESIS parameters RPARENTHESIS'''
+    if len(p) == 9:
+        line = p.lineno(2)
+        if p[1] != 'void':
+            statements = p[7]
+            return_present = False
+            for statement in statements:
+                if statement != None and statement[0] == 'return':
+                    return_present = True
+                    return_var_type = statement[1]
+                    if p[1] != return_var_type:
+                        errores_semantico.append(f'Error at line {line}: {p[1]} expected but found {return_var_type}')
+                    else:
+                        log_semantico.append(f'Line {line}: CHECK')
+            if not return_present:
+                errores_semantico.append(f'Error at line {line}: Missing return statement')
+
+
 
 def p_function_arrow(p):
     'function : declaration LPARENTHESIS parameters RPARENTHESIS ARROW expression SEMICOLON'
