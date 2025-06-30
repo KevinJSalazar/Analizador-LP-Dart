@@ -1,5 +1,5 @@
 symbol_table = {
-    "variable": {},
+    "scopes": [{}],  # pila de scopes, el actual es el último
     "type": {
         "string_type": [],
         "list_type": ["append", "index", "get", "delete"]
@@ -7,13 +7,23 @@ symbol_table = {
 }
 
 def addSymbol(name, type):
-    symbol_table["variable"][name] = type
+    symbol_table["scopes"][-1][name] = type
 
 def printTable():
     print(symbol_table)
 
 def inferIDType(variable):
-    return symbol_table["variable"].get(variable, None)
+    # Busca desde el scope más interno al más externo
+    for scope in reversed(symbol_table["scopes"]):
+        if variable in scope:
+            return scope[variable]
+    return None
+
+def pushScope():
+    symbol_table["scopes"].append({})
+
+def popScope():
+    symbol_table["scopes"].pop()
 
 
 

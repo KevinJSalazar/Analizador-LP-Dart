@@ -1,12 +1,5 @@
 #Virtual environment
 
 venv/
-
-LogsLex/
-
-LogsSintax/
-
-LogsSemantic/
-
 src/parser.out
 src/parsetab.py

@@ -33,7 +33,7 @@ void main() {
   });
 
   // Declaraciones alternativas
-  const bool sistemaActivo = true;
+   bool sistemaActivo = true;
   late String mensaje;
 
   if (sistemaActivo) {
