@@ -6,5 +6,7 @@ LogsLex/
 
 LogsSintax/
 
+LogsSemantic/
+
 src/parser.out
 src/parsetab.py

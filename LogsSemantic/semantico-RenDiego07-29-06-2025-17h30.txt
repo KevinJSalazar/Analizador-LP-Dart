@@ -1,5 +1,0 @@
-=== VALID EXPRESSIONS ===
-int x = int; VALID on line 3
-
-=== SEMANTIC ERRORS ===
-IS NOT POSSIBLE TO ASSIGN 'String TO TYPE 'int' ' on line 5
