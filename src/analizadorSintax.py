@@ -50,7 +50,6 @@ def p_statement(p):
                  | empty
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
-                 | declaration_with_modifier
                  | BREAK SEMICOLON'''
     
 def p_declaration(p):
@@ -287,6 +286,7 @@ def p_variable_member_access(p):
         p[0] = ('member_call_block', p[1], p[3], p[4])
     else:
         p[0] = ('member_access', p[1], p[3])
+
 def p_boolean_expression_comparison(p):
     '''booleanExpression : variable EQUALS variable
                          | variable NOT_EQUALS variable
@@ -294,12 +294,18 @@ def p_boolean_expression_comparison(p):
                          | variable LESS_THAN variable
                          | variable GREATER_THAN_OR_EQUALS variable
                          | variable LESS_THAN_OR_EQUALS variable'''
-    p[0] = ('boolop', p[2], p[1], p[3])
+    p[0] = 'bool'
 
 def p_boolean_expression_logic(p):
     '''booleanExpression : booleanExpression AND booleanExpression
                          | booleanExpression OR booleanExpression'''
-    p[0] = ('boolop', p[2], p[1], p[3])
+    if p[1] == 'bool' and p[3] == 'bool':
+        p[0] = 'bool'
+    else:
+        errores_semantico.append(
+            f"Error semántico: operación lógica requiere operandos booleanos (línea {p.lineno(2)})"
+        )
+        p[0] = 'error'
 
 def p_boolean_expression_paren(p):
     'booleanExpression : LPARENTHESIS booleanExpression RPARENTHESIS'
@@ -307,24 +313,45 @@ def p_boolean_expression_paren(p):
 
 def p_boolean_expression_variable(p):
     'booleanExpression : variable'
-    p[0] = p[1]
+    if p[1] == 'bool':
+        p[0] = 'bool'
+    else:
+        errores_semantico.append(
+            f"Error semántico: se esperaba una variable booleana en expresión lógica (línea {p.lineno(1)})"
+        )
+        p[0] = 'error'
+
 def p_if(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement %prec IFX'
+    if p[3] != 'bool':
+        errores_semantico.append(
+            f"Error semántico: la condición del if debe ser booleana (línea {p.lineno(1)})"
+        )
     p[0] = ('if', p[3], p[5])
 
 def p_if_else(p):
     'if : IF LPARENTHESIS booleanExpression RPARENTHESIS statement ELSE statement'
+    if p[3] != 'bool':
+        errores_semantico.append(
+            f"Error semántico: la condición del if-else debe ser booleana (línea {p.lineno(1)})"
+        )
     p[0] = ('if_else', p[3], p[5], p[7])
-
 
 def p_while(p):
     'while : WHILE LPARENTHESIS booleanExpression RPARENTHESIS LBRACE statements RBRACE'
+    if p[3] != 'bool':
+        errores_semantico.append(
+            f"Error semántico: la condición del while debe ser booleana (línea {p.lineno(1)})"
+        )
     p[0] = ('while', p[3], p[6])
-
 
 def p_for(p):
     '''for : FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON increment RPARENTHESIS LBRACE statements RBRACE
            | FOR LPARENTHESIS assignation SEMICOLON booleanExpression SEMICOLON decrement RPARENTHESIS LBRACE statements RBRACE'''
+    if p[5] != 'bool':
+        errores_semantico.append(
+            f"Error semántico: la condición del for debe ser booleana (línea {p.lineno(1)})"
+        )
     p[0] = ('for', p[3], p[5], p[7], p[10])
 
 def p_for_in(p):
