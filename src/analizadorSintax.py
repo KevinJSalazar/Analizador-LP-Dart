@@ -4,6 +4,7 @@ from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVa
 
 lexer = build_lexer()
 errores = []
+errores_semantico = []
 log_semantico = []
 start = 'program'
 
@@ -51,11 +52,13 @@ def p_statement(p):
                  | return SEMICOLON
                  | CONTINUE SEMICOLON
                  | BREAK SEMICOLON'''
+    p[0] = p[1]
     
 def p_declaration(p):
     '''declaration : declaration_with_modifier
                    | declaration_without_modifier'''
     p[0] = p[1]
+    addSymbol(p[1][3], p[1][2])
 
 def p_declaration_with_modifier(p):
     '''declaration_with_modifier : declaration_modifier varType ID
@@ -63,6 +66,14 @@ def p_declaration_with_modifier(p):
     if len(p) == 4:
         print("MATCH: declaration_modifier varType ID")
         p[0] = ('declaration', p[1], p[2], p[3])
+
+        line = p.lineno(2)
+    
+        if p[2] == 'void':
+            log_semantico.append(f'Error at line {line}: cannot declare variable {p[3]} as void type')
+        else:
+            log_semantico.append(f'Line {line}: CHECK')
+
     else:
         print("MATCH: declaration_modifier ID")
         p[0] = ('declaration', p[1], None, p[2])
@@ -71,6 +82,13 @@ def p_declaration_without_modifier(p):
     'declaration_without_modifier : varType ID'
     print("MATCH: varType ID")
     p[0] = ('declaration', None, p[1], p[2])
+
+    line = p.lineno(1)
+    
+    if p[1] == 'void':
+        log_semantico.append(f'Error at line {line}: cannot declare variable {p[2]} as void type')
+    else:
+        log_semantico.append(f'Line {line}: CHECK')
 
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
@@ -355,8 +373,22 @@ def p_default_case(p):
     p[0] = ('default', p[3])
 
 def p_function(p):
-    '''function : declaration LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
+    '''function : varType ID LPARENTHESIS parameters RPARENTHESIS LBRACE statements RBRACE
                 | ID LPARENTHESIS parameters RPARENTHESIS'''
+    if len(p) == 9:
+        line = p.lineno(1)
+        if p[1] != 'void':
+            last_statement = p[7][-1]
+            print(last_statement)
+            if last_statement[0] == 'return':
+                return_var_type = last_statement[1]
+                if p[1] == return_var_type:
+                    log_semantico.append(f'Line {line}: CHECK')
+                else:
+                    log_semantico.append(f'Erro at line {line}: {p[1]} expected but found {return_var_type}')
+            else:
+                log_semantico.append(f'Error at line {line}: {p[1]} expected but found void')
+
 
 def p_function_arrow(p):
     'function : declaration LPARENTHESIS parameters RPARENTHESIS ARROW expression SEMICOLON'
