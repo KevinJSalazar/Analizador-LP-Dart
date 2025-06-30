@@ -1,0 +1,15 @@
+=== VALID EXPRESSIONS ===
+Line 2: CHECK
+Line 3: CHECK
+Line 5: CHECK
+Line 1: CHECK
+Line 10: CHECK
+Line 11: CHECK
+Line 12: CHECK
+String abd = String; VALID ON LINE 12
+
+=== SEMANTIC ERRORS ===
+IS NOT POSSIBLE TO ASSIGN 'None TO TYPE 'int' ' on line 5
+Error at line 10: bool expected but found String
+Error at line 16: Missing return statement
+Error at line 21: cannot declare variable x as void type
