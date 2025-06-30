@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from analizadorLex import tokens, build_lexer
-from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVariableCompatibleWithVarType, inferTypeFromToken
+from analizadorSem import symbol_table, addSymbol, printTable, inferIDType, isVariableCompatibleWithVarType, inferTypeFromToken, isDeclared
 
 lexer = build_lexer()
 errores = []
@@ -52,7 +52,8 @@ def p_statement(p):
                  | CONTINUE SEMICOLON
                  | declaration_with_modifier
                  | BREAK SEMICOLON'''
-    
+    p[0] = p[1]
+
 def p_declaration(p):
     '''declaration : declaration_with_modifier
                    | declaration_without_modifier'''
@@ -80,8 +81,9 @@ def p_declaration_without_modifier(p):
 def p_declaration_list_init(p):
     '''declaration : LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal
                    | declaration_modifier LIST_TYPE LESS_THAN varType GREATER_THAN ID ASSIGN_OPERATOR list_literal'''
+
     if len(p) == 8:
-        print("is goes in")
+        #print("is goes in")
         var_type = p[3]      
         var_name = p[5]      
         list_literal = p[7]
@@ -103,10 +105,11 @@ def p_declaration_list_init(p):
     if is_valid:
         print(f"[OK] Todos los elementos son compatibles con 'List<{var_type}>'")
         addSymbol(var_name, f'List<{var_type}>')
+        log_semantico.append(f"ALL THE LIST'S ELEMENTS ARE COMPATIBLE WITH {var_type} TYPE CHECK")
    
     else:
-        log_semantico.append(
-            f"line {line}: cannot assign list with incompatible elements to List<{var_type}>"
+        errores_semantico.append(
+            f"IS NOT POSSIBLE TO ASSIGN LIST WITH INCOMPATIBLE ELEMENTS TO LIST<{var_type}> ON LINE {line}"
         )
     printTable()
 
@@ -137,19 +140,17 @@ def p_assignation(p):
         print(f"the variable type is :'{variable}' ")
         if(isVariableCompatibleWithVarType(varType, variable)):
             addSymbol(variableName, variable) ## se supone que dentro de addSymbol debe de retornar el tipo o se maneja la logica
-            log_semantico.append(f"{varType} {variableName} = {variable}; VALID on line {line}")
+            log_semantico.append(f"{varType} {variableName} = {variable}; VALID ON LINE {line}")
             printTable()
         else:
             print(f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}''")
             errores_semantico.append(
-            f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' ' on line {line}"
-        )
-
-    else:
-        addError(line)
+            f"IS NOT POSSIBLE TO ASSIGN '{variable} TO TYPE '{varType}' ' on line {line}")
 
   
     p[0] = ('assign', p[1], p[2], p[3])
+
+
 
 
 def p_assignation_no_type(p):
@@ -229,10 +230,16 @@ def p_variable(p):
                 | lambda
                 | expression'''
     token = p.slice[1].type
+    line = p.lineno(1)
     if(token in ['INT', 'DOUBLE', 'STRING', 'BOOL', 'NULL']):
         p[0] = inferTypeFromToken(token)
     elif (token == 'ID'):
-        p[0] = inferIDType(p[1])    
+        idType = inferIDType(p[1])
+        if(idType == None):
+            errores_semantico.append(f"{p[1]} NOT DECLARED LINE {line} ")
+            p[0] = None
+        else:
+            p[0] = inferIDType(p[1])    
     else:
         print(token)   
 
