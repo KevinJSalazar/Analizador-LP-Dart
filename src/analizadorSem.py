@@ -57,3 +57,7 @@ def isVariableCompatibleWithVarType(varType, variableType):
         'null': ['null'],
     }
     return varType in allowed and variableType in allowed[varType]
+
+
+def isDeclared(variableName):
+    return variableName in symbol_table["variable"]

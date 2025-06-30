@@ -1,0 +1,1 @@
+IS NOT POSSIBLE TO ASSIGN 'String TO TYPE 'int' ' on line 7
