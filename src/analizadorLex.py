@@ -171,3 +171,6 @@ def t_error(t):
 # Función para construir el lexer
 def build_lexer():
     return lex.lex()
+
+
+
