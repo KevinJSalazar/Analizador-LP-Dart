@@ -1,22 +1,20 @@
-import tkinter as tk
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton
 
-# Create the main window
-root = tk.Tk()
-root.title("Simple GUI")
-
-# Set window size
-root.geometry("400x300")
-
-# Add a label
-label = tk.Label(root, text="Hello, Tkinter!")
-label.pack(pady=50)
-
-# Add a button
 def on_button_click():
-    label.config(text="Button Clicked!")
+    label.setText("Button Clicked!")
 
-button = tk.Button(root, text="Click Me", command=on_button_click)
-button.pack()
+app = QApplication([])
 
-# Start the GUI event loop
-root.mainloop()
+window = QWidget()
+window.setWindowTitle("Simple PyQt5 GUI")
+window.setGeometry(100, 100, 400, 300)
+
+label = QLabel("Hello, PyQt5!", window)
+label.move(150, 100)  # This places the label in the window
+
+button = QPushButton("Click Me", window)
+button.move(150, 150)
+button.clicked.connect(on_button_click)
+
+window.show()
+app.exec_()
