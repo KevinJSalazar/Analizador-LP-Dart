@@ -1,5 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QPushButton, QApplication, QVBoxLayout, QHBoxLayout, QFrame, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QPushButton, QApplication, QVBoxLayout, QHBoxLayout, QFrame, QTextEdit, QFileDialog
 from PyQt5.QtCore import Qt
+from analizadorLex import build_lexer
+from analizadorSintax import build_parser, errores, errores_semantico, log_semantico, parser
 
 # def on_button_click():
 #     label.setText("Button Clicked!")
@@ -78,7 +80,7 @@ class MainWindow(QMainWindow):
         buttons__container.setStyleSheet("""
         QFrame {
                 background-color: #23272f;                           
-                padding; 10px;   
+                padding: 10px;   
             }
         """)
         buttons__container__layout = QHBoxLayout(buttons__container)
@@ -93,13 +95,17 @@ class MainWindow(QMainWindow):
         
 
         load__btn = QPushButton("Load File")
+        load__btn.clicked.connect(self.load_file)
         new__file__btn = QPushButton("New File")
+
         load__btn.setStyleSheet("Padding: 15px 20px;" \
                                 "background-color: #2b7ed7;" \
                                 "color: #fff; border-radius: 5px")
+        
         new__file__btn.setStyleSheet("Padding: 15px 20px;" \
                                 "background-color: #2b7ed7;" \
                                 "color: #fff; border-radius: 5px")
+        new__file__btn.clicked.connect(self.clean_textbox)
         
         left__container__layout.addWidget(load__btn)
         left__container__layout.addWidget(new__file__btn)
@@ -110,11 +116,29 @@ class MainWindow(QMainWindow):
         right__container__layout.setAlignment(Qt.AlignCenter)
         
 
-        run__btn = QPushButton("Run")
-        run__btn.setStyleSheet("Padding: 15px 20px;" \
+        run__analyzer__btn = QPushButton("Run lexer")
+        
+        run__analyzer__btn.clicked.connect(self.run_lexer)
+        run__analyzer__btn.setStyleSheet("Padding: 15px 20px;" \
                                 "background-color: #2b7ed7;" \
                                 "color: #fff; border-radius: 5px")
-        right__container__layout.addWidget(run__btn, alignment=Qt.AlignCenter)
+        
+        run__analyzer__semantic__btn = QPushButton("Run semantic analyzer")
+        run__analyzer__semantic__btn.clicked.connect(self.run_semantic_analyzer)
+        run__analyzer__semantic__btn.setStyleSheet("Padding: 15px 20px;" \
+                                "background-color: #2b7ed7;" \
+                                "color: #fff; border-radius: 5px")
+        
+        run__analyzer__syntax__btn  = QPushButton("Run syntax analyzer")
+        run__analyzer__syntax__btn.clicked.connect(self.run_syntax_analyzer)
+        run__analyzer__syntax__btn.setStyleSheet("Padding: 15px 20px;" \
+                                "background-color: #2b7ed7;" \
+                                "color: #fff; border-radius: 5px")
+
+        right__container__layout.setAlignment(Qt.AlignCenter)
+        right__container__layout.addWidget(run__analyzer__semantic__btn)
+        right__container__layout.addWidget(run__analyzer__btn)
+        right__container__layout.addWidget(run__analyzer__syntax__btn)
         buttons__container__layout.addWidget(left__container)
 
         buttons__container__layout.addWidget(right__container)
@@ -160,7 +184,7 @@ class MainWindow(QMainWindow):
                 background: #181c23;
                 border: 2px solid;
                 border-radius: 8px;                                                         
-                }
+            }
         """)
         left__side__layout.addWidget(self.textbox)
         right__side__layout = QVBoxLayout(body__layout__right__side)
@@ -182,4 +206,76 @@ class MainWindow(QMainWindow):
         layout.addWidget(body, stretch=1)
 
 
+    def load_file(self):
+        options =QFileDialog.Options()
+        file_path, _ = QFileDialog.getOpenFileName(self, 
+                                                "Open File", 
+                                                "",
+                                                "All Files (*);;Text Files (*.txt)",
+                                                options = options
+                                                )
+        if file_path:
+            with open(file_path,'r',encoding = 'utf-8') as f:
+                content = f.read()
+                self.textbox.setText(content)
+        
 
+    def clean_textbox(self):
+        self.textbox.clear()
+        self.resultbox.clear()
+
+    def run_lexer(self):
+        input_text = self.textbox.toPlainText()
+        lexer = build_lexer()
+        lexer.input(input_text)
+        tokens_output = ""
+        while True:
+            tok = lexer.token()
+            if not tok:
+                break
+            tokens_output += str(tok) + '\n'
+        self.resultbox.setPlainText(tokens_output)    
+        #self.resultbox.setPlainText(result)
+
+    def run_semantic_analyzer(self):
+
+        errores_semantico.clear()
+        log_semantico.clear()
+        input_text = self.textbox.toPlainText()
+        lexer = build_lexer()
+        parser.parse(input_text, lexer=lexer)
+
+        output = ""
+        if log_semantico:
+            output += "=== VALID EXPRESSIONS ===\n"
+            for l in log_semantico:
+                output += l + '\n'
+
+        if errores_semantico:
+            output += "\n=== SEMANTIC ERRORS ===\n"
+            for e in errores_semantico:
+                output += e + '\n'
+        else:
+            output += "\nNo se detectaron errores semánticos.\n"
+
+        self.resultbox.setPlainText(output)
+
+    def run_syntax_analyzer(self):
+        errores.clear()  # limpia errores acumulados
+        input_text = self.textbox.toPlainText()
+        lexer = build_lexer()
+        parser = build_parser()
+        parser.parse(input_text, lexer=lexer)
+
+        output = ""
+        if errores:
+            output += "=== SYNTAX ERRORS ===\n"
+            for e in errores:
+                output += e + '\n'
+        else:
+            output += "No se encontraron errores de sintaxis.\n"
+
+        self.resultbox.setPlainText(output)
+            
+
+    
