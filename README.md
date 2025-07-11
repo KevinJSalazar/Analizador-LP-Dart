@@ -46,4 +46,3 @@ Este repositorio contiene un analizador para Lenguajes de Programación desarrol
 
 ---
 
-¿Tienes dudas o sugerencias? No dudes en abrir un issue o contactarnos.
