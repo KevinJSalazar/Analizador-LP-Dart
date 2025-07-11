@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QPushButton, QApplication, QVBoxLayout, QHBoxLayout, QFrame, QTextEdit, QFileDialog
 from PyQt5.QtCore import Qt
-from analizadorLex import build_lexer
+from analizadorLex import build_lexer, lex_err
 from analizadorSintax import build_parser, errores, errores_semantico, log_semantico, parser
 
 # def on_button_click():
@@ -234,6 +234,13 @@ class MainWindow(QMainWindow):
             if not tok:
                 break
             tokens_output += str(tok) + '\n'
+        
+        tokens_output += "\n\nLexic errors: \n"
+        tokens_output += "========================================================= \n"
+        #Print errors
+        for msg in lex_err:
+            tokens_output += msg + '\n'
+
         self.resultbox.setPlainText(tokens_output)    
         #self.resultbox.setPlainText(result)
 

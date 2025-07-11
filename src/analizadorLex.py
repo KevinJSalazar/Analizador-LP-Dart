@@ -1,5 +1,7 @@
 import ply.lex as lex
 
+lex_err = []
+
 reserved = {
     # === Palabras clave de control de flujo ===
     'if': 'IF',
@@ -165,7 +167,11 @@ def t_ID(t):
 
 # Errores léxicos
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}' at line {t.lineno}")
+    msg = f"Illegal character '{t.value[0]}' at line {t.lineno}"
+    print(msg)
+
+    lex_err.append(msg)
+
     t.lexer.skip(1)
 
 # Función para construir el lexer
