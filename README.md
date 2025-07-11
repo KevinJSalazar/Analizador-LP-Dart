@@ -37,7 +37,7 @@ Este repositorio contiene un analizador para Lenguajes de Programación desarrol
    cd src
    python main.py
    ```
-   Si el nombre del archivo principal es diferente, ajusta el comando anterior.
+
 
 ## Notas adicionales
 
