@@ -32,7 +32,7 @@ Este repositorio contiene un analizador para Lenguajes de Programación desarrol
    ```
 
 3. **Ejecuta el proyecto**
-   El punto de entrada suele estar en la carpeta `src`. Busca un archivo como `main.py` o similar:
+  
    ```sh
    cd src
    python main.py
